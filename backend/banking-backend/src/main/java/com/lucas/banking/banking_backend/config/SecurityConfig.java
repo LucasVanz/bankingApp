@@ -12,17 +12,13 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable()) // Desabilite temporariamente para testar o acesso ao console
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console", "/h2-console/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll() // Garante acesso a todos os sub-recursos do console
                         .requestMatchers("/health").permitAll()
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**")
-                )
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable())
-                )
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())) // Isso você já tem e é essencial!
                 .formLogin(Customizer.withDefaults());
 
         return http.build();
