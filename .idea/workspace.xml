@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21479f45-ad05-4efc-8396-a9c17b08f4e0" name="Changes" comment="20/12">
-      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/dto/DepositRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/entity/Transaction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/entity/TransactionStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/entity/TransactionType.java" afterDir="false" />
+    <list default="true" id="21479f45-ad05-4efc-8396-a9c17b08f4e0" name="Changes" comment="22/12">
+      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/controller/TransactionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/repository/TransactionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/service/TransactionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/dto/DepositRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/dto/DepositRequestDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +21,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -108,7 +110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1766279835433</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="22/12">
+      <created>1766455055525</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1766455055525</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -127,6 +136,7 @@
     <MESSAGE value="18/12" />
     <MESSAGE value="19/12" />
     <MESSAGE value="20/12" />
-    <option name="LAST_COMMIT_MESSAGE" value="20/12" />
+    <MESSAGE value="22/12" />
+    <option name="LAST_COMMIT_MESSAGE" value="22/12" />
   </component>
 </project>

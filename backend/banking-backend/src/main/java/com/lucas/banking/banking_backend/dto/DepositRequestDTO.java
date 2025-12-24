@@ -1,4 +1,6 @@
 package com.lucas.banking.banking_backend.dto;
 
-public record DepositRequestDTO() {
+import java.math.BigDecimal;
+
+public record DepositRequestDTO(BigDecimal amount) {
 }
