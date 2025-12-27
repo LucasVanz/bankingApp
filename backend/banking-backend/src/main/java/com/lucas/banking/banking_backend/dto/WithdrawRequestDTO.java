@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record DepositRequestDTO(@NotNull @DecimalMin(value = "0.01") BigDecimal amount) {
+public record WithdrawRequestDTO(@NotNull @DecimalMin(value = "0.01") BigDecimal amount) {
 }

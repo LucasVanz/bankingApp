@@ -35,4 +35,7 @@ public class UserController {
         return ResponseEntity.ok(walletService.findByUser(user));
     }
 
+    // TODO: Fazer implementação para verificar o extrato da conta
+
+
 }

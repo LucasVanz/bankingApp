@@ -4,7 +4,6 @@ import com.lucas.banking.banking_backend.dto.UserRequestDTO;
 import com.lucas.banking.banking_backend.entity.User;
 import com.lucas.banking.banking_backend.entity.Wallet;
 import com.lucas.banking.banking_backend.repository.UserRepository;
-import com.lucas.banking.banking_backend.repository.WalletRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +45,9 @@ public class UserService {
         return savedUser;
     }
 
+    public User findById(Long id){
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
     public List<User> findAll(){
         return userRepository.findAll();
     }

@@ -2,8 +2,6 @@ package com.lucas.banking.banking_backend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -32,6 +30,8 @@ public class Transaction {
     private TransactionStatus status;
     @ManyToOne
     private Wallet wallet;
+    @ManyToOne
+    private Wallet receiverWallet;
     private LocalDateTime createdAt = LocalDateTime.now();
 
 }
