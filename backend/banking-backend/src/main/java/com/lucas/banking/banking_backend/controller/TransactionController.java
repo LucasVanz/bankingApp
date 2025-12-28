@@ -35,9 +35,6 @@ public class TransactionController {
     @PostMapping("/confirm/{id}")
     public ResponseEntity<String> confirmTransaction(@PathVariable UUID id){
 
-        //TODO: Fazer a lógica para procurar o tipo da transação.
-        //TODO: Ex: Se for depósito, confirma o depósito, se for outra, confirma essa outra
-
         if(transactionService.confirmTransaction(id)){
             return ResponseEntity.ok("Transação efetuada com sucesso!");
         }

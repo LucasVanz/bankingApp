@@ -1,7 +1,9 @@
 package com.lucas.banking.banking_backend.controller;
 
 import com.lucas.banking.banking_backend.dto.UserRequestDTO;
+import com.lucas.banking.banking_backend.entity.Transaction;
 import com.lucas.banking.banking_backend.entity.User;
+import com.lucas.banking.banking_backend.service.TransactionService;
 import com.lucas.banking.banking_backend.service.UserService;
 import com.lucas.banking.banking_backend.service.WalletService;
 import jakarta.validation.Valid;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -17,6 +21,8 @@ public class UserController {
     UserService userService;
     @Autowired
     WalletService walletService;
+    @Autowired
+    TransactionService transactionService;
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody @Valid UserRequestDTO data){
@@ -35,7 +41,11 @@ public class UserController {
         return ResponseEntity.ok(walletService.findByUser(user));
     }
 
-    // TODO: Fazer implementação para verificar o extrato da conta
 
+    // TODO: Fazer implementação para verificar o extrato da conta
+    @GetMapping("/me/transactions")
+    public ResponseEntity<List<Transaction>> getUserTransactions(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(transactionService.getTransactions(user));
+    }
 
 }

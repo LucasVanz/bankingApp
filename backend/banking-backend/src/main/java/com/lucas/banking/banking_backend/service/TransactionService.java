@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -57,7 +58,7 @@ public class TransactionService {
         }
         // Verifica se possui saldo na carteira
         if (!haveBalance(walletUser, amount)){
-            throw new RuntimeException("Saldo insuficiente no momento da confirmação");
+            throw new RuntimeException("Saldo insuficiente no momento do requerimento da transferência");
         }
         // Efetua a carga dos dados da transação
         Transaction transaction = new Transaction();
@@ -109,5 +110,11 @@ public class TransactionService {
 
     public boolean haveBalance(Wallet wallet, BigDecimal amount){
         return wallet.getBalance().compareTo(amount) >= 0;
+    }
+
+    public List<Transaction> getTransactions(User user){
+        Wallet wallet = walletService.findByUser(user);
+        return transactionRepository.findByWalletOrReceiverWalletOrderByCreatedAtDesc(wallet, wallet);
+        // TODO: Deixar os dados do usuário sem poder ver ao consultar as transações
     }
 }
