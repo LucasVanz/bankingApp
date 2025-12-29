@@ -27,6 +27,6 @@ public class AuthService {
             return tokenService.generateToken(user);
         }
         // Retorna aviso caso senha não corresponder
-        throw new InvalidCredentialsException("Email ou senha incorretos");
+        throw new InvalidCredentialsException("Email or password wrong");
     }
 }

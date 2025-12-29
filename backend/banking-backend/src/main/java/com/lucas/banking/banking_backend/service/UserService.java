@@ -18,7 +18,6 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     WalletService walletService;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Transactional
@@ -26,6 +25,7 @@ public class UserService {
         String hash = passwordEncoder.encode(data.password());
 
         User newUser = new User(
+                data.cpf(),
                 data.name(),
                 data.email(),
                 hash,
@@ -45,8 +45,8 @@ public class UserService {
         return savedUser;
     }
 
-    public User findById(Long id){
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public User findByCpf(String cpf){
+        return userRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("User not found with CPF: " + cpf));
     }
     public List<User> findAll(){
         return userRepository.findAll();

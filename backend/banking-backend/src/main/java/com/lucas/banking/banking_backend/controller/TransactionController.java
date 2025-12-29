@@ -30,15 +30,15 @@ public class TransactionController {
 
     @PostMapping("/transfer")
     public UUID transferRequest(@AuthenticationPrincipal User user,@RequestBody @Valid TransferRequestDTO data){
-        return transactionService.requestTransfer(user, data.receiverId(), data.amount());
+        return transactionService.requestTransfer(user, data.receiverCpf(), data.amount());
     }
     @PostMapping("/confirm/{id}")
     public ResponseEntity<String> confirmTransaction(@PathVariable UUID id){
 
         if(transactionService.confirmTransaction(id)){
-            return ResponseEntity.ok("Transação efetuada com sucesso!");
+            return ResponseEntity.ok("Transaction completed successfully!");
         }
-        return ResponseEntity.badRequest().body("Transação inválida ou já processada");
+        return ResponseEntity.badRequest().body("Invalid transaction or transaction already processed");
 
     }
 }

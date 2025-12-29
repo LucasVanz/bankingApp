@@ -37,7 +37,7 @@ public class TransactionService {
         Wallet wallet = walletService.findByUser(user);
         // Verifica se possui saldo na carteira
         if (!haveBalance(wallet, amount)){
-            throw new RuntimeException("Saldo insuficiente");
+            throw new RuntimeException("Insufficient funds... The current balance is R$" + wallet.getBalance());
         }
         // Efetua a carga dos dados da transação
         Transaction transaction = new Transaction();
@@ -49,16 +49,17 @@ public class TransactionService {
         return transaction.getId();
     }
 
-    public UUID requestTransfer(User user, Long receiverId, BigDecimal amount){
+    public UUID requestTransfer(User user, String receiverCpf, BigDecimal amount){
         Wallet walletUser = walletService.findByUser(user);
-        Wallet walletReceiver = walletService.findByUser(userService.findById(receiverId));
+        Wallet walletReceiver = walletService.findByUser(userService.findByCpf(receiverCpf));
         // Verifica se não está fazendo uma transferência para a mesma conta
-        if (user.getId() == receiverId){
-            throw new RuntimeException("Não é possível efetuar transferências utilizando a mesma conta");
+        if (user.getCpf() == receiverCpf){
+            throw new RuntimeException("It is not possible to make transfers using the same account");
         }
         // Verifica se possui saldo na carteira
         if (!haveBalance(walletUser, amount)){
-            throw new RuntimeException("Saldo insuficiente no momento do requerimento da transferência");
+            throw new RuntimeException("Insufficient funds at the time of transfer request.... " +
+                                       "The current balance is R$" + walletUser.getBalance());
         }
         // Efetua a carga dos dados da transação
         Transaction transaction = new Transaction();
@@ -74,7 +75,7 @@ public class TransactionService {
     public boolean confirmTransaction(UUID idTransaction){
         Transaction transaction = transactionRepository
                 .findById(idTransaction)
-                .orElseThrow(() -> new RuntimeException("Transação não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
         // Se o status da transação for pendente
         if (transaction.getStatus() == TransactionStatus.PENDING){
             Wallet wallet = transaction.getWallet();
@@ -83,13 +84,13 @@ public class TransactionService {
                 case DEPOSIT -> wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
                 case WITHDRAW -> {
                     if (!haveBalance(wallet, transaction.getAmount())) {
-                        throw new RuntimeException("Saldo insuficiente no momento da confirmação");
+                        throw new RuntimeException("Insufficient funds at the time of confirmation");
                     }
                     wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));
                 }
                 case TRANSFER -> {
                     if (!haveBalance(wallet, transaction.getAmount())) {
-                        throw new RuntimeException("Saldo insuficiente no momento da confirmação");
+                        throw new RuntimeException("Insufficient funds at the time of confirmation");
                     }
                     Wallet receiverWallet = transaction.getReceiverWallet();
                     wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));
@@ -115,6 +116,5 @@ public class TransactionService {
     public List<Transaction> getTransactions(User user){
         Wallet wallet = walletService.findByUser(user);
         return transactionRepository.findByWalletOrReceiverWalletOrderByCreatedAtDesc(wallet, wallet);
-        // TODO: Deixar os dados do usuário sem poder ver ao consultar as transações
     }
 }
