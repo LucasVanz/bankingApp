@@ -4,21 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21479f45-ad05-4efc-8396-a9c17b08f4e0" name="Changes" comment="27/12&#10;Get transactions">
-      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/config/CpfMaskSerializer.java" afterDir="false" />
+    <list default="true" id="21479f45-ad05-4efc-8396-a9c17b08f4e0" name="Changes" comment="29/12&#10;Fix class User, implementing CPF as a atribute&#10;Hide some informations in Json">
+      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/src/pages/Login.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/src/services/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/banking-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/controller/TransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/controller/TransactionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/dto/TransferRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/dto/TransferRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/dto/UserRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/dto/UserRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/service/TransactionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/resources/db/migration/V1__create_user_table.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/resources/db/migration/V2__create_wallet_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/config/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1766890853729</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="29/12&#10;Fix class User, implementing CPF as a atribute&#10;Hide some informations in Json">
+      <created>1767049727183</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1767049727183</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -169,6 +168,7 @@
     <MESSAGE value="23/12&#10;Transaction logic" />
     <MESSAGE value="26/12&#10;Transaction logic" />
     <MESSAGE value="27/12&#10;Get transactions" />
-    <option name="LAST_COMMIT_MESSAGE" value="27/12&#10;Get transactions" />
+    <MESSAGE value="29/12&#10;Fix class User, implementing CPF as a atribute&#10;Hide some informations in Json" />
+    <option name="LAST_COMMIT_MESSAGE" value="29/12&#10;Fix class User, implementing CPF as a atribute&#10;Hide some informations in Json" />
   </component>
 </project>

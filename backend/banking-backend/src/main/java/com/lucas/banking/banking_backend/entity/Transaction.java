@@ -32,6 +32,5 @@ public class Transaction {
     private Wallet wallet;
     @ManyToOne
     private Wallet receiverWallet;
-    private LocalDateTime createdAt = LocalDateTime.now();
-
+    @Builder.Default private LocalDateTime createdAt = LocalDateTime.now();
 }

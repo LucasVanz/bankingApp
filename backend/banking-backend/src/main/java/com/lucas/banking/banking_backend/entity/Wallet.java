@@ -19,15 +19,15 @@ public class Wallet {
     private Long id;
     @NotNull
     @Column(precision = 19, scale = 2)
-    private BigDecimal balance = BigDecimal.ZERO;
+    @Builder.Default private BigDecimal balance = BigDecimal.ZERO;
     @NotEmpty
     private String currency;
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private User user;
     @Enumerated(EnumType.STRING)
-    private Status status = Status.ACTIVE;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Builder.Default private Status status = Status.ACTIVE;
+    @Builder.Default private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
 
     public Wallet(User user){
