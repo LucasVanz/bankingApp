@@ -7,8 +7,5 @@ public record UserRequestDTO(
         @NotEmpty String cpf,
         @NotEmpty String name,
         @Email @NotEmpty String email,
-        @NotEmpty String password,
-        @NotEmpty String agency,
-        @NotEmpty String account,
-        @NotEmpty String verificationDigit
+        @NotEmpty String password
 ) { }

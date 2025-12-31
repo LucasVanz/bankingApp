@@ -19,14 +19,14 @@ public class AuthService {
     @Autowired
     private TokenService tokenService;
     public String authenticate(LoginRequestDTO data){
-        // Busca o usuário pelo email passado
-        User user = userRepository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("User not found"));
+        // Busca o usuário pelo CPF passado
+        User user = userRepository.findByCpf(data.cpf()).orElseThrow(() -> new RuntimeException("User not found"));
 
         // Compara a senha enviada com o hash do banco
         if (passwordEncoder.matches(data.password(), user.getPasswordHash())){
             return tokenService.generateToken(user);
         }
         // Retorna aviso caso senha não corresponder
-        throw new InvalidCredentialsException("Email or password wrong");
+        throw new InvalidCredentialsException("CPF or password wrong");
     }
 }

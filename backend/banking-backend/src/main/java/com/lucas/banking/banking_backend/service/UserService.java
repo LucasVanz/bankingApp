@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserService {
@@ -23,17 +24,15 @@ public class UserService {
     @Transactional
     public User createWithWallet(UserRequestDTO data){
         String hash = passwordEncoder.encode(data.password());
-
         User newUser = new User(
                 data.cpf(),
                 data.name(),
                 data.email(),
-                hash,
-                data.agency(),
-                data.account(),
-                data.verificationDigit()
+                hash
         );
-
+        // Busca a conta com maior número
+        long lastAccount = userRepository.findFirstByOrderByAccountDesc().map(User::getAccount).orElse(9999L);
+        newUser.setAccount(lastAccount + 1);
         // Salva o usuário criado
         User savedUser = userRepository.save(newUser);
 
@@ -51,4 +50,6 @@ public class UserService {
     public List<User> findAll(){
         return userRepository.findAll();
     }
+
+
 }

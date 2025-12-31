@@ -2,16 +2,16 @@ import { useState } from 'react'
 import api from './services/api' // Certifique-se que o api.js existe na pasta services
 
 function App() {
-  const [email, setEmail] = useState('')
+  const [cpf, setCpf] = useState('')
   const [password, setPassword] = useState('')
-  
+
+// No HTML (JSX), mude o input
+
 
   const handleLogin = async (e) => {
     e.preventDefault() // Impede a página de recarregar
     try {
-      // Faz a chamada para o seu Back-end Java
-      const response = await api.post('/auth/login', { email, password })
-      // Se der certo, o token vai aparecer no Console do navegador (F12)
+      const response = await api.post('/auth/login', { cpf, password })
       console.log('Login Sucesso! Seu Token:', response.data)
       alert('Login realizado com sucesso! Verifique o Console (F12).')
       
@@ -22,6 +22,7 @@ function App() {
       alert('Falha no login. Verifique seu e-mail, senha e se o Java está rodando.')
     }
   }
+  
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px', fontFamily: 'Arial' }}>
@@ -29,10 +30,18 @@ function App() {
       
       <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', width: '300px', gap: '15px' }}>
         <input 
-          type="email" 
-          placeholder="Digite seu e-mail" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text" 
+          placeholder="Digite seu CPF" 
+          value={cpf}
+          onChange={(e) => {
+            const value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+            const maskedValue = value
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+            setCpf(maskedValue.substring(0, 14)); // Limita ao tamanho do CPF
+          }
+        }
           style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
         

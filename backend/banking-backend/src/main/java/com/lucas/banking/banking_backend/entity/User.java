@@ -39,9 +39,9 @@ public class User implements UserDetails {
     private String passwordHash;
     @NotEmpty
     private String agency;
-    @NotEmpty
-    private String account;
-    @NotEmpty
+    @NotNull
+    @Column(unique = true, nullable = false)
+    private Long account;
     private String verificationDigit;
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -49,16 +49,21 @@ public class User implements UserDetails {
     @NotNull
     private LocalDateTime createdAt;
 
-    public User(String cpf, String name, String email, String password, String agency, String account, String verificationDigit) {
+    public User(String cpf, String name, String email, String password) {
         this.cpf = cpf;
         this.name = name;
         this.email = email;
         this.passwordHash = password;
-        this.agency = agency;
-        this.account = account;
-        this.verificationDigit = verificationDigit;
+        this.agency = "0001";
         this.status = Status.ACTIVE;
         this.createdAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.account != null) {
+            this.verificationDigit = String.valueOf(this.account % 10);
+        }
     }
 
     @Override
