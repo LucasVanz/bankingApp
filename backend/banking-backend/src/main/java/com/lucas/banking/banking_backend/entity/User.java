@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private String cpf;
     @NotEmpty
     private String name;
+    @Column(unique = true, nullable = false)
     @NotEmpty
     private String email;
     @NotEmpty

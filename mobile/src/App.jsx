@@ -1,67 +1,25 @@
-import { useState } from 'react'
-import api from './services/api' // Certifique-se que o api.js existe na pasta services
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Login } from './pages/Login';
+import { Create } from './pages/Create';
+import { Dashboard } from './pages/Dashboard';
 
 function App() {
-  const [cpf, setCpf] = useState('')
-  const [password, setPassword] = useState('')
-
-// No HTML (JSX), mude o input
-
-
-  const handleLogin = async (e) => {
-    e.preventDefault() // Impede a página de recarregar
-    try {
-      const response = await api.post('/auth/login', { cpf, password })
-      console.log('Login Sucesso! Seu Token:', response.data)
-      alert('Login realizado com sucesso! Verifique o Console (F12).')
-      
-      // Salva o token para usarmos nas próximas telas
-      localStorage.setItem('token', response.data.token)
-    } catch (err) {
-      console.error('Erro ao logar:', err)
-      alert('Falha no login. Verifique seu e-mail, senha e se o Java está rodando.')
-    }
-  }
-  
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px', fontFamily: 'Arial' }}>
-      <h1 style={{ color: '#2c3e50' }}>LBank Login</h1>
-      
-      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', width: '300px', gap: '15px' }}>
-        <input 
-          type="text" 
-          placeholder="Digite seu CPF" 
-          value={cpf}
-          onChange={(e) => {
-            const value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
-            const maskedValue = value
-            .replace(/(\d{3})(\d)/, "$1.$2")
-            .replace(/(\d{3})(\d)/, "$1.$2")
-            .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-            setCpf(maskedValue.substring(0, 14)); // Limita ao tamanho do CPF
-          }
-        }
-          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-        />
+    <Router>
+      <Routes>
+        {/* Define a tela inicial como o Login */}
+        <Route path="/" element={<Login />} />
         
-        <input 
-          type="password" 
-          placeholder="Digite sua senha" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-        />
+        {/* Rota para a tela de cadastro */}
+        <Route path="/create" element={<Create />} />
         
-        <button 
-          type="submit" 
-          style={{ padding: '10px', backgroundColor: '#3498db', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
-        >
-          Entrar no Banco
-        </button>
-      </form>
-    </div>
-  )
+        {/* Rota para a tela de dashboard */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Redireciona qualquer rota inexistente para o login */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

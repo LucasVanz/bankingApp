@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,18 +34,24 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity getUser(@AuthenticationPrincipal User user){
+    public ResponseEntity getUser(){
+        // Pega o token da requisição e pega o email dele
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByEmail(email);
         return ResponseEntity.ok(user);
     }
+
     @GetMapping("/me/wallet")
-    public ResponseEntity getUserWallet(@AuthenticationPrincipal User user){
+    public ResponseEntity getUserWallet(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByEmail(email);
         return ResponseEntity.ok(walletService.findByUser(user));
     }
 
-
-    // TODO: Fazer implementação para verificar o extrato da conta
     @GetMapping("/me/transactions")
-    public ResponseEntity<List<Transaction>> getUserTransactions(@AuthenticationPrincipal User user){
+    public ResponseEntity<List<Transaction>> getUserTransactions(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByEmail(email);
         return ResponseEntity.ok(transactionService.getTransactions(user));
     }
 

@@ -1,0 +1,55 @@
+:root {
+  --primary-color: #4f46e5;
+  --secondary-color: #1e1b4b;
+  --bg-color: #f8fafc;
+  --text-color: #1e293b;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-container {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+h2 { margin-bottom: 1.5rem; color: var(--secondary-color); }
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-sizing: border-box; /* Garante que o padding não quebre a largura */
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary { background: var(--primary-color); color: white; margin-bottom: 10px; }
+.btn-primary:hover { background: #4338ca; }
+
+.btn-secondary { background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); }
+.btn-secondary:hover { background: #f5f3ff; }
+

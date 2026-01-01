@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class UserService {
@@ -46,6 +45,10 @@ public class UserService {
 
     public User findByCpf(String cpf){
         return userRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("User not found with CPF: " + cpf));
+    }
+
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
     public List<User> findAll(){
         return userRepository.findAll();
