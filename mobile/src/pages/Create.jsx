@@ -21,7 +21,7 @@ export function Create() {
     const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/users', { cpf: cpf.replace(/\D/g, ''), name, email, password });
+      const response = await api.post('/users/create', { cpf: cpf.replace(/\D/g, ''), name, email, password });
       alert('Account created succesfully!');
       navigate('/');
     } catch (error) {

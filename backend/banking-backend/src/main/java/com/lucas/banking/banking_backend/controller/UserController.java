@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     TransactionService transactionService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody @Valid UserRequestDTO data){
         // Cria o usuário com a carteira
         User savedUser = userService.createWithWallet(data);

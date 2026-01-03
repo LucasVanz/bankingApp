@@ -1,13 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import './css/Dashboard.css';
 
 export function Dashboard() {
     const [userData, setUserData] = useState(null);
     const [walletData, setWalletData] = useState(null);
     const [showBalance, setShowBalance] = useState(true);
     const navigate = useNavigate();
-
+    // Depósito
+    const handleDeposit = async () => {
+        navigate('/deposit');
+    };
+    // Transferência
+    const handleTransfer = async () => {
+        navigate('/transfer');
+    };
+    // Saque
+    const handleWithdraw = async () => {
+        navigate('/withdraw');
+    };
+    // Extrato
+    const handleStatement = async () => {
+        navigate('/statement');
+    };
+    // Menu Inicial    
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -18,7 +35,7 @@ export function Dashboard() {
                 setWalletData(responseWallet.data);
             } catch (error) {
                 console.error(error);
-                alert('Sessão expirada ou não autorizado');
+                alert('Session expired or not authorized');
                 navigate('/');
             }
         };
@@ -30,28 +47,49 @@ export function Dashboard() {
     }
 
     return (
-        <div className="dashboard-container" style={{ padding: '20px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
-            <header>
-                <h2>Hello, {userData.name}!</h2>
-                <p>Agency {userData.agency} | Account {userData.account}-{userData.verificationDigit}</p>
-            </header>
-
-            <div className="balance-card" style={{ backgroundColor: '#3b3b98', color: 'white', padding: '20px', borderRadius: '15px', marginTop: '20px' }}>
-                <span>Balance</span>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <h3>{showBalance ? `R$ ${walletData.balance.toFixed(2)}` : 'R$ •••••'}</h3>
-                    <button onClick={() => setShowBalance(!showBalance)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', borderRadius: '5px', padding: '5px 10px' }}>
-                        {showBalance ? 'Hide' : 'Show'}
-                    </button>
-                </div>
+    <div className="dashboard-container">
+        <header style={{ marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+                <h1 style={{ color: '#1a1a2e', fontSize: '26px', margin: 0 }}>Hello, {userData.name}!</h1>
+                <p style={{ color: '#7b7f9e', margin: '5px 0', fontSize: '14px' }}>
+                    Agency {userData.agency} | Account {userData.account}-{userData.verificationDigit}
+                </p>
             </div>
+            <div style={{ backgroundColor: '#e0e4f5', padding: '10px', borderRadius: '50%', fontSize: '20px' }}>👤</div>
+        </header>
 
-            <div className="actions-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginTop: '30px' }}>
-                <button className="action-btn">Deposit</button>
-                <button className="action-btn">Transfer</button>
-                <button className="action-btn">Withdraw</button>
-                <button className="action-btn">Bank statement</button>
+        <div className="balance-card">
+            <span style={{ opacity: 0.8, fontSize: '14px', fontWeight: '500' }}>Available Balance</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '12px' }}>
+                <h2 style={{ fontSize: '32px', margin: 0, fontWeight: '700' }}>
+                    {showBalance ? `R$ ${walletData.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : 'R$ •••••'}
+                </h2>
+                <button 
+                    onClick={() => setShowBalance(!showBalance)}
+                    style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', padding: '8px 16px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer' }}
+                >
+                    {showBalance ? 'Hide' : 'Show'}
+                </button>
             </div>
         </div>
+        <div className="actions-grid">
+            <button className="action-btn" onClick={handleDeposit}>
+                <div className="icon-box">📥</div>
+                <span>Deposit</span>
+            </button>
+            <button className="action-btn" onClick={handleTransfer}>
+                <div className="icon-box">💸</div>
+                <span>Transfer</span>
+            </button>
+            <button className="action-btn" onClick={handleWithdraw}>
+                <div className="icon-box">📤</div>
+                <span>Withdraw</span>
+            </button>
+            <button className="action-btn" onClick={handleStatement}>
+                <div className="icon-box">📄</div>
+                <span>Statement</span>
+            </button>
+        </div>
+    </div>
     );
 }

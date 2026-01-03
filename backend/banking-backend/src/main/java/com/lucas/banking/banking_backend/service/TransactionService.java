@@ -113,6 +113,10 @@ public class TransactionService {
         return wallet.getBalance().compareTo(amount) >= 0;
     }
 
+    public Transaction findById(UUID id){
+        return transactionRepository.getReferenceById(id);
+    }
+    
     public List<Transaction> getTransactions(User user){
         Wallet wallet = walletService.findByUser(user);
         return transactionRepository.findByWalletOrReceiverWalletOrderByCreatedAtDesc(wallet, wallet);
