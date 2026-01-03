@@ -1,4 +1,4 @@
 # H2 database
-data/
-*.mv.db
+backend/banking-backend/data/
+*.db
 *.trace.db
