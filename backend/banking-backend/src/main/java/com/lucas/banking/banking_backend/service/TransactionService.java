@@ -53,7 +53,7 @@ public class TransactionService {
         Wallet walletUser = walletService.findByUser(user);
         Wallet walletReceiver = walletService.findByUser(userService.findByCpf(receiverCpf));
         // Verifica se não está fazendo uma transferência para a mesma conta
-        if (user.getCpf() == receiverCpf){
+        if (user.getCpf().equalsIgnoreCase(receiverCpf)){
             throw new RuntimeException("It is not possible to make transfers using the same account");
         }
         // Verifica se possui saldo na carteira

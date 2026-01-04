@@ -6,27 +6,27 @@ import './css/Deposit.css';
 import { ErrorMessage } from './ErrorMessage';
 import { parseMoneyInput, formatMoneyDisplay } from '../utils/formatters';
 
-export function Deposit() {
+export function Withdraw() {
     const [amount, setAmount] = useState(0);
     const [transactionId, setTransactionId] = useState(null);
-    const [depositConfirmed, setDepositConfirmed] = useState(false);
+    const [withdrawConfirmed, setWithdrawConfirmed] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
-    
+
     // Carrega o valor da transação
     const handleAmountChange = (e) => {
-        setAmount(parseMoneyInput(e.target.value));
+         setAmount(parseMoneyInput(e.target.value));
     };
 
-    // Cria a transação de depósito
-    const handleDeposit = async (e) => {
+    // Cria a transação de saque
+    const handleWithdraw = async (e) => {
         e.preventDefault();
         setErrorMsg("");
-        try {
-            const response = await api.post('/transaction/deposit', { amount: parseFloat(amount) / 100});
+        try{
+            const response = await api.post('/transaction/withdraw', { amount: parseFloat(amount) / 100});
             setTransactionId(response.data);
-            setDepositConfirmed(false);
-        } catch (error) {
+            setWithdrawConfirmed(false);
+        }catch(error){
             const errorMessage = error.response?.data?.message || "An unexpected error occurred";
             setErrorMsg(errorMessage);
         }
@@ -35,24 +35,24 @@ export function Deposit() {
     // Verifica se a transação foi realizada
     useEffect(() => {
         let interval;
-        if (transactionId && !depositConfirmed){
+        if (transactionId && !withdrawConfirmed){
             interval = setInterval(async () => {
                 try{
                     const response = await api.get(`/transaction/status/${transactionId}`);
                     if (response.data == 'COMPLETED'){
-                        setDepositConfirmed(true);
+                        setWithdrawConfirmed(true);
                         clearInterval(interval);
                     }
-                } catch(error){
-                    console.error("Erro ao verificar status: " + error);
+                }catch(error){
+                    console.error("Erro ao verificar status: ", error);
                     clearInterval(interval);
                 }
             }, 2000)
         }
         return () => clearInterval(interval);
-    }, [transactionId, depositConfirmed, navigate])
+    }, [transactionId, withdrawConfirmed, navigate])
 
-    // Atualiza a tela de depósito indicando que a transação foi realizada
+    // Atualiza a tela de saque indicando que a transação foi realizada
     const renderConfirmationScreen = () => (
         <div className="balance-card success-card">
             <div className="checkmark-wrapper">
@@ -61,8 +61,8 @@ export function Deposit() {
                     <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
              </svg>
             </div>
-            <h2>Deposit confirmed!</h2>
-            <p>You deposited <strong>R$ {formatMoneyDisplay(amount)}</strong> successfully!</p>
+            <h2>Withdraw realized!</h2>
+            <p>You withdrew <strong>R$ {formatMoneyDisplay(amount)}</strong> successfully!</p>
             <button 
                 onClick={() => navigate('/dashboard')} 
                 className="action-btn btn-success-return"
@@ -72,16 +72,16 @@ export function Deposit() {
         </div>
     )
 
-    // Configurações dos campos do depósito
+    // Configuração dos campos do saque
     return (
         <div className="dashboard-container">
-            <h2 style={{ color: '#1a1a2e', textAlign:"center"}}>Deposit by QRCode</h2>
-            {depositConfirmed ? ( // Se confirmado, mostra a animação
+            <h2 style={{ color: '#1a1a2e', textAlign:"center"}}>Withdraw by QRCode</h2>
+            {withdrawConfirmed ? ( // Se confirmado, mostra a animação
                 renderConfirmationScreen()
             ) : !transactionId ? (
-                <form onSubmit={handleDeposit} className="balance-card" style={{ background: 'white', color: '#333' }}>
+                <form onSubmit={handleWithdraw} className="balance-card" style={{ background: 'white', color: '#333' }}>
                     <ErrorMessage message={errorMsg} />
-                    <p style={{textAlign:"center"}}>Enter the amount to deposit:</p>
+                    <p style={{textAlign:"center"}}>Enter the amount to withdraw:</p>
                     <input 
                         type="text"
                         value={`R$ ${formatMoneyDisplay(amount)}`}
@@ -107,21 +107,21 @@ export function Deposit() {
                         display: 'flex', 
                         justifyContent: 'center', 
                         padding: '20px', 
-                        background: 'white',
+                        background: 'white', 
                         borderRadius: '15px' 
                     }}>                 
                         <QRCodeSVG 
                            value={`http://localhost:8080/transaction/confirm/${transactionId}`} 
                            size={200}
-                           marginSize={true}
+                           marginSize={true} 
                         />
                     </div>
                     <button onClick={() => setTransactionId(null)} className="action-btn" style={{ marginTop: '20px' , backgroundColor: '#c4c4ddff'}}>
-                        New Deposit
+                        New Withdraw
                     </button>
                 </div>
             )}
         </div>
     );
-}
 
+}

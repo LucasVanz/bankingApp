@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { formatCPF, stripNonDigits } from '../utils/formatters';
 
 export function Login() {
   const [cpf, setCpf] = useState('');
@@ -9,16 +10,13 @@ export function Login() {
 
   // Formata o CPF
   const handleCpfChange = (e) => {
-        let val = e.target.value.replace(/\D/g, "");
-        val = val.replace(/(\d{3})(\d)/, "$1.$2")
-                 .replace(/(\d{3})(\d)/, "$1.$2")
-                 .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-        setCpf(val.substring(0, 14));
+        const maskedValue = formatCPF(e.target.value)
+        setCpf(maskedValue);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/auth/login', { cpf: cpf.replace(/\D/g, ''), password });
+      const response = await api.post('/auth/login', { cpf: stripNonDigits(cpf), password });
       localStorage.setItem('token', response.data);
       alert('Login success!');
       navigate('/dashboard');
