@@ -74,54 +74,42 @@ export function Deposit() {
 
     // Configurações dos campos do depósito
     return (
-        <div className="dashboard-container">
-            <h2 style={{ color: '#1a1a2e', textAlign:"center"}}>Deposit by QRCode</h2>
-            {depositConfirmed ? ( // Se confirmado, mostra a animação
-                renderConfirmationScreen()
-            ) : !transactionId ? (
-                <form onSubmit={handleDeposit} className="balance-card" style={{ background: 'white', color: '#333' }}>
-                    <ErrorMessage message={errorMsg} />
-                    <p style={{textAlign:"center"}}>Enter the amount to deposit:</p>
-                    <input 
-                        type="text"
-                        value={`R$ ${formatMoneyDisplay(amount)}`}
-                        onChange={handleAmountChange}
-                        placeholder="R$ 0,00"
-                        style={{ 
-                            width: '100%', 
-                            padding: '12px', 
-                            borderRadius: '8px', 
-                            border: '1px solid #ddd',
-                            fontSize: '20px',
-                            textAlign: 'center'
-                        }}
+        <div className="deposit-page-wrapper">
+            <h2>Deposit by QRCode</h2>
+        
+        {depositConfirmed ? (
+            renderConfirmationScreen()
+        ) : !transactionId ? (
+            <form onSubmit={handleDeposit} className="balance-card">
+                <ErrorMessage message={errorMsg} />
+                <p style={{textAlign: 'center'}}>Enter the amount to deposit:</p>
+                <input 
+                    type="text"
+                    className="money-input"
+                    value={`R$ ${formatMoneyDisplay(amount)}`}
+                    onChange={handleAmountChange}
+                    placeholder="R$ 0,00"
+                />
+                <button type="submit" className="action-btn">
+                    Generate Code
+                </button>
+            </form>
+        ) : (
+            <div className="balance-card qr-container">
+                <p>Scan to confirm <strong>R$ {formatMoneyDisplay(amount)}</strong></p>
+                <div className="qr-wrapper">
+                    <QRCodeSVG 
+                       value={`http://localhost:8080/transaction/confirm/${transactionId}`} 
+                       size={200}
+                       marginSize={true}
                     />
-                    <button type="submit" className="action-btn" style={{ width: '100%', marginTop: '15px', backgroundColor: '#c4c4ddff'}}>
-                        Generate Code
-                    </button>
-                </form>
-            ) : (
-                <div className="balance-card" style={{ background: 'white', textAlign: 'center', color: '#333' }}>
-                    <p>Scan to confirm <strong>R$ {formatMoneyDisplay(amount)}</strong></p>
-                    <div style={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
-                        padding: '20px', 
-                        background: 'white',
-                        borderRadius: '15px' 
-                    }}>                 
-                        <QRCodeSVG 
-                           value={`http://localhost:8080/transaction/confirm/${transactionId}`} 
-                           size={200}
-                           marginSize={true}
-                        />
-                    </div>
-                    <button onClick={() => setTransactionId(null)} className="action-btn" style={{ marginTop: '20px' , backgroundColor: '#c4c4ddff'}}>
-                        New Deposit
-                    </button>
                 </div>
-            )}
-        </div>
-    );
+                <button onClick={() => setTransactionId(null)} className="action-btn">
+                    New Deposit
+                </button>
+            </div>
+        )}
+    </div>
+);
 }
 

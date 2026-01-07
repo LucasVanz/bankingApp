@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import './css/Deposit.css';
+import './css/Withdraw.css';
 import { ErrorMessage } from './ErrorMessage';
 import { parseMoneyInput, formatMoneyDisplay } from '../utils/formatters';
 
@@ -74,49 +74,36 @@ export function Withdraw() {
 
     // Configuração dos campos do saque
     return (
-        <div className="dashboard-container">
-            <h2 style={{ color: '#1a1a2e', textAlign:"center"}}>Withdraw by QRCode</h2>
-            {withdrawConfirmed ? ( // Se confirmado, mostra a animação
+        <div className="withdraw-page-wrapper"> {/* Wrapper de escopo */}
+            <h2>Withdraw by QRCode</h2>
+            {withdrawConfirmed ? (
                 renderConfirmationScreen()
             ) : !transactionId ? (
-                <form onSubmit={handleWithdraw} className="balance-card" style={{ background: 'white', color: '#333' }}>
+                <form onSubmit={handleWithdraw} className="balance-card">
                     <ErrorMessage message={errorMsg} />
                     <p style={{textAlign:"center"}}>Enter the amount to withdraw:</p>
                     <input 
                         type="text"
+                        className="money-input"
                         value={`R$ ${formatMoneyDisplay(amount)}`}
                         onChange={handleAmountChange}
                         placeholder="R$ 0,00"
-                        style={{ 
-                            width: '100%', 
-                            padding: '12px', 
-                            borderRadius: '8px', 
-                            border: '1px solid #ddd',
-                            fontSize: '20px',
-                            textAlign: 'center'
-                        }}
                     />
-                    <button type="submit" className="action-btn" style={{ width: '100%', marginTop: '15px', backgroundColor: '#c4c4ddff'}}>
+                    <button type="submit" className="action-btn">
                         Generate Code
                     </button>
                 </form>
             ) : (
-                <div className="balance-card" style={{ background: 'white', textAlign: 'center', color: '#333' }}>
+                <div className="balance-card" style={{textAlign: 'center'}}>
                     <p>Scan to confirm <strong>R$ {formatMoneyDisplay(amount)}</strong></p>
-                    <div style={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
-                        padding: '20px', 
-                        background: 'white', 
-                        borderRadius: '15px' 
-                    }}>                 
+                    <div className="qr-wrapper">                 
                         <QRCodeSVG 
                            value={`http://localhost:8080/transaction/confirm/${transactionId}`} 
                            size={200}
                            marginSize={true} 
                         />
                     </div>
-                    <button onClick={() => setTransactionId(null)} className="action-btn" style={{ marginTop: '20px' , backgroundColor: '#c4c4ddff'}}>
+                    <button onClick={() => setTransactionId(null)} className="action-btn">
                         New Withdraw
                     </button>
                 </div>

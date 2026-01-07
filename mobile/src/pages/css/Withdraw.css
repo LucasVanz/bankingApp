@@ -5,69 +5,103 @@
     --font-main: 'Inter', sans-serif;
 }
 
-/* Container isolado para não quebrar o Dashboard */
-.transfer-page {
+/* No topo do Withdraw.css */
+.withdraw-page-wrapper {
     font-family: var(--font-main);
     max-width: 450px;
-    margin: 40px auto;
+    margin: 60px auto; /* Aumentei a margem para não colar no topo */
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh; /* Garante que o conteúdo não 'flutue' */
 }
 
-.transfer-page h2 {
+/* Garante que o título não herde estilos estranhos */
+.withdraw-page-wrapper h2 {
     color: var(--primary);
     text-align: center;
     font-weight: 700;
     margin-bottom: 25px;
+    width: 100%;
 }
 
-/* Card Estilizado */
-.transfer-page .balance-card {
+/* Card Branco Estilizado */
+.withdraw-page-wrapper .balance-card {
     background: white;
     border-radius: 16px;
     padding: 30px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
 }
-
-/* Inputs Modernos */
-.transfer-page input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    border: 2px solid #eee;
-    font-size: 18px;
-    text-align: center;
-    transition: all 0.3s ease;
+.withdraw-page-wrapper .balance-card p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
 }
-
-.transfer-page input:focus {
-    outline: none;
-    border-color: var(--accent);
-    background-color: #f8f9ff;
-}
-
-/* Botão Principal */
-.transfer-page .action-btn {
+/* Input de Moeda */
+.withdraw-page-wrapper .money-input {
     width: 100%;
     padding: 15px;
-    border: none;
     border-radius: 12px;
-    background-color: var(--accent);
-    color: var(--primary);
+    border: 2px solid #ddd;
+    font-size: 22px;
     font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.2s;
+    text-align: center;
+    color: #333;
+    transition: all 0.2s ease;
 }
 
-.transfer-page .action-btn:hover {
-    transform: translateY(-2px);
+.withdraw-page-wrapper .money-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(196, 196, 221, 0.2);
+}
+
+/* Botão de Ação */
+.withdraw-page-wrapper .action-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: var(--accent);
+    color: var(--primary);
+    transition: all 0.2s ease;
+    margin-top: 15px;
+}
+
+.withdraw-page-wrapper .action-btn:hover {
+    transform: translateY(-1px);
     filter: brightness(0.95);
 }
 
+/* QR Code Wrapper */
+.withdraw-page-wrapper .qr-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #eee;
+}
+
+/* Tela de Sucesso */
+.withdraw-page-wrapper .success-card {
+    background: var(--success) !important;
+    color: white !important;
+    border: none;
+    text-align: center;
+}
+
+.withdraw-page-wrapper .btn-success-return {
+    background: white !important;
+    color: var(--primary) !important;
+}
+
 /* Estilos de Sucesso (Mantendo suas animações) */
-.transfer-page .success-card {
+.withdraw-page-wrapper .success-card {
     background: var(--success) !important;
     color: white !important;
     border: none;
@@ -75,11 +109,12 @@
     animation: scaleUp 0.3s ease-out;
 }
 
-.transfer-page .btn-success-return {
+.withdraw-page-wrapper .btn-success-return {
     background: white !important;
     color: var(--primary) !important;
     margin-top: 25px;
 }
+
 /* Animação do SVG Checkmark */
 .checkmark-wrapper {
     display: flex;
@@ -115,6 +150,7 @@
     stroke-dashoffset: 48;
     animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
+
 /* Keyframes das Animações */
 @keyframes stroke {
     100% { stroke-dashoffset: 0; }

@@ -1,12 +1,114 @@
-/* Card de Sucesso */
-.success-card {
-    background: #2ecc71 !important;
-    color: white !important;
-    text-align: center;
-    padding: 40px;
-    animation: scaleUp 0.3s ease-out;
+/* Variáveis para consistência visual */
+:root {
+    --primary: #1a1a2e;
+    --accent: #c4c4dd;
+    --accent-hover: #b0b0cf;
+    --success: #2ecc71;
+    --text-dark: #333;
+    --border: #ddd;
+    --font-main: 'Inter', -apple-system, sans-serif;
 }
 
+/* Use a classe pai para isolar o estilo */
+.deposit-page-wrapper {
+    font-family: var(--font-main);
+    max-width: 450px; /* Isso não vai mais afetar o Dashboard */
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Garanta que o card só mude se estiver dentro da página de depósito */
+.deposit-page-wrapper .balance-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.deposit-page-wrapper .balance-card p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.deposit-page-wrapper h2 {
+    color: var(--primary);
+    margin-bottom: 25px;
+}
+
+/* Inputs Estilizados */
+.money-input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+
+.money-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(196, 196, 221, 0.2);
+}
+
+/* Botões */
+.action-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: var(--accent);
+    color: var(--primary);
+    transition: all 0.2s ease;
+    margin-top: 15px;
+}
+
+.action-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+/* Container do QRCode */
+.qr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.qr-wrapper {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: inline-block;
+}
+
+/* Reutilizando suas animações de sucesso... */
+.success-card {
+    background: var(--success) !important;
+    color: white !important;
+    border: none;
+}
+.success-card p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: rgb(0, 0, 0) !important;
+    opacity: 0.9; /* Deixa o texto suave sobre o fundo verde */
+}
 /* Animação do SVG Checkmark */
 .checkmark-wrapper {
     display: flex;
@@ -42,7 +144,6 @@
     stroke-dashoffset: 48;
     animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
-
 /* Keyframes das Animações */
 @keyframes stroke {
     100% { stroke-dashoffset: 0; }
@@ -64,7 +165,7 @@
 
 .btn-success-return {
     background: white !important;
-    color: #2ecc71 !important;
+    color: #000000 !important;
     font-weight: bold;
     margin-top: 25px;
 }

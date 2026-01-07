@@ -34,6 +34,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers("/transaction/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/transaction/status/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/transaction/confirm/**").permitAll()
                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                     .anyRequest().authenticated()
             )

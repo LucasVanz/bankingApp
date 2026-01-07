@@ -24,6 +24,10 @@ export function Dashboard() {
     const handleStatement = async () => {
         navigate('/statement');
     };
+    // Login
+    const handleLogin = async () => {
+        navigate('/');
+    };
     // Menu Inicial    
     useEffect(() => {
         const fetchUserData = async () => {
@@ -73,21 +77,25 @@ export function Dashboard() {
             </div>
         </div>
         <div className="actions-grid">
-            <button className="action-btn" onClick={handleDeposit}>
+            <button className="dashboard-action-btn" onClick={handleDeposit}>
                 <div className="icon-box">📥</div>
                 <span>Deposit</span>
             </button>
-            <button className="action-btn" onClick={handleTransfer}>
+            <button className="dashboard-action-btn" onClick={handleTransfer}>
                 <div className="icon-box">💸</div>
                 <span>Transfer</span>
             </button>
-            <button className="action-btn" onClick={handleWithdraw}>
+            <button className="dashboard-action-btn" onClick={handleWithdraw}>
                 <div className="icon-box">📤</div>
                 <span>Withdraw</span>
             </button>
-            <button className="action-btn" onClick={handleStatement}>
+            <button className="dashboard-action-btn" onClick={handleStatement}>
                 <div className="icon-box">📄</div>
                 <span>Statement</span>
+            </button>
+            <button className="dashboard-action-btn" onClick={handleLogin}>
+                <div className="icon-box">↪</div>
+                <span>Exit</span>
             </button>
         </div>
     </div>

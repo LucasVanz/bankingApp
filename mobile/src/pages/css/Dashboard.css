@@ -26,7 +26,7 @@
     margin-top: 24px;
 }
 
-.action-btn {
+.dashboard-action-btn {
     background: white;
     border: none;
     border-radius: 20px;
@@ -42,7 +42,7 @@
     font-weight: 600;
 }
 
-.action-btn:hover {
+.dashboard-action-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }

@@ -3,13 +3,13 @@ package com.lucas.banking.banking_backend.controller;
 import com.lucas.banking.banking_backend.dto.UserRequestDTO;
 import com.lucas.banking.banking_backend.entity.Transaction;
 import com.lucas.banking.banking_backend.entity.User;
+import com.lucas.banking.banking_backend.entity.Wallet;
 import com.lucas.banking.banking_backend.service.TransactionService;
 import com.lucas.banking.banking_backend.service.UserService;
 import com.lucas.banking.banking_backend.service.WalletService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +24,7 @@ public class UserController {
     WalletService walletService;
     @Autowired
     TransactionService transactionService;
+    
 
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody @Valid UserRequestDTO data){
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity getUser(){
+    public ResponseEntity<User> getUser(){
         // Pega o token da requisição e pega o email dele
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(email);
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/me/wallet")
-    public ResponseEntity getUserWallet(){
+    public ResponseEntity<Wallet> getUserWallet(){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(email);
         return ResponseEntity.ok(walletService.findByUser(user));
