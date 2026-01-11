@@ -1,0 +1,84 @@
+.statement-page-wrapper{
+  min-height: 100vh;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 24px;
+}
+
+.statement-container{
+  width: 100%;
+  max-width: 450px;     
+  padding: 0 16px;
+}
+
+.back-statement {
+  background: linear-gradient(135deg, #3b3b98 0%, #717192 100%);;
+  color: #fff;
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Container dos Filtros: Botões lado a lado */
+.statement-filters {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: row; /* Alinhados horizontalmente */
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 10;
+  border-bottom: 1px solid #eee;
+}
+
+/* Estilização dos Botões */
+.statement-filters button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.statement-filters button:hover {
+  background: linear-gradient(135deg, #3b3b98 0%, #717192 100%);;
+  color: #fff;
+}
+
+/* Card Individual */
+.statement-transaction-card {
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra leve */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statement-amount-text {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.statement-details-text {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.4;
+  text-align: center;
+}

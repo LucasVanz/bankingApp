@@ -121,4 +121,14 @@ public class TransactionService {
         Wallet wallet = walletService.findByUser(user);
         return transactionRepository.findByWalletOrReceiverWalletOrderByCreatedAtDesc(wallet, wallet);
     }
+
+    public List<Transaction> getTransactionsExpenses(User user){
+        Wallet wallet = walletService.findByUser(user);
+        return transactionRepository.findExpensesByWallet(wallet);
+    }
+
+    public List<Transaction> getTransactionsIncome(User user){
+        Wallet wallet = walletService.findByUser(user);
+        return transactionRepository.findIncomesByWallet(wallet);
+    }
 }

@@ -9,11 +9,11 @@
 .withdraw-page-wrapper {
     font-family: var(--font-main);
     max-width: 450px;
-    margin: 60px auto; /* Aumentei a margem para não colar no topo */
+    margin: 60px auto;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    min-height: 80vh; /* Garante que o conteúdo não 'flutue' */
+    min-height: 80vh; 
 }
 
 /* Garante que o título não herde estilos estranhos */
@@ -100,7 +100,7 @@
     color: var(--primary) !important;
 }
 
-/* Estilos de Sucesso (Mantendo suas animações) */
+
 .withdraw-page-wrapper .success-card {
     background: var(--success) !important;
     color: white !important;

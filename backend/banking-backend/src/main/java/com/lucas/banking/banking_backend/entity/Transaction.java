@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,5 +34,6 @@ public class Transaction {
     private Wallet wallet;
     @ManyToOne
     private Wallet receiverWallet;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     @Builder.Default private LocalDateTime createdAt = LocalDateTime.now();
 }

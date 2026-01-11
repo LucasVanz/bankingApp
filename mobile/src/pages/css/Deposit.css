@@ -12,7 +12,7 @@
 /* Use a classe pai para isolar o estilo */
 .deposit-page-wrapper {
     font-family: var(--font-main);
-    max-width: 450px; /* Isso não vai mais afetar o Dashboard */
+    max-width: 450px; 
     margin: 40px auto;
     padding: 20px;
 }
@@ -96,7 +96,7 @@
     display: inline-block;
 }
 
-/* Reutilizando suas animações de sucesso... */
+
 .success-card {
     background: var(--success) !important;
     color: white !important;
@@ -107,7 +107,7 @@
     font-weight: 400;
     font-size: 18px;
     color: rgb(0, 0, 0) !important;
-    opacity: 0.9; /* Deixa o texto suave sobre o fundo verde */
+    opacity: 0.9; 
 }
 /* Animação do SVG Checkmark */
 .checkmark-wrapper {

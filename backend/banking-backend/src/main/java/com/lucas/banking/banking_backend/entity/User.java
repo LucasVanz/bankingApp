@@ -1,4 +1,5 @@
 package com.lucas.banking.banking_backend.entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lucas.banking.banking_backend.config.CpfMaskSerializer;
@@ -48,6 +49,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Status status;
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime createdAt;
 
     public User(String cpf, String name, String email, String password) {

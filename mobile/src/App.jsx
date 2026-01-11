@@ -5,6 +5,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Deposit } from './pages/Deposit';
 import { Withdraw } from './pages/Withdraw';
 import { Transfer } from './pages/Transfer';
+import { Statement } from './pages/Statement';
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
         <Route path="/withdraw" element={<Withdraw />} />
         {/* Rota para a tela de transferência */}
         <Route path="/transfer" element={<Transfer />} />
+        {/* Rota para a tela de extrato */}
+        <Route path="/statement" element={<Statement />} />
         {/* Redireciona qualquer rota inexistente para o login */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

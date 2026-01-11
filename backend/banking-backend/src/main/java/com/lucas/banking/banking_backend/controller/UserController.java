@@ -56,4 +56,18 @@ public class UserController {
         return ResponseEntity.ok(transactionService.getTransactions(user));
     }
 
+    @GetMapping("/me/transactions/expenses")
+    public ResponseEntity<List<Transaction>> getUserTransactionsExpenses(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(transactionService.getTransactionsExpenses(user));
+    }
+
+    @GetMapping("/me/transactions/income")
+    public ResponseEntity<List<Transaction>> getUserTransactionsIncome(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(transactionService.getTransactionsIncome(user));
+    }
+
 }

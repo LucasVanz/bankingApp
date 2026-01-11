@@ -6,6 +6,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,7 +29,9 @@ public class Wallet {
     private User user;
     @Enumerated(EnumType.STRING)
     @Builder.Default private Status status = Status.ACTIVE;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     @Builder.Default private LocalDateTime createdAt = LocalDateTime.now();
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime updatedAt;
 
     public Wallet(User user){
