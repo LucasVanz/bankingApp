@@ -7,6 +7,7 @@ import { ErrorMessage } from './ErrorMessage';
 
 export function Statement() {
     const [transactions, setTransactions] = useState([]);
+    const [idUser, setIdUser] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
 
@@ -30,6 +31,8 @@ export function Statement() {
         setErrorMsg("");
         setTransactions([]);
         try {
+            const responseName = await api.get("/users/me");
+            setIdUser(responseName.data.id);
             const response = await api.get(url);
             setTransactions(response.data);
         } catch (error) {
@@ -57,7 +60,7 @@ export function Statement() {
                     </button>
                 </div>
                     {transactions.map((transaction) => {
-                        const corAtual = transaction.type === 'DEPOSIT' ? '#11bd36' : '#c01010ff';
+                        const corAtual = transaction.type === 'DEPOSIT' || transaction.receiverWallet.user.id === idUser ? '#11bd36' : '#c01010ff';
                         return (
                         <div key={transaction.id} className="statement-transaction-card">
                             <div className="statement-amount-text" style={{color: corAtual}}>
