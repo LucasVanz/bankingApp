@@ -57,6 +57,13 @@
   color: #fff;
 }
 
+/* Esta classe será aplicada ao botão clicado */
+.statement-filters button.active {
+  background: linear-gradient(135deg, #3b3b98 0%, #717192 100%);
+  color: #fff;
+  border-color: #3b3b98;
+}
+
 /* Card Individual */
 .statement-transaction-card {
   background: #ffffff;

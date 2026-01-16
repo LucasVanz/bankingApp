@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import './css/Create.css'
 
 export function Create() {
     const[cpf, setCpf] = useState('');
@@ -30,14 +31,15 @@ export function Create() {
   };
 
 return (
-  <div className="auth-container">
+  <div className="create-auth-container">
     <h2>Create your account</h2>
-    <form onSubmit={handleSubmit}>
+    <form className='create-form' onSubmit={handleSubmit}>
       <input type="text" placeholder="CPF" value={cpf} onChange={handleCpfChange} />
       <input type="text" placeholder="Full Name" onChange={e => setName(e.target.value)} />
       <input type="email" placeholder="E-mail" onChange={e => setEmail(e.target.value)} />
       <input type="password" placeholder="Create Password" onChange={e => setPassword(e.target.value)} />
       <button type="submit" className="btn-primary">Finish</button>
+      <button type="button" className="btn-secondary" onClick={() => navigate('/')}>Back to login</button>
     </form>
   </div>
 );

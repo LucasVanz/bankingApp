@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import './css/Statement.css';
@@ -8,18 +8,22 @@ import { ErrorMessage } from './ErrorMessage';
 export function Statement() {
     const [transactions, setTransactions] = useState([]);
     const [idUser, setIdUser] = useState("");
+    const [typeStatement, setTypeStatement] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
 
     const handleAllStatement = () => {
+        setTypeStatement("ALL");
         const url = "/users/me/transactions";
         handleStatement(url);
     }
     const handleExpensesStatement = () => {
+        setTypeStatement("EXPENSES");
         const url = "/users/me/transactions/expenses";
         handleStatement(url);
     }
     const handleIncomeStatement = () => {
+        setTypeStatement("INCOME");
         const url = "/users/me/transactions/income";
         handleStatement(url);
     }
@@ -40,6 +44,13 @@ export function Statement() {
             setErrorMsg(errorMessage);
         }
     }
+
+    // Chama a requisição para indicar todos os extratos no primeiro acesso aos extratos
+    if (typeStatement === ""){
+        handleAllStatement();
+    }
+    
+    
     return (
         <div className='statement-page-wrapper'>
             <div className='statement-container'>
@@ -49,13 +60,13 @@ export function Statement() {
                 </button>
                 </div>
                 <div className='statement-filters'>
-                    <button className="all-statement" onClick={handleAllStatement}>
+                    <button className={`all-statement ${typeStatement === "ALL" ? "active" : ""}`} onClick={handleAllStatement}>
                        <span>All</span>
                     </button>
-                    <button className="expenses-statement" onClick={handleExpensesStatement}>
+                    <button className={`expenses-statement ${typeStatement === "EXPENSES" ? "active" : ""}`} onClick={handleExpensesStatement}>
                         <span>Expenses</span>
                     </button>
-                    <button className="income-statement" onClick={handleIncomeStatement}>
+                    <button className={`income-statement ${typeStatement === "INCOME" ? "active" : ""}`} onClick={handleIncomeStatement}>
                        <span>Income</span>
                     </button>
                 </div>
