@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import './css/Dashboard.css';
+import logoImg from './images/Logo.png';
+import depositImage from './images/Deposit.png';
+import withdrawImage from './images/Withdraw.png';
+import transferImage from './images/Transfer.png';
+import statementImage from './images/Statement.png';
 
 export function Dashboard() {
     const [userData, setUserData] = useState(null);
@@ -52,6 +57,13 @@ export function Dashboard() {
 
     return (
     <div className="dashboard-container">
+        <header style={{ marginBottom: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <img 
+                src={logoImg} 
+                alt="LBank Logo" 
+                style={{ display: 'flex', width: '200px', objectFit: 'contain' }} 
+            />
+        </header>
         <header style={{ marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
                 <h1 style={{ color: '#1a1a2e', margin: '5px 4px', fontSize: '17px'}}>Hello, {userData.name}!</h1>
@@ -78,19 +90,39 @@ export function Dashboard() {
         </div>
         <div className="actions-grid">
             <button className="dashboard-action-btn" onClick={handleDeposit}>
-                <div className="icon-box">📥</div>
+                <div className="icon-box">
+                    <img src={depositImage} 
+                    alt="Deposit image" 
+                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
+                    />
+                </div>
                 <span>Deposit</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleTransfer}>
-                <div className="icon-box">💸</div>
+                <div className="icon-box">
+                    <img src={transferImage} 
+                    alt="Transfer image" 
+                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
+                    />
+                </div>
                 <span>Transfer</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleWithdraw}>
-                <div className="icon-box">📤</div>
+                <div className="icon-box">
+                    <img src={withdrawImage} 
+                    alt="Withdraw image" 
+                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
+                    />
+                </div>
                 <span>Withdraw</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleStatement}>
-                <div className="icon-box">📄</div>
+                <div className="icon-box">
+                    <img src={statementImage} 
+                    alt="Statement image" 
+                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
+                    />
+                </div>
                 <span>Statement</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleLogin}>
