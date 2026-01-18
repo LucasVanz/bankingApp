@@ -1,5 +1,6 @@
 package com.lucas.banking.banking_backend.controller;
 
+import com.lucas.banking.banking_backend.dto.AnalisysReturnDTO;
 import com.lucas.banking.banking_backend.dto.UserRequestDTO;
 import com.lucas.banking.banking_backend.entity.Transaction;
 import com.lucas.banking.banking_backend.entity.User;
@@ -10,6 +11,7 @@ import com.lucas.banking.banking_backend.service.WalletService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,6 +70,10 @@ public class UserController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(email);
         return ResponseEntity.ok(transactionService.getTransactionsIncome(user));
+    }
+    @GetMapping("me/analisys")
+    public ResponseEntity<AnalisysReturnDTO> getTransactionsAnalisys(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(transactionService.getAnalysisByUserId(user));
     }
 
 }

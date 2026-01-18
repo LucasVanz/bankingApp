@@ -7,6 +7,7 @@ import depositImage from './images/Deposit.png';
 import withdrawImage from './images/Withdraw.png';
 import transferImage from './images/Transfer.png';
 import statementImage from './images/Statement.png';
+import analisysImage from './images/Analisys.png';
 
 export function Dashboard() {
     const [userData, setUserData] = useState(null);
@@ -28,6 +29,10 @@ export function Dashboard() {
     // Extrato
     const handleStatement = async () => {
         navigate('/statement');
+    };
+    // Extrato
+    const handleAnalisys = async () => {
+        navigate('/analisys');
     };
     // Login
     const handleLogin = async () => {
@@ -124,6 +129,15 @@ export function Dashboard() {
                     />
                 </div>
                 <span>Statement</span>
+            </button>
+            <button className="dashboard-action-btn" onClick={handleAnalisys}>
+                <div className="icon-box">
+                    <img src={analisysImage} 
+                    alt="Statement image" 
+                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
+                    />
+                </div>
+                <span>Financial Analisys</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleLogin}>
                 <div className="icon-box">↪</div>

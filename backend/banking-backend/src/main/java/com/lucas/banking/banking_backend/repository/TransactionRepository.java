@@ -1,5 +1,6 @@
 package com.lucas.banking.banking_backend.repository;
 
+import com.lucas.banking.banking_backend.dto.AnalisysReturnDTO;
 import com.lucas.banking.banking_backend.entity.Transaction;
 import com.lucas.banking.banking_backend.entity.Wallet;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
            "(t.wallet = :wallet AND t.type = 'DEPOSIT' AND t.status = 'COMPLETED') " +
            "ORDER BY t.createdAt DESC")
     List<Transaction> findIncomesByWallet(@Param("wallet") Wallet wallet);
+    @Query("SELECT new com.lucas.banking.banking_backend.dto.AnalisysReturnDTO(" +
+       "COALESCE(SUM(CASE WHEN t.type = 'TRANSFER' AND t.wallet = :wallet THEN t.amount ELSE 0 END), 0), " +
+       "COALESCE(SUM(CASE WHEN t.type = 'TRANSFER' AND t.receiverWallet = :wallet THEN t.amount ELSE 0 END), 0), " + // Soma o que recebeu
+       "COALESCE(SUM(CASE WHEN t.type = 'WITHDRAW' THEN t.amount ELSE 0 END), 0), " +
+       "COALESCE(SUM(CASE WHEN t.type = 'DEPOSIT' THEN t.amount ELSE 0 END), 0), " +
+       "COUNT(CASE WHEN t.type = 'TRANSFER' AND t.wallet = :wallet THEN 1 END), " +
+       "COUNT(CASE WHEN t.type = 'TRANSFER' AND t.receiverWallet = :wallet THEN 1 END), " + // Conta o que recebeu
+       "COUNT(CASE WHEN t.type = 'WITHDRAW' THEN 1 END), " +
+       "COUNT(CASE WHEN t.type = 'DEPOSIT' THEN 1 END)) " +
+       "FROM Transaction t WHERE t.wallet = :wallet OR t.receiverWallet = :wallet")
+    AnalisysReturnDTO getAnalysisByWallet(@Param("wallet") Wallet wallet);
 }

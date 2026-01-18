@@ -6,6 +6,7 @@ import { Deposit } from './pages/Deposit';
 import { Withdraw } from './pages/Withdraw';
 import { Transfer } from './pages/Transfer';
 import { Statement } from './pages/Statement';
+import { Analisys } from './pages/Analisys';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="/transfer" element={<Transfer />} />
         {/* Rota para a tela de extrato */}
         <Route path="/statement" element={<Statement />} />
+        {/* Rota para a tela de análise financeira */}
+        <Route path="/analisys" element={<Analisys />} />
         {/* Redireciona qualquer rota inexistente para o login */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

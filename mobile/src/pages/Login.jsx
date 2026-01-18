@@ -2,7 +2,8 @@ import { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { formatCPF, stripNonDigits } from '../utils/formatters';
-import './css/Login.css'
+import './css/Login.css';
+import logoImage from './images/Logo.png';
 
 export function Login() {
   const [cpf, setCpf] = useState('');
@@ -28,7 +29,13 @@ export function Login() {
 
   return (
   <div className="login-auth-container">
-    <h2>LBank</h2>
+    <header style={{ marginBottom: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+      <img 
+        src={logoImage} 
+        alt="LBank Logo" 
+        style={{ display: 'flex', width: '200px', objectFit: 'contain' }} 
+      />
+    </header>
     <p>Access your account</p>
     <form className="login-form" onSubmit={handleSubmit}>
       <input type="cpf" placeholder="CPF" value = {cpf} onChange={handleCpfChange} />

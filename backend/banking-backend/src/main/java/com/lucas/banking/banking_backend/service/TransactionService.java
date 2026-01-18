@@ -1,4 +1,5 @@
 package com.lucas.banking.banking_backend.service;
+import com.lucas.banking.banking_backend.dto.AnalisysReturnDTO;
 import com.lucas.banking.banking_backend.entity.*;
 import com.lucas.banking.banking_backend.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
@@ -130,5 +131,10 @@ public class TransactionService {
     public List<Transaction> getTransactionsIncome(User user){
         Wallet wallet = walletService.findByUser(user);
         return transactionRepository.findIncomesByWallet(wallet);
+    }
+
+    public AnalisysReturnDTO getAnalysisByUserId(User user){
+        Wallet wallet = walletService.findByUser(user);
+        return transactionRepository.getAnalysisByWallet(wallet);
     }
 }

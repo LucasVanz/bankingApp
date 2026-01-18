@@ -1,0 +1,110 @@
+/* Container Principal: Trava a altura na tela do navegador */
+.analisys-screen {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f7fe;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow: hidden; /* Impede o scroll */
+}
+
+.analisys-header h2 {
+    font-size: 1.2rem;
+    color: #1a1d4d;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+.analisys-back-button {
+    background: linear-gradient(135deg, #3b3b98 0%, #717192 100%);
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+/* Container dos Gráficos: Distribui o espaço verticalmente */
+.charts-main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-height: 0; 
+}
+
+/* Seções: Cada uma ocupa 50% da área disponível */
+.chart-section {
+    flex: 1; 
+    background: white;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    text-align: center;
+    min-height: 0;
+}
+
+.chart-header-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.chart-header-inline h3 {
+    font-size: 1rem;
+    color: #1a1d4d;
+    margin: 0;
+}
+
+/* Badge do Total */
+.total-badge {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #5d5fef;
+    background: #f0f1ff;
+    padding: 4px 12px;
+    border-radius: 8px;
+}
+
+/* Força o ResponsiveContainer a preencher o espaço interno da seção */
+.recharts-responsive-container {
+    flex: 1;
+}
+
+/* Container da lista de legenda */
+.custom-2-column-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Aqui acontece a mágica das 2 colunas */
+    gap: 8px 20px; /* Espaço entre linhas e colunas */
+    padding: 0;
+    margin: 10px auto 0 auto;
+    list-style: none;
+    width: fit-content;
+}
+
+/* Item individual da legenda */
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #4a5568;
+}
+
+/* O círculo colorido */
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    flex-shrink: 0; /* Impede o círculo de achatar */
+}
+
+.label {
+    white-space: nowrap; /* Impede o texto de quebrar linha */
+}
