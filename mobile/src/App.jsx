@@ -7,6 +7,7 @@ import { Withdraw } from './pages/Withdraw';
 import { Transfer } from './pages/Transfer';
 import { Statement } from './pages/Statement';
 import { Analisys } from './pages/Analisys';
+import { UserDetails } from './pages/UserDetails';
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
         <Route path="/statement" element={<Statement />} />
         {/* Rota para a tela de análise financeira */}
         <Route path="/analisys" element={<Analisys />} />
+        {/* Rota para a tela de detalhes do usuário */}
+        <Route path="/userDetails" element={<UserDetails />} />
         {/* Redireciona qualquer rota inexistente para o login */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

@@ -8,12 +8,18 @@ import withdrawImage from './images/Withdraw.png';
 import transferImage from './images/Transfer.png';
 import statementImage from './images/Statement.png';
 import analisysImage from './images/Analisys.png';
+import userImage from './images/User.png';
 
 export function Dashboard() {
     const [userData, setUserData] = useState(null);
     const [walletData, setWalletData] = useState(null);
     const [showBalance, setShowBalance] = useState(true);
     const navigate = useNavigate();
+
+    // Area dos dados do usuário
+    const showUserArea = async () => {
+        navigate('/userDetails');
+    };
     // Depósito
     const handleDeposit = async () => {
         navigate('/deposit');
@@ -76,7 +82,16 @@ export function Dashboard() {
                     Agency {userData.agency} | Account {userData.account}-{userData.verificationDigit}
                 </p>
             </div>
-            <div style={{ backgroundColor: '#e0e4f5', padding: '10px', borderRadius: '40%', fontSize: '20px' }}>👤</div>
+            <div style={{background: 'none', padding: '10px', fontSize: '2px' }}>
+                <button className='user-button' onClick={showUserArea}>
+                    <img src={userImage} alt="User image" style={{
+                        width: '35px',   // Ajuste este valor conforme desejar
+                        height: '35px', 
+                        objectFit: 'cover',
+                        borderRadius: '80%'
+                    }}/>
+                </button>
+            </div>
         </header>
 
         <div className="balance-card">

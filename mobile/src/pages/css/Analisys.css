@@ -80,8 +80,8 @@
 /* Container da lista de legenda */
 .custom-2-column-legend {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Aqui acontece a mágica das 2 colunas */
-    gap: 8px 20px; /* Espaço entre linhas e colunas */
+    grid-template-columns: 1fr 1fr; /* 2 colunas */
+    gap: 8px 20px; 
     padding: 0;
     margin: 10px auto 0 auto;
     list-style: none;
