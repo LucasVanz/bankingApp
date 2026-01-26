@@ -27,6 +27,7 @@ public class UserService {
                 data.cpf(),
                 data.name(),
                 data.email(),
+                data.phone(),
                 hash
         );
         // Busca a conta com maior número

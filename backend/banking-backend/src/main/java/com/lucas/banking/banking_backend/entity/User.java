@@ -3,6 +3,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lucas.banking.banking_backend.config.CpfMaskSerializer;
+import com.lucas.banking.banking_backend.validation.PhoneNumber;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +25,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity(name = "users")
-@JsonIgnoreProperties({"password", "passwordHash", "email", "status", "createdAt"})
+@JsonIgnoreProperties({"password", "passwordHash", "status", "createdAt"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,6 +41,9 @@ public class User implements UserDetails {
     @NotEmpty
     private String email;
     @NotEmpty
+    @PhoneNumber
+    private String phone;
+    @NotEmpty
     private String passwordHash;
     @NotEmpty
     private String agency;
@@ -53,10 +58,11 @@ public class User implements UserDetails {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime createdAt;
 
-    public User(String cpf, String name, String email, String password) {
+    public User(String cpf, String name, String email, String phone, String password) {
         this.cpf = cpf;
         this.name = name;
         this.email = email;
+        this.phone = phone;
         this.passwordHash = password;
         this.agency = "0001";
         this.status = Status.ACTIVE;

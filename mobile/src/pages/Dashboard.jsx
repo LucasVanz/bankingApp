@@ -18,7 +18,14 @@ export function Dashboard() {
 
     // Area dos dados do usuário
     const showUserArea = async () => {
-        navigate('/userDetails');
+        navigate('/userDetails', { 
+            state: { 
+                name: userData.name, 
+                email: userData.email,
+                phone: userData.phone,
+                photo: userData.photo
+            }
+        });
     };
     // Depósito
     const handleDeposit = async () => {

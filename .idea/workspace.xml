@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21479f45-ad05-4efc-8396-a9c17b08f4e0" name="Changes" comment="29/12&#10;Fix class User, implementing CPF as a atribute&#10;Hide some informations in Json">
-      <change afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/src/pages/Login.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/src/services/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/banking-backend/src/main/java/com/lucas/banking/banking_backend/config/SecurityConfig.java" afterDir="false" />
-    </list>
+    <list default="true" id="21479f45-ad05-4efc-8396-a9c17b08f4e0" name="Changes" comment="29/12&#10;Fix class User, implementing CPF as a atribute&#10;Hide some informations in Json" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

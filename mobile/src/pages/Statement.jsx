@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import './css/Statement.css';
-import { formatCPF, stripNonDigits, formatMoneyDisplay } from '../utils/formatters';
-import { ErrorMessage } from './ErrorMessage';
 
 export function Statement() {
     const [transactions, setTransactions] = useState([]);
