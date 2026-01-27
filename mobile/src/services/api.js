@@ -7,7 +7,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   
-  // Só adiciona o token se ele existir E se não for uma rota de login ou for uma rota
+  // Só adiciona o token se ele existir e se não for uma rota de login ou for uma rota de criação de usuário
   if (token && !config.url.includes('/auth') && !config.url.includes('/create')) {
      config.headers.Authorization = `Bearer ${token}`;
   }

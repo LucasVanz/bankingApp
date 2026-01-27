@@ -23,7 +23,7 @@ export function Dashboard() {
                 name: userData.name, 
                 email: userData.email,
                 phone: userData.phone,
-                photo: userData.photo
+                photo: userData.photoBase64
             }
         });
     };

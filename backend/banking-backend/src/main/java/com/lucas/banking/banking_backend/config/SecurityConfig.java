@@ -31,6 +31,7 @@ public class SecurityConfig {
                     .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/health").permitAll()
                     .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/users/me/update").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers("/transaction/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/transaction/status/**").permitAll()

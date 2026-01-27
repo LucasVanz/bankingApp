@@ -104,26 +104,29 @@
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    gap: 5px;
 }
 
 .user-details-input {
     width: 100%;
-    border: none;
-    padding: 10px 0;
-    font-size: 16px;
-    color: #2d3748;
-    background: transparent;
-    transition: all 0.3s;
+    padding: 12px 16px; /* 12px vertical, 16px horizontal */
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: #fff;
 }
 
 .user-details-input:focus {
     outline: none;
-    border-bottom-color: #5d5fef;
 }
 
 .user-details-input:disabled {
-    color: #a0aec0;
     cursor: not-allowed;
+    background-color: #f8f9fa;
+    border-color: transparent;
+    color: #6c757d;
 }
 
 /* Botões de Ação */
@@ -154,4 +157,24 @@
     background-color: #00C49F;
     color: white;
     box-shadow: 0 8px 20px rgba(0, 196, 159, 0.3);
+}
+
+
+
+/* Efeito de pulso na foto ao salvar */
+.success-pulse {
+    animation: pulse-border 1.5s ease-out;
+}
+
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0px rgba(46, 204, 113, 0.7); }
+    100% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+}
+
+
+/* Botão de sucesso */
+.btn-success-anim {
+    background-color: #2ecc71 !important;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
 }

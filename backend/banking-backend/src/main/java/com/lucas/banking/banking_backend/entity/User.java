@@ -43,6 +43,9 @@ public class User implements UserDetails {
     @NotEmpty
     @PhoneNumber
     private String phone;
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String photoBase64;
     @NotEmpty
     private String passwordHash;
     @NotEmpty
@@ -63,6 +66,7 @@ public class User implements UserDetails {
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.photoBase64 = "";
         this.passwordHash = password;
         this.agency = "0001";
         this.status = Status.ACTIVE;

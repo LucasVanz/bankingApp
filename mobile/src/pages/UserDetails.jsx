@@ -9,6 +9,7 @@ export function UserDetails() {
     // Para uso genérico 
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState("");
+    const [saveSuccess, setSaveSuccess] = useState(false);
     const location = useLocation();
 
     // Para controle de alteração dos dados
@@ -22,7 +23,7 @@ export function UserDetails() {
         name: initialData.name || '',
         email: initialData.email || '',
         phone: initialData.phone || '',
-        photo: initialData.photo || null
+        photoBase64: initialData.photo || null
     });
 
 
@@ -32,7 +33,12 @@ export function UserDetails() {
 
     const handleSave = async () => {
         try {
-            const response = await api.post('/user/updateInfos', { name: userData.name, email: userData.email, phone: userData.phone, photo: userData.photo}); 
+            const response = await api.put('users/me/update', { name: userData.name, email: userData.email, phone: userData.phone.replace(/\D/g, ''), photoBase64: userData.photoBase64}); 
+            setUserData(response.data)
+            setIsEditing(false); 
+            // Ativa a animação de sucesso
+            setSaveSuccess(true);
+            setTimeout(() => setSaveSuccess(false), 3000); 
         } catch (error) {
             const errorMessage = error.response?.data?.message || "An unexpected error occurred";
             setErrorMsg(errorMessage);
@@ -56,7 +62,7 @@ export function UserDetails() {
                 <div className="user-details-photo-wrapper">
                     <img 
                         className="user-details-avatar"
-                        src={userData.photo || 'https://via.placeholder.com/150'} 
+                        src={userData.photoBase64 || 'https://via.placeholder.com/150'} 
                         alt="Profile" 
                     />
                     {isEditing && (
@@ -111,10 +117,11 @@ export function UserDetails() {
             </div>
 
             <button 
-                className={`user-details-btn ${isEditing ? 'user-details-btn-save' : 'user-details-btn-edit'}`}
+                className={`user-details-btn ${isEditing ? 'user-details-btn-save' : 'user-details-btn-edit'} ${saveSuccess ? 'btn-success-anim' : ''}`}
                 onClick={isEditing ? handleSave : () => setIsEditing(true)}
+                disabled={saveSuccess}
             >
-                {isEditing ? 'Save Changes' : 'Edit Profile'}
+                {saveSuccess ? '✓ Updated!' : (isEditing ? 'Save Changes' : 'Edit Profile')}
             </button>
         </div>
     </div>

@@ -1,6 +1,7 @@
 package com.lucas.banking.banking_backend.service;
 
 import com.lucas.banking.banking_backend.dto.UserRequestDTO;
+import com.lucas.banking.banking_backend.dto.UserRequestUpdateDTO;
 import com.lucas.banking.banking_backend.entity.User;
 import com.lucas.banking.banking_backend.entity.Wallet;
 import com.lucas.banking.banking_backend.repository.UserRepository;
@@ -42,6 +43,17 @@ public class UserService {
 
         // Retorna o usuário criado
         return savedUser;
+    }
+
+    public UserRequestUpdateDTO updateUser(User user, UserRequestUpdateDTO data){
+           User updatedUser = user;
+           updatedUser.setName(data.name());
+           updatedUser.setEmail(data.email());
+           updatedUser.setPhone(data.phone());
+           updatedUser.setPhotoBase64(data.photoBase64());
+           userRepository.save(updatedUser);
+           UserRequestUpdateDTO userRequestUpdateDTO = new UserRequestUpdateDTO(updatedUser.getName(), updatedUser.getEmail(), updatedUser.getPhone(), updatedUser.getPhotoBase64());
+           return userRequestUpdateDTO;
     }
 
     public User findByCpf(String cpf){
