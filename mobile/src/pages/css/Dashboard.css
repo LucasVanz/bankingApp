@@ -1,63 +1,70 @@
-/* Dashboard.css */
 .dashboard-container {
     font-family: 'Inter', sans-serif;
     background-color: #f8f9fc;
-    padding: 24px;
+    padding: 16px;
     max-width: 450px;
     margin: 0 auto;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
     box-sizing: border-box;
+    overflow: hidden; 
 }
 
-/* Glassmorphism Balance Card */
+/* Mantém o topo compacto */
+header {
+    margin-bottom: 8px !important;
+}
+
 .balance-card {
     background: linear-gradient(135deg, #3b3b98 0%, #717192 100%);
     color: white;
-    padding: 24px;
-    border-radius: 24px;
-    box-shadow: 0 10px 25px rgba(59, 59, 152, 0.3);
-    margin: 5px 0;
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 12px;
 }
 
-/* Floating Action Grid */
 .actions-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 24px;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas para simetria */
+    gap: 12px;
+    flex: 1; /* Ocupa o espaço restante */
+    align-content: stretch; /* Garante que as linhas estiquem por igual */
 }
 
 .dashboard-action-btn {
     background: white;
     border: none;
     border-radius: 20px;
-    padding: 24px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+    gap: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    color: #1a1a2e;
+    transition: all 0.2s ease;
+    width: 100%; 
+    height: 100%; 
+}
+
+/* Força os ícones a não quebrarem o layout */
+.icon-box img {
+    width: 55px !important;
+    height: 55px;
+    object-fit: contain;
+}
+
+.dashboard-action-btn span {
+    font-size: 11px;
     font-weight: 600;
+    color: #1a1a2e;
+    text-align: center;
 }
 
-.dashboard-action-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.icon-box {
-    padding: 12px;
-    border-radius: 14px;
-    font-size: 24px;
-    color: #3b3b98;
-}
-
-.user-button {
-    background-color: #f8f9fc;
+/* Estilo do botão Exit ocupando a base */
+.exit-button-full {
+    grid-column: span 3; /* Agora ocupa 3 colunas */
+    max-height: 70px; /* Impede que o Exit fique alto demais */
+    margin-top: auto;
 }

@@ -47,6 +47,10 @@ export function Dashboard() {
     const handleAnalisys = async () => {
         navigate('/analisys');
     };
+    // Investiments
+    const handleInvestments = async () => {
+         navigate('/investments');
+    }
     // Login
     const handleLogin = async () => {
         navigate('/');
@@ -121,52 +125,31 @@ export function Dashboard() {
         </div>
         <div className="actions-grid">
             <button className="dashboard-action-btn" onClick={handleDeposit}>
-                <div className="icon-box">
-                    <img src={depositImage} 
-                    alt="Deposit image" 
-                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
-                    />
-                </div>
+                <div className="icon-box"><img src={depositImage} alt="Deposit" /></div>
                 <span>Deposit</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleTransfer}>
-                <div className="icon-box">
-                    <img src={transferImage} 
-                    alt="Transfer image" 
-                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
-                    />
-                </div>
+                <div className="icon-box"><img src={transferImage} alt="Transfer" /></div>
                 <span>Transfer</span>
-            </button>
+             </button>
             <button className="dashboard-action-btn" onClick={handleWithdraw}>
-                <div className="icon-box">
-                    <img src={withdrawImage} 
-                    alt="Withdraw image" 
-                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
-                    />
-                </div>
+                <div className="icon-box"><img src={withdrawImage} alt="Withdraw" /></div>
                 <span>Withdraw</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleStatement}>
-                <div className="icon-box">
-                    <img src={statementImage} 
-                    alt="Statement image" 
-                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
-                    />
-                </div>
+                <div className="icon-box"><img src={statementImage} alt="Statement" /></div>
                 <span>Statement</span>
             </button>
-            <button className="dashboard-action-btn" onClick={handleAnalisys}>
-                <div className="icon-box">
-                    <img src={analisysImage} 
-                    alt="Statement image" 
-                    style={{ display: 'flex', width: '50px', objectFit: 'contain' }}
-                    />
-                </div>
-                <span>Financial Analisys</span>
+            <button className="dashboard-action-btn investment-highlight" onClick={handleInvestments}>
+                <div className="icon-box">📈</div>
+                <span>Invest</span>
             </button>
-            <button className="dashboard-action-btn" onClick={handleLogin}>
-                <div className="icon-box">↪</div>
+            <button className="dashboard-action-btn" onClick={handleAnalisys}>
+                <div className="icon-box"><img src={analisysImage} alt="Analysis" /></div>
+                <span>Analysis</span>
+            </button>
+            <button className="dashboard-action-btn" onClick={handleLogin} style={{ gridColumn: 'span 3' }}>
+                <div className="icon-box" style={{ padding: '4px' }}>↪</div>
                 <span>Exit</span>
             </button>
         </div>

@@ -41,7 +41,7 @@ export function UserDetails() {
             setSaveSuccess(true);
             setTimeout(() => setSaveSuccess(false), 3000); 
         } catch (error) {
-            const errorMessage = error.response?.data?.errors?.[0]?.defaultMessage || // Erro do @NotEmpty
+            const errorMessage = error.response?.data?.errors?.[0]?.defaultMessage || 
                                  error.response?.data?.message || "An unexpected error occurred";
             setErrorMsg(errorMessage);
         }
