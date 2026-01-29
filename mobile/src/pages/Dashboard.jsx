@@ -91,12 +91,16 @@ export function Dashboard() {
             </div>
             <div style={{background: 'none', padding: '10px', fontSize: '2px' }}>
                 <button className='user-button' onClick={showUserArea}>
-                    <img src={userImage} alt="User image" style={{
-                        width: '35px',   // Ajuste este valor conforme desejar
-                        height: '35px', 
-                        objectFit: 'cover',
-                        borderRadius: '80%'
-                    }}/>
+                    <img 
+                        src={userData.photoBase64 || userImage}
+                        alt="User profile" 
+                        style={{
+                          width: '60px',
+                          height: '60px', 
+                          objectFit: 'cover',
+                          borderRadius: '50%' 
+                        }}
+                  />
                 </button>
             </div>
         </header>

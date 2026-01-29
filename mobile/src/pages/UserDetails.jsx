@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ErrorMessage } from './ErrorMessage';
+import { formatPhoneNumber } from '../utils/formatters';
 import './css/UserDetails.css'
 
 export function UserDetails() {
@@ -40,11 +41,30 @@ export function UserDetails() {
             setSaveSuccess(true);
             setTimeout(() => setSaveSuccess(false), 3000); 
         } catch (error) {
-            const errorMessage = error.response?.data?.message || "An unexpected error occurred";
+            const errorMessage = error.response?.data?.errors?.[0]?.defaultMessage || // Erro do @NotEmpty
+                                 error.response?.data?.message || "An unexpected error occurred";
             setErrorMsg(errorMessage);
         }
     }
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+            setUserData({ ...userData, photoBase64: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    useEffect(() => {
+        if (errorMsg) {
+            const timer = setTimeout(() => {
+                setErrorMsg("");
+            }, 5000); 
+        return () => clearTimeout(timer);
+        }
+    }, [errorMsg]);
 
    return (
     <div className="user-details-screen">
@@ -71,7 +91,8 @@ export function UserDetails() {
                             <input 
                                 type="file" 
                                 hidden 
-                                onChange={(e) => console.log(e.target.files[0])} 
+                                accept="image/*" 
+                                onChange={handleFileChange}
                             />
                         </label>
                     )}
@@ -82,6 +103,7 @@ export function UserDetails() {
             </div>
             {/* Formulário */}
             <div className="user-details-form">
+                <ErrorMessage message={errorMsg} />
                 <div className="user-details-input-group">
                     <label className="user-details-label">Full Name</label>
                     <input 
@@ -109,9 +131,9 @@ export function UserDetails() {
                     <input 
                         className="user-details-input"
                         type="text" 
-                        value={userData.phone} 
+                        value={formatPhoneNumber(userData.phone)} 
                         disabled={!isEditing}
-                        onChange={(e) => setUserData({...userData, phone: e.target.value})}
+                        onChange={(e) => setUserData({...userData, phone: formatPhoneNumber(e.target.value)})}
                     />
                 </div>
             </div>

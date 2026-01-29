@@ -41,7 +41,7 @@ return (
       <input type="text" placeholder="CPF" value={cpf} onChange={handleCpfChange} />
       <input type="text" placeholder="Full Name" onChange={e => setName(e.target.value)} />
       <input type="email" placeholder="E-mail" onChange={e => setEmail(e.target.value)} />
-      <input type="tel" placeholder="(51) 99999-9999" value={phone} onChange={handlePhoneChange}/>
+      <input type="tel" placeholder="(99) 99999-9999" value={phone} onChange={handlePhoneChange}/>
       <input type="password" placeholder="Create Password" onChange={e => setPassword(e.target.value)} />
       <button type="submit" className="btn-primary">Finish</button>
       <button type="button" className="btn-secondary" onClick={() => navigate('/')}>Back to login</button>
