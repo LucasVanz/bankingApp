@@ -8,6 +8,7 @@ import withdrawImage from './images/Withdraw.png';
 import transferImage from './images/Transfer.png';
 import statementImage from './images/Statement.png';
 import analisysImage from './images/Analisys.png';
+import investingImage from './images/Investing.png';
 import userImage from './images/User.png';
 
 export function Dashboard() {
@@ -141,7 +142,7 @@ export function Dashboard() {
                 <span>Statement</span>
             </button>
             <button className="dashboard-action-btn investment-highlight" onClick={handleInvestments}>
-                <div className="icon-box">📈</div>
+                <div className="icon-box"><img src={investingImage} alt="Investing" /></div>
                 <span>Invest</span>
             </button>
             <button className="dashboard-action-btn" onClick={handleAnalisys}>
