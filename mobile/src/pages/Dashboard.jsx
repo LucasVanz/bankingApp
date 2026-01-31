@@ -48,7 +48,7 @@ export function Dashboard() {
     const handleAnalisys = async () => {
         navigate('/analisys');
     };
-    // Investiments
+    // Investimentos
     const handleInvestments = async () => {
          navigate('/investments');
     }
@@ -60,7 +60,6 @@ export function Dashboard() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                // Endpoint que precisamos criar no Java para retornar os dados do logado
                 const responseUser = await api.get('/users/me'); 
                 const responseWallet = await api.get('/users/me/wallet');
                 setUserData(responseUser.data);
