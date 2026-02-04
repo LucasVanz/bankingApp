@@ -110,6 +110,8 @@ public class TransactionService {
         return false;
     }
 
+    // TODO: Criar metodo investmentTransaction registrando o tipo de transação e diminuindo o valor da carteira
+
     public boolean haveBalance(Wallet wallet, BigDecimal amount){
         return wallet.getBalance().compareTo(amount) >= 0;
     }

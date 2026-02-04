@@ -44,9 +44,9 @@ export function Statement() {
     }
 
     // Chama a requisição para indicar todos os extratos no primeiro acesso aos extratos
-    if (typeStatement === ""){
+    useEffect(() => {
         handleAllStatement();
-    }
+    }, []);
     
     
     return (
@@ -69,7 +69,7 @@ export function Statement() {
                     </button>
                 </div>
                     {transactions.map((transaction) => {
-                        const corAtual = transaction.type === 'DEPOSIT' || transaction.receiverWallet.user.id === idUser ? '#11bd36' : '#c01010ff';
+                        const corAtual = transaction.type === 'DEPOSIT' || transaction.receiverWallet?.user?.id === idUser ? '#11bd36' : '#c01010ff';
                         return (
                         <div key={transaction.id} className="statement-transaction-card">
                             <div className="statement-amount-text" style={{color: corAtual}}>
