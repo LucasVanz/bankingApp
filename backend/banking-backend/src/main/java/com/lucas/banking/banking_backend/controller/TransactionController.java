@@ -1,6 +1,7 @@
 package com.lucas.banking.banking_backend.controller;
 
 import com.lucas.banking.banking_backend.dto.DepositRequestDTO;
+import com.lucas.banking.banking_backend.dto.InvestmentRequestDTO;
 import com.lucas.banking.banking_backend.dto.TransferConfirmDTO;
 import com.lucas.banking.banking_backend.dto.TransferRequestDTO;
 import com.lucas.banking.banking_backend.dto.WithdrawRequestDTO;
@@ -15,6 +16,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -39,6 +43,13 @@ public class TransactionController {
     public UUID transferRequest(@AuthenticationPrincipal User user, @RequestBody @Valid TransferRequestDTO data){
         return transactionService.requestTransfer(user, data.receiverCpf(), data.amount());
     }
+
+    @PostMapping("/investment")
+    public UUID investmentRequest(@AuthenticationPrincipal User user, @RequestBody @Valid InvestmentRequestDTO data){
+        return transactionService.investmentTransaction(user, data.ticker(), data.quantity());
+
+    }
+
     @PostMapping("/transfer/confirm/{id}")
     public ResponseEntity<String> transferConfirm(@AuthenticationPrincipal User user, @PathVariable UUID id, @RequestBody TransferConfirmDTO data) {
         String token = authService.authenticate(user.getCpf(), data.password());
@@ -55,6 +66,7 @@ public class TransactionController {
         }
         return ResponseEntity.badRequest().body("Invalid transaction or transaction already processed");
     }
+    
     @GetMapping("/status/{id}")
     public ResponseEntity<String> getTransactionStatus(@PathVariable UUID id) {
         Transaction transaction = transactionService.findById(id);

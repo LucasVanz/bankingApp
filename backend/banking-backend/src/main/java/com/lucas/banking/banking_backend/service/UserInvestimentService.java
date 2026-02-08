@@ -1,12 +1,13 @@
 package com.lucas.banking.banking_backend.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucas.banking.banking_backend.entity.FinancialAsset;
-import com.lucas.banking.banking_backend.entity.User;
 import com.lucas.banking.banking_backend.entity.UserInvestment;
 import com.lucas.banking.banking_backend.entity.Wallet;
 import com.lucas.banking.banking_backend.repository.UserInvestimentRepository;
@@ -14,22 +15,14 @@ import com.lucas.banking.banking_backend.repository.WalletRepository;
 
 @Service
 public class UserInvestimentService {
-
-    @Autowired
-    FinancialAssetService financialAssetService;
     
     @Autowired
     UserInvestimentRepository userInvestimentRepository;
 
     @Autowired
-    WalletService walletService;
-
-    @Autowired
     WalletRepository walletRepository;
 
-    public UserInvestment buyAsset(User user, String ticker, Long quantity){
-        FinancialAsset financialAsset = financialAssetService.getAssetByTicker(ticker);
-        Wallet wallet = walletService.findByUser(user);
+    public boolean buyAsset(Wallet wallet, FinancialAsset financialAsset, BigDecimal quantity){
         UserInvestment userInvestment = userInvestimentRepository.findByFinancialAssetAndWallet(financialAsset, wallet).orElse(new UserInvestment());
         if(userInvestment.getId() == null){
             userInvestment.setAvaragePrice(financialAsset.getCurrentPrice());
@@ -38,16 +31,17 @@ public class UserInvestimentService {
             userInvestment.setFinancialAsset(financialAsset);
             userInvestment.setCreatedAt(LocalDateTime.now());
         }else{
-            Double totalInvested = userInvestment.getQuantity() * userInvestment.getAvaragePrice();
-            userInvestment.setQuantity(userInvestment.getQuantity() + quantity);
-            Double avaragePrice = (totalInvested + (quantity * financialAsset.getCurrentPrice())) / userInvestment.getQuantity();
+            BigDecimal totalInvested = userInvestment.getQuantity().multiply(userInvestment.getAvaragePrice());
+            userInvestment.setQuantity(userInvestment.getQuantity().add(quantity));
+            BigDecimal avaragePrice = totalInvested.add(quantity.multiply(financialAsset.getCurrentPrice())).divide(userInvestment.getQuantity(), 2, RoundingMode.HALF_UP);
             userInvestment.setAvaragePrice(avaragePrice);
         }
-        // TODO: chamar o metodo investmentTransaction
 
         userInvestimentRepository.save(userInvestment);
         
-        return userInvestment;
+        return true;
 
     }
+
+    
 }

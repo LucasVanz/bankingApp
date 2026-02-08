@@ -1,5 +1,6 @@
 package com.lucas.banking.banking_backend.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,11 +26,12 @@ public class MarketSimulationService {
         for (FinancialAsset asset : assets) {
             if (asset.getType() == FinancialAssetType.VARIABLE) {
                 // Gera uma variação entre -1.5% e +1.5%
-                double variation = 0.985 + (Math.random() * 0.03);
-                double newPrice = asset.getCurrentPrice() * variation;
+                BigDecimal constant = new BigDecimal(0.985);
+                BigDecimal variation = constant.add((new BigDecimal(Math.random() * 0.03)));
+                BigDecimal newPrice = asset.getCurrentPrice().multiply(variation);
                 
                 // Arredonda para 2 casas decimais
-                asset.setCurrentPrice(Math.round(newPrice * 100.0) / 100.0);
+                asset.setCurrentPrice(((newPrice.multiply(new BigDecimal(100.00))).divide(new BigDecimal(100.00))));
                 asset.setLastUpdate(LocalDateTime.now());
             }
         }

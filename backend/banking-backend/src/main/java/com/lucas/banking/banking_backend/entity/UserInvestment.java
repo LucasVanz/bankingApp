@@ -1,5 +1,6 @@
 package com.lucas.banking.banking_backend.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -35,9 +36,9 @@ public class UserInvestment {
     @NotNull
     private FinancialAsset financialAsset;
     @NotNull
-    private Long quantity;
+    private BigDecimal quantity;
     @NotNull
-    private Double avaragePrice;
+    private BigDecimal avaragePrice;
     @NotNull
     private LocalDateTime createdAt;
 }

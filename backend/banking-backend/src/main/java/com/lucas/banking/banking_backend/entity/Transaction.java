@@ -34,6 +34,9 @@ public class Transaction {
     private Wallet wallet;
     @ManyToOne
     private Wallet receiverWallet;
+    @ManyToOne
+    private FinancialAsset financialAsset;
+    private BigDecimal quantityFinancialAsset;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     @Builder.Default private LocalDateTime createdAt = LocalDateTime.now();
 }

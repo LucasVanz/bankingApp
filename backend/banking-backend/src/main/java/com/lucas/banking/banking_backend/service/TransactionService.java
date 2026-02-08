@@ -19,6 +19,10 @@ public class TransactionService {
     WalletService walletService;
     @Autowired
     UserService userService;
+    @Autowired
+    FinancialAssetService financialAssetService;
+    @Autowired
+    UserInvestimentService userInvestimentService;
     @Transactional
     public UUID requestDeposit(User user, BigDecimal amount){
         // Busca a carteira pelo usuário
@@ -99,6 +103,13 @@ public class TransactionService {
                     receiverWallet.setUpdatedAt(LocalDateTime.now());
                     walletService.save(receiverWallet);
                 }
+                case INVESTMENT -> {
+                    if (!haveBalance(wallet, transaction.getAmount())) {
+                        throw new RuntimeException("Insufficient funds at the time of confirmation");
+                    }
+                    wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));
+                    userInvestimentService.buyAsset(wallet, transaction.getFinancialAsset(), transaction.getQuantityFinancialAsset());
+                }
             }
             wallet.setUpdatedAt(LocalDateTime.now());
             walletService.save(wallet);
@@ -110,7 +121,27 @@ public class TransactionService {
         return false;
     }
 
-    // TODO: Criar metodo investmentTransaction registrando o tipo de transação e diminuindo o valor da carteira
+    @Transactional
+    public UUID investmentTransaction(User user, String ticker, BigDecimal quantity){
+        // Busca a carteira pelo usuário
+        Wallet wallet = walletService.findByUser(user);
+        FinancialAsset financialAsset = financialAssetService.getAssetByTicker(ticker);
+        BigDecimal amount = financialAsset.getCurrentPrice().multiply(quantity);
+        // Verifica se possui saldo na carteira
+        if (!haveBalance(wallet, amount)){
+            throw new RuntimeException("Insufficient funds... The current balance is R$" + wallet.getBalance());
+        }
+        Transaction transaction = new Transaction();
+        transaction.setAmount(amount);
+        transaction.setType(TransactionType.INVESTMENT);
+        transaction.setWallet(wallet);
+        transaction.setFinancialAsset(financialAsset);
+        transaction.setQuantityFinancialAsset(quantity);
+        transaction.setStatus(TransactionStatus.PENDING);
+        transaction.setCreatedAt(LocalDateTime.now());
+        transactionRepository.save(transaction);
+        return transaction.getId();
+    }
 
     public boolean haveBalance(Wallet wallet, BigDecimal amount){
         return wallet.getBalance().compareTo(amount) >= 0;

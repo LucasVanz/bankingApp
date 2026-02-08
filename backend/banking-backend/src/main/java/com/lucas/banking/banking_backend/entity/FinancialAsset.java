@@ -1,5 +1,6 @@
 package com.lucas.banking.banking_backend.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -36,9 +37,9 @@ public class FinancialAsset {
     @NotNull
     private FinancialAssetType type;
     @NotNull
-    private Double currentPrice;
+    private BigDecimal currentPrice;
     @NotNull
-    private Double yieldPercentage;
+    private BigDecimal yieldPercentage;
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime lastUpdate;
