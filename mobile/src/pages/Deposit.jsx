@@ -13,16 +13,15 @@ export function Deposit() {
     const [errorMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
     
-    // Carrega o valor da transação
     const handleAmountChange = (e) => {
         setAmount(parseMoneyInput(e.target.value));
     };
 
-    // Cria a transação de depósito
     const handleDeposit = async (e) => {
         e.preventDefault();
         setErrorMsg("");
         try {
+            // O backend retorna o UUID da transação PENDING
             const response = await api.post('/transaction/deposit', { amount: parseFloat(amount) / 100});
             setTransactionId(response.data);
             setDepositConfirmed(false);
@@ -32,34 +31,33 @@ export function Deposit() {
         }
     };
 
-    // Verifica se a transação foi realizada
+    // Polling: Verifica o status da transação a cada 2 segundos
     useEffect(() => {
         let interval;
         if (transactionId && !depositConfirmed){
             interval = setInterval(async () => {
                 try{
                     const response = await api.get(`/transaction/status/${transactionId}`);
-                    if (response.data == 'COMPLETED'){
+                    // Quando o usuário confirmar na outra tela, o status vira 'COMPLETED'
+                    if (response.data === 'COMPLETED'){
                         setDepositConfirmed(true);
                         clearInterval(interval);
                     }
                 } catch(error){
                     console.error("Erro ao verificar status: " + error);
-                    clearInterval(interval);
                 }
             }, 2000)
         }
         return () => clearInterval(interval);
-    }, [transactionId, depositConfirmed, navigate])
+    }, [transactionId, depositConfirmed]); // Removido 'navigate' das dependências para evitar loops
 
-    // Atualiza a tela de depósito indicando que a transação foi realizada
     const renderConfirmationScreen = () => (
         <div className="balance-card success-card">
             <div className="checkmark-wrapper">
-             <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                     <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
                     <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-             </svg>
+                </svg>
             </div>
             <h2>Deposit confirmed!</h2>
             <p>You deposited <strong>R$ {formatMoneyDisplay(amount)}</strong> successfully!</p>
@@ -72,7 +70,6 @@ export function Deposit() {
         </div>
     )
 
-    // Configurações dos campos do depósito
     return (
         <div className="deposit-page-wrapper">
             <h2>Deposit by QRCode</h2>
@@ -99,17 +96,17 @@ export function Deposit() {
                 <p>Scan to confirm <strong>R$ {formatMoneyDisplay(amount)}</strong></p>
                 <div className="qr-wrapper">
                     <QRCodeSVG 
-                       value={`http://localhost:8080/transaction/confirm/${transactionId}`} 
+                       value={`${window.location.origin}/confirmTransaction/${transactionId}`} 
                        size={200}
                        marginSize={true}
                     />
                 </div>
-                <button onClick={() => setTransactionId(null)} className="action-btn">
-                    New Deposit
+                <p className="qr-hint">After scanning, confirm the payment on your phone.</p>
+                <button onClick={() => setTransactionId(null)} className="action-btn btn-secondary">
+                    Cancel / New Deposit
                 </button>
             </div>
         )}
     </div>
 );
 }
-

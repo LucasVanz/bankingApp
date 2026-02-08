@@ -98,7 +98,7 @@ export function Withdraw() {
                     <p>Scan to confirm <strong>R$ {formatMoneyDisplay(amount)}</strong></p>
                     <div className="qr-wrapper">                 
                         <QRCodeSVG 
-                           value={`http://localhost:8080/transaction/confirm/${transactionId}`} 
+                           value={`${window.location.origin}/confirmTransaction/${transactionId}`} 
                            size={200}
                            marginSize={true} 
                         />

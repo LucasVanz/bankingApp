@@ -8,6 +8,7 @@ import { Transfer } from './pages/Transfer';
 import { Statement } from './pages/Statement';
 import { Analisys } from './pages/Analisys';
 import { UserDetails } from './pages/UserDetails';
+import { ConfirmTransaction } from './pages/confirmTransaction';
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
         <Route path="/analisys" element={<Analisys />} />
         {/* Rota para a tela de detalhes do usuário */}
         <Route path="/userDetails" element={<UserDetails />} />
+        {/* Rota para a tela de confirmação */}
+        <Route path="/confirmTransaction/:id" element={<ConfirmTransaction />} />
         {/* Redireciona qualquer rota inexistente para o login */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

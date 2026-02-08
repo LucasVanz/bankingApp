@@ -2,6 +2,7 @@ package com.lucas.banking.banking_backend.controller;
 
 import com.lucas.banking.banking_backend.dto.DepositRequestDTO;
 import com.lucas.banking.banking_backend.dto.InvestmentRequestDTO;
+import com.lucas.banking.banking_backend.dto.TransactionDetailsDTO;
 import com.lucas.banking.banking_backend.dto.TransferConfirmDTO;
 import com.lucas.banking.banking_backend.dto.TransferRequestDTO;
 import com.lucas.banking.banking_backend.dto.WithdrawRequestDTO;
@@ -16,8 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -54,19 +53,26 @@ public class TransactionController {
     public ResponseEntity<String> transferConfirm(@AuthenticationPrincipal User user, @PathVariable UUID id, @RequestBody TransferConfirmDTO data) {
         String token = authService.authenticate(user.getCpf(), data.password());
         if (!token.isEmpty()){
-            return confirmTransaction(id);
+            return confirmTransaction(user, id);
         }
         return ResponseEntity.badRequest().body("Password incorrect. Verify if you type correctly.");
     }
     
-    @GetMapping("/confirm/{id}")
-    public ResponseEntity<String> confirmTransaction(@PathVariable UUID id){
+    @PostMapping("/confirm/{id}")
+    public ResponseEntity<String> confirmTransaction(@AuthenticationPrincipal User user, @PathVariable UUID id){
         if(transactionService.confirmTransaction(id)){
             return ResponseEntity.ok("Transaction completed successfully!");
         }
         return ResponseEntity.badRequest().body("Invalid transaction or transaction already processed");
     }
     
+    @GetMapping("/details/{id}")
+    public ResponseEntity<TransactionDetailsDTO> getTransactionDetails(@PathVariable UUID id) {
+        Transaction transaction = transactionService.findById(id);
+        TransactionDetailsDTO transactionDetailsDTO = new TransactionDetailsDTO(transaction.getAmount(), transaction.getType(), transaction.getFinancialAsset());
+        return ResponseEntity.ok(transactionDetailsDTO);
+    }
+
     @GetMapping("/status/{id}")
     public ResponseEntity<String> getTransactionStatus(@PathVariable UUID id) {
         Transaction transaction = transactionService.findById(id);
