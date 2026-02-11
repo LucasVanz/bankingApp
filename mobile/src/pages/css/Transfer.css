@@ -47,6 +47,22 @@
     background-color: #f8f9ff;
 }
 
+.transfer-page .transfer-back-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 15px;
+}
+
+.transfer-page .transfer-back-button:hover {
+    background-color: rgb(226, 223, 223);
+}
+
 /* Botão Principal */
 .transfer-page .action-btn {
     width: 100%;

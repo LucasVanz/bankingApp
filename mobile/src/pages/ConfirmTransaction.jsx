@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { formatMoneyDisplay } from '../utils/formatters';
+import './css/ConfirmTransaction.css'; // Importando o novo estilo
 
 export function ConfirmTransaction() {
     const { id } = useParams();
@@ -11,14 +12,13 @@ export function ConfirmTransaction() {
     const [confirming, setConfirming] = useState(false);
     const [error, setError] = useState("");
 
-    // 1. Busca os detalhes da transação para mostrar na tela
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const response = await api.get(`/transaction/details/${id}`); // Endpoint que retorna o objeto Transaction
+                const response = await api.get(`/transaction/details/${id}`);
                 setTransaction(response.data);
             } catch (err) {
-                setError("Transaction not found");
+                setError("Transaction not found or expired.");
             } finally {
                 setLoading(false);
             }
@@ -26,51 +26,70 @@ export function ConfirmTransaction() {
         fetchDetails();
     }, [id]);
 
-    // 2. Executa o POST de confirmação
     const handleConfirm = async () => {
         setConfirming(true);
         try {
             await api.post(`/transaction/confirm/${id}`);
-            alert("Transaction done!");
-            navigate('/dashboard');
+            // Removi o alert genérico para usar algo mais fluido se quiser depois
+            navigate('/dashboard', { state: { success: true } });
         } catch (err) {
             setError("Error processing confirmation. Verify your wallet.");
             setConfirming(false);
         }
     };
 
-    if (loading) return <div className="loader">Loading details...</div>;
+    if (loading) return <div className="loader">Loading secure connection...</div>;
 
     return (
-        <div className="deposit-page-wrapper">
-            <div className="balance-card">
-                <h2>Confirm Operation</h2>
+        <div className="confirm-container">
+            <div className="confirm-card">
+                <span className="transaction-badge">{transaction?.type || 'Operation'}</span>
+                <h2>Confirm Details</h2>
                 
                 {error ? (
-                    <p className="error-msg">{error}</p>
-                ) : (
-                    <div className="transaction-details">
-                        <p><strong>Type:</strong> {transaction.type}</p>
-                        <p><strong>Amount:</strong> R$ {formatMoneyDisplay(transaction.amount * 100)}</p>
-                        
-                        {/* Se for investimento, mostra o ativo */}
-                        {transaction.financialAsset && (
-                            <p><strong>Asset:</strong> {transaction.financialAsset.ticker}</p>
-                        )}
-
-                        <button 
-                            onClick={handleConfirm} 
-                            className="action-btn"
-                            disabled={confirming}
-                        >
-                            {confirming ? "Processando..." : "Confirmar Agora"}
-                        </button>
+                    <div className="error-box">
+                        <p className="error-msg">{error}</p>
                     </div>
+                ) : (
+                    <>
+                        <div className="amount-display">
+                            R$ {formatMoneyDisplay(transaction.amount * 100)}
+                        </div>
+
+                        <div className="details-list">
+                            <div className="detail-row">
+                                <span>Status</span>
+                                <strong>{transaction.status}</strong>
+                            </div>
+
+                            {transaction.financialAsset && (
+                                <div className="detail-row">
+                                    <span>Asset</span>
+                                    <strong>{transaction.financialAsset.ticker}</strong>
+                                </div>
+                            )}
+                            
+                            <div className="detail-row">
+                                <span>ID</span>
+                                <small>{id.substring(0, 8)}...</small>
+                            </div>
+                        </div>
+
+                        <div className="actions-group">
+                            <button 
+                                onClick={handleConfirm} 
+                                className="btn-confirm"
+                                disabled={confirming}
+                            >
+                                {confirming ? "Processing..." : "Confirm Payment"}
+                            </button>
+                            
+                            <button onClick={() => navigate('/dashboard')} className="btn-back">
+                                Cancel and Back
+                            </button>
+                        </div>
+                    </>
                 )}
-                
-                <button onClick={() => navigate('/dashboard')} className="btn-cancel">
-                    Back
-                </button>
             </div>
         </div>
     );

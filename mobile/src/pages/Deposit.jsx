@@ -90,6 +90,9 @@ export function Deposit() {
                 <button type="submit" className="action-btn">
                     Generate Code
                 </button>
+                <button className="deposit-back-button" onClick={() => navigate('/dashboard')}>
+                    Back
+                </button>
             </form>
         ) : (
             <div className="balance-card qr-container">

@@ -57,6 +57,22 @@
     box-shadow: 0 0 0 4px rgba(196, 196, 221, 0.2);
 }
 
+.withdraw-page-wrapper .back-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 15px;
+}
+
+.withdraw-page-wrapper .back-button:hover {
+    background-color: rgb(226, 223, 223);
+}
+
 /* Botão de Ação */
 .withdraw-page-wrapper .action-btn {
     width: 100%;

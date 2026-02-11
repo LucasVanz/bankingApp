@@ -86,10 +86,9 @@ export function Analisys() {
                 <div className="chart-header-inline">
                     <h3>Money Volume (R$)</h3>
                     <div className="total-badge">
-                        Total cash flow: R$ {totalCashFlow.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                    </div>
+                       Total cash flow: R$ {totalCashFlow.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                   </div>
                 </div>
-
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie

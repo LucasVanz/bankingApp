@@ -1,0 +1,97 @@
+.confirm-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    padding: 20px;
+    background-color: #f4f7f6;
+}
+
+.confirm-card {
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.confirm-card h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.transaction-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 50px;
+    background: #e8f0fe;
+    color: #1a73e8;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.amount-display {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin: 10px 0;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+
+.detail-row strong {
+    color: #333;
+}
+
+.actions-group {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-confirm {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.btn-confirm:hover {
+    background: #43a047;
+    transform: translateY(-2px);
+}
+
+.btn-confirm:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-back {
+    background: transparent;
+    color: #888;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.btn-back:hover {
+    background: #f9f9f9;
+}

@@ -90,6 +90,9 @@ export function Transfer() {
                 <button type="submit" className="action-btn">
                     Confirm transfer
                 </button>
+                <button className="transfer-back-button" onClick={() => navigate('/dashboard')}>
+                    Back
+                </button>
             </form>
         ) : (
             <form onSubmit={handleConfirmTransfer} className="balance-card">
