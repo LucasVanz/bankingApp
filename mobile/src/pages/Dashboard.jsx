@@ -50,7 +50,7 @@ export function Dashboard() {
     };
     // Investimentos
     const handleInvestments = async () => {
-         navigate('/investments');
+         navigate('/invest');
     }
     // Login
     const handleLogin = async () => {

@@ -7,6 +7,7 @@ import { Withdraw } from './pages/Withdraw';
 import { Transfer } from './pages/Transfer';
 import { Statement } from './pages/Statement';
 import { Analisys } from './pages/Analisys';
+import { Invest } from './pages/Invest';
 import { UserDetails } from './pages/UserDetails';
 import { ConfirmTransaction } from './pages/confirmTransaction';
 
@@ -30,6 +31,8 @@ function App() {
         <Route path="/statement" element={<Statement />} />
         {/* Rota para a tela de análise financeira */}
         <Route path="/analisys" element={<Analisys />} />
+        {/* Rota para a tela de investimento financeiro */}
+        <Route path="/invest" element={<Invest />} />
         {/* Rota para a tela de detalhes do usuário */}
         <Route path="/userDetails" element={<UserDetails />} />
         {/* Rota para a tela de confirmação */}
