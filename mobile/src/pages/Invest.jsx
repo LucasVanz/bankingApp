@@ -6,6 +6,9 @@ import './css/Invest.css';
 export function Invest() {
     const [assets, setAssets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedAsset, setSelectedAsset] = useState(null); // Ativo clicado
+    const [quantity, setQuantity] = useState(1); // Quantidade no modal
+    const [showModal, setShowModal] = useState(false); // Controle do modal
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,22 +25,36 @@ export function Invest() {
         fetchAssets();
     }, []);
 
-    const handleInvest = (asset) => {
-        // Redireciona para uma tela de confirmação ou abre um prompt de quantidade
-        const quantity = prompt(`Quantas unidades de ${asset.ticker} deseja comprar?`);
-        
-        if (quantity && !isNaN(quantity)) {
-            const investmentData = {
-                ticker: asset.ticker,
-                quantity: parseInt(quantity)
-            };
+    // Abre o modal e limpa a quantidade
+    const handleOpenModal = (asset) => {
+        setSelectedAsset(asset);
+        setQuantity(1);
+        setShowModal(true);
+    };
 
-            api.post('/transaction/investment', investmentData)
-                .then(response => {
-                    const transactionId = response.data;
-                    navigate(`/confirmTransaction/${transactionId}`);
-                })
-                .catch(err => alert("Erro ao processar investimento: " + err.response?.data?.message));
+    // Fecha o modal e limpa o ativo selecionado
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedAsset(null);
+    };
+
+    const confirmInvestment = async () => {
+        if (!quantity || quantity <= 0) {
+            alert("Please enter a valid quantity.");
+            return;
+        }
+
+        const investmentData = {
+            ticker: selectedAsset.ticker,
+            quantity: parseInt(quantity)
+        };
+
+        try {
+            const response = await api.post('/transaction/investment', investmentData);
+            const transactionId = response.data;
+            navigate(`/confirmTransaction/${transactionId}`);
+        } catch (err) {
+            alert("Erro ao processar investimento: " + (err.response?.data?.message || "Erro desconhecido"));
         }
     };
 
@@ -46,10 +63,13 @@ export function Invest() {
             <div className="broker-container">
                 <header className="broker-header">
                     <h2>Home Broker</h2>
+                    <button className="btn-portfolio" onClick={() => alert("Portfolio feature coming soon!")}>
+                        My wallet
+                    </button>
                     <p>Select asset to invest</p>
                 </header>
 
-                {loading ? <p>Loading assets...</p> : (
+                {loading ? <p className="loading-text">Loading assets...</p> : (
                     <div className="assets-grid">
                         {assets.map(asset => (
                             <div className="asset-card" key={asset.ticker}>
@@ -61,10 +81,12 @@ export function Invest() {
                                     <p>{asset.name}</p>
                                 </div>
                                 <div className="asset-price">
-                                    <span className="price">R$ {asset.currentPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                    <span className="price">
+                                        R$ {asset.currentPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                    </span>
                                     <span className="yield">{asset.yieldPercentage}% yield</span>
                                 </div>
-                                <button className="btn-invest" onClick={() => handleInvest(asset)}>
+                                <button className="btn-invest" onClick={() => handleOpenModal(asset)}>
                                     Invest
                                 </button>
                             </div>
@@ -76,6 +98,52 @@ export function Invest() {
                     Back to Dashboard
                 </button>
             </div>
+
+            {/* --- MODAL DE INVESTIMENTO --- */}
+            {showModal && selectedAsset && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <header className="modal-header">
+                            <h3>Confirm Investment</h3>
+                            <button className="close-x" onClick={handleCloseModal}>&times;</button>
+                        </header>
+                        
+                        <div className="modal-body">
+                            <div className="asset-summary">
+                                <strong>{selectedAsset.ticker}</strong>
+                                <span>{selectedAsset.name}</span>
+                            </div>
+
+                            <div className="input-field">
+                                <label>Quantity</label>
+                                <input 
+                                    type="number" 
+                                    min="1" 
+                                    value={quantity} 
+                                    onChange={(e) => setQuantity(e.target.value)}
+                                    autoFocus
+                                />
+                            </div>
+
+                            <div className="investment-details">
+                                <div className="detail-row">
+                                    <span>Unit Price:</span>
+                                    <span>R$ {selectedAsset.currentPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                </div>
+                                <div className="detail-row total">
+                                    <span>Estimated Total:</span>
+                                    <span>R$ {(selectedAsset.currentPrice * (quantity || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <footer className="modal-footer">
+                            <button className="btn-confirm" onClick={confirmInvestment}>Confirm Purchase</button>
+                            <button className="btn-cancel" onClick={handleCloseModal}>Cancel</button>
+                        </footer>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
