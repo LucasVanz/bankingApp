@@ -1,5 +1,6 @@
 package com.lucas.banking.banking_backend.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,5 +16,6 @@ import com.lucas.banking.banking_backend.entity.Wallet;
 public interface UserInvestimentRepository extends JpaRepository<UserInvestment, UUID>{
     
     Optional<UserInvestment> findByFinancialAssetAndWallet(FinancialAsset financialAsset, Wallet wallet);
+    Optional<List<UserInvestment>> findAllByWallet(Wallet wallet);
     
 } 

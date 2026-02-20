@@ -1,12 +1,14 @@
 package com.lucas.banking.banking_backend.controller;
 
 import com.lucas.banking.banking_backend.dto.AnalisysReturnDTO;
+import com.lucas.banking.banking_backend.dto.UserInvestmentDTO;
 import com.lucas.banking.banking_backend.dto.UserRequestDTO;
 import com.lucas.banking.banking_backend.dto.UserRequestUpdateDTO;
 import com.lucas.banking.banking_backend.entity.Transaction;
 import com.lucas.banking.banking_backend.entity.User;
 import com.lucas.banking.banking_backend.entity.Wallet;
 import com.lucas.banking.banking_backend.service.TransactionService;
+import com.lucas.banking.banking_backend.service.UserInvestimentService;
 import com.lucas.banking.banking_backend.service.UserService;
 import com.lucas.banking.banking_backend.service.WalletService;
 import jakarta.validation.Valid;
@@ -27,6 +29,8 @@ public class UserController {
     WalletService walletService;
     @Autowired
     TransactionService transactionService;
+    @Autowired
+    UserInvestimentService userInvestimentService;
     
 
     @PostMapping("/create")
@@ -70,6 +74,11 @@ public class UserController {
     @GetMapping("me/analisys")
     public ResponseEntity<AnalisysReturnDTO> getTransactionsAnalisys(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(transactionService.getAnalysisByUserId(user));
+    }
+
+    @GetMapping("me/investmentWallet")
+    public ResponseEntity<List<UserInvestmentDTO>> getAllUserInvestment(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(userInvestimentService.getAllUserInvestment(user));
     }
 
 }
