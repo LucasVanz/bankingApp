@@ -7,20 +7,16 @@ import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell, Legend } from 'recha
 const COLORS_MAP = {
     deposit: '#00C49F',    // Verde
     received: '#0088FE',   // Azul
-    withdraw: '#FFBB28',  // Laranja
-    sent: '#FF4444'       // Vermelho
+    withdraw: '#FFBB28',   // Laranja
+    sent: '#FF4444',       // Vermelho
+    investment: '#3b3b98'  // Roxo (Identidade visual do app)
 };
 
 export function Analisys() {
     const [analisysData, setAnalisysData] = useState(null);
     const navigate = useNavigate();
 
-    const handleDashboard = async () => {
-        navigate('/dashboard');
-    }
-
-
-    const loadAnalisys = async (e) => {
+    const loadAnalisys = async () => {
         try {
             const response = await api.get('users/me/analisys');
             setAnalisysData(response.data);
@@ -33,171 +29,123 @@ export function Analisys() {
         loadAnalisys();
     }, []);
 
-    const dataGrafico = analisysData ? [
-        { name: 'Transfers Sent Amount', value: analisysData.totalAmountTransferSent },
-        { name: 'Transfers Received Amount', value: analisysData.totalAmountTransferReceived },
-        { name: 'Withdraw Amount', value: analisysData.totalAmountWithdraw },
-        { name: 'Deposit Amount', value: analisysData.totalAmountDeposit },
-        { name: 'Total Transfers Sent', value: analisysData.countTransferSent },
-        { name: 'Total Transfers Received', value: analisysData.countTransferReceived },
-        { name: 'Total Withdraws', value: analisysData.countWithdraw },
-        { name: 'Total Deposits', value: analisysData.countDeposit }
-    ] : [];
-
+    // 1. Dados de Volume (Valores em R$)
     const dataValores = analisysData ? [
-    { name: 'Deposits', value: analisysData.totalAmountDeposit, color: COLORS_MAP.deposit },
-    { name: 'Received', value: analisysData.totalAmountTransferReceived, color: COLORS_MAP.received },
-    { name: 'Sent', value: analisysData.totalAmountTransferSent, color: COLORS_MAP.sent },
-    { name: 'Withdraws', value: analisysData.totalAmountWithdraw, color: COLORS_MAP.withdraw },
-] : [];
-
-    // Gráfico 2: Frequência (Quantidade de Transações)
-    const dataQuantidades = analisysData ? [
-        { name: 'Transfers Sent', value: analisysData.countTransferSent, color: COLORS_MAP.deposit },
-        { name: 'Transfers Received', value: analisysData.countTransferReceived, color: COLORS_MAP.received },
-        { name: 'Withdraws', value: analisysData.countWithdraw, color: COLORS_MAP.sent },
-        { name: 'Deposits', value: analisysData.countDeposit, color: COLORS_MAP.withdraw },
+        { name: 'Deposits', value: analisysData.totalAmountDeposit || 0, color: COLORS_MAP.deposit },
+        { name: 'Received', value: analisysData.totalAmountTransferReceived || 0, color: COLORS_MAP.received },
+        { name: 'Sent', value: analisysData.totalAmountTransferSent || 0, color: COLORS_MAP.sent },
+        { name: 'Withdraws', value: analisysData.totalAmountWithdraw || 0, color: COLORS_MAP.withdraw },
+        { name: 'Investments', value: analisysData.totalAmountInvestment || 0, color: COLORS_MAP.investment },
     ] : [];
 
-    const totalCashFlow = analisysData ? (
-    analisysData.totalAmountDeposit + 
-    analisysData.totalAmountTransferReceived + 
-    analisysData.totalAmountTransferSent + 
-    analisysData.totalAmountWithdraw
-    ) : 0;
+    // 2. Dados de Frequência (Quantidade de operações)
+    const dataQuantidades = analisysData ? [
+        { name: 'Deposits', value: analisysData.countDeposit || 0, color: COLORS_MAP.deposit },
+        { name: 'Received', value: analisysData.countTransferReceived || 0, color: COLORS_MAP.received },
+        { name: 'Sent', value: analisysData.countTransferSent || 0, color: COLORS_MAP.sent },
+        { name: 'Withdraws', value: analisysData.countWithdraw || 0, color: COLORS_MAP.withdraw },
+        { name: 'Investments', value: analisysData.countInvestment || 0, color: COLORS_MAP.investment },
+    ] : [];
 
-    const totalTransactions = analisysData ? (
-    analisysData.countDeposit + 
-    analisysData.countTransferReceived + 
-    analisysData.countTransferSent + 
-    analisysData.countWithdraw
-    ) : 0;
+    // Filtros para evitar que o PieChart quebre com valores zero
+    const filteredValores = dataValores.filter(d => d.value > 0);
+    const filteredQuantidades = dataQuantidades.filter(d => d.value > 0);
+
+    const totalCashFlow = dataValores.reduce((acc, curr) => acc + curr.value, 0);
+    const totalTransactions = dataQuantidades.reduce((acc, curr) => acc + curr.value, 0);
 
     return (
-    <div className="analisys-screen">
-        <header className="analisys-header">
-            
-            <h2>Financial Analysis</h2>
-        </header>
+        <div className="analisys-screen">
+            <header className="analisys-header">
+                <h2>Financial Analysis</h2>
+            </header>
 
-        <main className="charts-main-container">
-            {/* Gráfico 1: Volume */}
-            <section className="chart-section">
-                <div className="chart-header-inline">
-                    <h3>Money Volume (R$)</h3>
-                    <div className="total-badge">
-                       Total cash flow: R$ {totalCashFlow.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                   </div>
-                </div>
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                        <Pie
-                            data={dataValores}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            innerRadius="60%"
-                            outerRadius="85%"
-                            paddingAngle={5}
-                        >
-                            {dataValores.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                        </Pie>
-                        <Tooltip formatter={(value) => `R$ ${value.toFixed(2)}`} />
-                        <Legend 
-                            iconType="circle" 
-                            layout="horizontal" 
-                            verticalAlign="bottom" 
-                            align="center"
-                            wrapperStyle={{
-                                paddingTop: "10px",
-                                display: "flex",
-                                justifyContent: "center",
-                                flexWrap: "wrap",
-                                width: "100%"
-                            }}
-                            content={(props) => {
-                                const { payload } = props;
-                                return (
-                                    <ul className="custom-2-column-legend">
-                                        {payload.map((entry, index) => (
-                                            <li key={`item-${index}`} className="legend-item">
-                                                <span 
-                                                    className="dot" 
-                                                    style={{ backgroundColor: entry.color }}
-                                                ></span>
-                                                <span className="label">{entry.value}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                );
-                            }}
-                        />
-                    </PieChart>
-                </ResponsiveContainer>
-            </section>
-
-            {/* Gráfico 2: Quantidade */}
-            <section className="chart-section">
-                <div className="chart-header-inline">
-                    <h3>Transactions Count</h3>
-                    <div className="total-badge">
-                        Total transactions: {totalTransactions}
+            <main className="charts-main-container">
+                {/* Gráfico 1: Volume */}
+                <section className="chart-section">
+                    <div className="chart-header-inline">
+                        <h3>Money Volume (R$)</h3>
+                        <div className="total-badge">
+                           Total flow: R$ {totalCashFlow.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                       </div>
                     </div>
-                </div>
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                        <Pie
-                            data={dataQuantidades}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            innerRadius="60%"
-                            outerRadius="85%"
-                            paddingAngle={5}
-                        >
-                            {dataQuantidades.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                        </Pie>
-                        <Tooltip formatter={(value) => `${value} operations`} />
-                        <Legend 
-                            iconType="circle" 
-                            layout="horizontal" 
-                            verticalAlign="bottom" 
-                            align="center"
-                            wrapperStyle={{
-                                paddingTop: "10px",
-                                display: "flex",
-                                justifyContent: "center",
-                                flexWrap: "wrap",
-                                width: "100%"
-                            }}
-                            content={(props) => {
-                                const { payload } = props;
-                                return (
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={filteredValores}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                innerRadius="60%"
+                                outerRadius="85%"
+                                paddingAngle={filteredValores.length > 1 ? 5 : 0}
+                            >
+                                {filteredValores.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                                ))}
+                            </Pie>
+                            <Tooltip formatter={(value) => `R$ ${value.toFixed(2)}`} />
+                            <Legend 
+                                verticalAlign="bottom" 
+                                align="center"
+                                content={(props) => (
                                     <ul className="custom-2-column-legend">
-                                        {payload.map((entry, index) => (
+                                        {dataValores.map((entry, index) => (
                                             <li key={`item-${index}`} className="legend-item">
-                                                <span 
-                                                    className="dot" 
-                                                    style={{ backgroundColor: entry.color }}
-                                                ></span>
-                                                <span className="label">{entry.value}</span>
+                                                <span className="dot" style={{ backgroundColor: entry.color }}></span>
+                                                <span className="label">{entry.name}</span>
                                             </li>
                                         ))}
                                     </ul>
-                                );
-                            }}
-                        />
-                    </PieChart>
-                </ResponsiveContainer>
-            </section>
-        </main>
-        <button className="analisys-back-button" onClick={handleDashboard}>Back</button>
-    </div>
-);
+                                )}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </section>
+
+                {/* Gráfico 2: Quantidade */}
+                <section className="chart-section">
+                    <div className="chart-header-inline">
+                        <h3>Transactions Count</h3>
+                        <div className="total-badge">Total: {totalTransactions}</div>
+                    </div>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={filteredQuantidades}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                innerRadius="60%"
+                                outerRadius="85%"
+                                paddingAngle={filteredQuantidades.length > 1 ? 5 : 0}
+                            >
+                                {filteredQuantidades.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                                ))}
+                            </Pie>
+                            <Tooltip formatter={(value) => `${value} operations`} />
+                            <Legend 
+                                verticalAlign="bottom" 
+                                align="center"
+                                content={(props) => (
+                                    <ul className="custom-2-column-legend">
+                                        {dataQuantidades.map((entry, index) => (
+                                            <li key={`item-${index}`} className="legend-item">
+                                                <span className="dot" style={{ backgroundColor: entry.color }}></span>
+                                                <span className="label">{entry.name}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </section>
+            </main>
+            <button className="analisys-back-button" onClick={() => navigate('/dashboard')}>Back</button>
+        </div>
+    );
 }

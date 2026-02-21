@@ -63,7 +63,7 @@ export function Invest() {
             <div className="broker-container">
                 <header className="broker-header">
                     <h2>Home Broker</h2>
-                    <button className="btn-portfolio" onClick={() => alert("Portfolio feature coming soon!")}>
+                    <button className="btn-portfolio" onClick={() => navigate("/investWallet")}>
                         My wallet
                     </button>
                     <p>Select asset to invest</p>

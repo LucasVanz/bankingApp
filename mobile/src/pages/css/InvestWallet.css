@@ -1,0 +1,131 @@
+.wallet-screen {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #f4f7fe;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.wallet-container {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wallet-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.total-invested-card {
+    background: #3b3b98;
+    color: white;
+    padding: 25px 50px;
+    border-radius: 20px;
+    margin-top: 20px;
+    box-shadow: 0 10px 25px rgba(59, 59, 152, 0.25);
+}
+
+.investments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+.investment-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.investment-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.ticker-badge {
+    background: #3b3b98;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.asset-name-small {
+    margin: 5px 0 0 0;
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+.quantity-badge {
+    font-size: 0.8rem;
+    background: #edf2f7;
+    padding: 4px 8px;
+    border-radius: 5px;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.info-row.highlight {
+    padding-top: 8px;
+    border-top: 1px dashed #e2e8f0;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.profit-positive { color: #28a745; }
+.profit-negative { color: #dc3545; }
+
+.card-footer-price {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.card-footer-price strong {
+    color: #3b3b98;
+    font-size: 1.2rem;
+}
+
+.btn-back {
+    margin-top: 40px;
+    background: #ffffff;
+    border: 2px solid #3b3b98;
+    color: #3b3b98;
+    padding: 12px 35px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-back:hover {
+    background: #3b3b98;
+    color: white;
+}
