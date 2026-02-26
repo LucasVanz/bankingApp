@@ -78,5 +78,9 @@ public class UserInvestimentService {
             ));
         }
         return investmentList;
-    } 
+    }
+    
+    public UserInvestment getUserInvestmentByFinancialAssetAndWallet(FinancialAsset financialAsset, Wallet wallet){
+        return userInvestimentRepository.findByFinancialAssetAndWallet(financialAsset, wallet).orElseThrow(() -> new RuntimeException("User investment not found for the given financial asset and wallet"));
+    }
 }

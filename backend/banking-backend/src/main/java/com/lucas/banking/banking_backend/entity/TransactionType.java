@@ -4,5 +4,6 @@ public enum TransactionType {
     DEPOSIT,
     TRANSFER,
     WITHDRAW,
-    INVESTMENT
+    INVESTMENT,
+    INVESTMENT_SELL
 }

@@ -37,6 +37,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/transaction/details/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/transaction/status/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/transaction/investment").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/transaction/investmentSell").permitAll()
                     .requestMatchers(HttpMethod.POST, "/transaction/confirm/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/financialAssets/**").permitAll()
                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()

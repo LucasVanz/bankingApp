@@ -49,6 +49,12 @@ public class TransactionController {
 
     }
 
+    @PostMapping("/investmentSell")
+    public UUID investmentSellRequest(@AuthenticationPrincipal User user, @RequestBody @Valid InvestmentRequestDTO data){
+        return transactionService.investmentSellTransaction(user, data.ticker(), data.quantity());
+
+    }
+
     @PostMapping("/transfer/confirm/{id}")
     public ResponseEntity<String> transferConfirm(@AuthenticationPrincipal User user, @PathVariable UUID id, @RequestBody TransferConfirmDTO data) {
         String token = authService.authenticate(user.getCpf(), data.password());

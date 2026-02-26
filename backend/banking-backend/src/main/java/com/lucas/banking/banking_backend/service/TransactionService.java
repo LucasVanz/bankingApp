@@ -110,6 +110,9 @@ public class TransactionService {
                     wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));
                     userInvestimentService.buyAsset(wallet, transaction.getFinancialAsset(), transaction.getQuantityFinancialAsset());
                 }
+                case INVESTMENT_SELL -> {
+                    wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
+                }
             }
             wallet.setUpdatedAt(LocalDateTime.now());
             walletService.save(wallet);
@@ -142,6 +145,30 @@ public class TransactionService {
         transactionRepository.save(transaction);
         return transaction.getId();
     }
+
+    @Transactional
+    public UUID investmentSellTransaction(User user, String ticker, BigDecimal quantity){
+        // Busca a carteira pelo usuário
+        Wallet wallet = walletService.findByUser(user);
+        FinancialAsset financialAsset = financialAssetService.getAssetByTicker(ticker);
+        BigDecimal amount = financialAsset.getCurrentPrice().multiply(quantity);
+        UserInvestment userInvestment = userInvestimentService.getUserInvestmentByFinancialAssetAndWallet(financialAsset, wallet);
+        // Verifica se possui o ativo e a quantidade necessária para venda
+        if (userInvestment.getQuantity().compareTo(quantity) < 0){
+            throw new RuntimeException("Insufficient asset quantity... You have " + userInvestment.getQuantity() + " " + ticker + " at the moment");
+        }
+        Transaction transaction = new Transaction();
+        transaction.setAmount(amount);
+        transaction.setType(TransactionType.INVESTMENT_SELL);
+        transaction.setWallet(wallet);
+        transaction.setFinancialAsset(financialAsset);
+        transaction.setQuantityFinancialAsset(quantity);
+        transaction.setStatus(TransactionStatus.PENDING);
+        transaction.setCreatedAt(LocalDateTime.now());
+        transactionRepository.save(transaction);
+        return transaction.getId();
+    }
+
 
     public boolean haveBalance(Wallet wallet, BigDecimal amount){
         return wallet.getBalance().compareTo(amount) >= 0;
