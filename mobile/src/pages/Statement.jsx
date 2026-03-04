@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { ErrorMessage } from './ErrorMessage';
 import './css/Statement.css';
 
 export function Statement() {
@@ -57,6 +58,7 @@ export function Statement() {
                        <span>Back to dashboard</span>
                 </button>
                 </div>
+                <ErrorMessage message={errorMsg} />
                 <div className='statement-filters'>
                     <button className={`all-statement ${typeStatement === "ALL" ? "active" : ""}`} onClick={handleAllStatement}>
                        <span>All</span>

@@ -9,7 +9,8 @@ const COLORS_MAP = {
     received: '#0088FE',   // Azul
     withdraw: '#FFBB28',   // Laranja
     sent: '#FF4444',       // Vermelho
-    investment: '#3b3b98'  // Roxo (Identidade visual do app)
+    investment: '#3b3b98',  // Roxo (Identidade visual do app)
+    investmentSell: '#8b008b'  // Roxo escuro (para vendas de investimentos)
 };
 
 export function Analisys() {
@@ -36,6 +37,7 @@ export function Analisys() {
         { name: 'Sent', value: analisysData.totalAmountTransferSent || 0, color: COLORS_MAP.sent },
         { name: 'Withdraws', value: analisysData.totalAmountWithdraw || 0, color: COLORS_MAP.withdraw },
         { name: 'Investments', value: analisysData.totalAmountInvestment || 0, color: COLORS_MAP.investment },
+        { name: 'Investments Sales', value: analisysData.totalAmountInvestmentSell || 0, color: COLORS_MAP.investmentSell },
     ] : [];
 
     // 2. Dados de Frequência (Quantidade de operações)
@@ -45,6 +47,7 @@ export function Analisys() {
         { name: 'Sent', value: analisysData.countTransferSent || 0, color: COLORS_MAP.sent },
         { name: 'Withdraws', value: analisysData.countWithdraw || 0, color: COLORS_MAP.withdraw },
         { name: 'Investments', value: analisysData.countInvestment || 0, color: COLORS_MAP.investment },
+        { name: 'Investments Sales', value: analisysData.countInvestmentSell || 0, color: COLORS_MAP.investmentSell },
     ] : [];
 
     // Filtros para evitar que o PieChart quebre com valores zero

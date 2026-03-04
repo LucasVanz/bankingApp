@@ -8,9 +8,11 @@ public record AnalisysReturnDTO (
     BigDecimal totalAmountWithdraw,
     BigDecimal totalAmountDeposit,
     BigDecimal totalAmountInvestment,
+    BigDecimal totalAmountInvestmentSell,
     Long countTransferSent,
     Long countTransferReceived,
     Long countWithdraw,
     Long countDeposit,
-    Long countInvestment
+    Long countInvestment,
+    Long countInvestmentSell
 ){}

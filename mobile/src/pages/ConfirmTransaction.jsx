@@ -40,17 +40,32 @@ export function ConfirmTransaction() {
 
     if (loading) return <div className="loader">Loading secure connection...</div>;
 
+    // Adicionar ErrorMessage na para melhor display de erro
+    const getErrorComponent = () => {
+        if (!error) return null;
+        return (
+            <div style={{
+                backgroundColor: '#ffebee',
+                color: '#c62828',
+                padding: '10px',
+                borderRadius: '8px',
+                marginBottom: '15px',
+                textAlign: 'center',
+                fontSize: '14px',
+                fontWeight: '500',
+                border: '1px solid #ef9a9a'
+            }}>{error}</div>
+        );
+    };
+
     return (
         <div className="confirm-container">
             <div className="confirm-card">
                 <span className="transaction-badge">{transaction?.type || 'Operation'}</span>
                 <h2>Confirm Details</h2>
                 
-                {error ? (
-                    <div className="error-box">
-                        <p className="error-msg">{error}</p>
-                    </div>
-                ) : (
+                {getErrorComponent()}
+                {!error ? (
                     <>
                         <div className="amount-display">
                             R$ {formatMoneyDisplay(transaction.amount * 100)}
@@ -89,6 +104,10 @@ export function ConfirmTransaction() {
                             </button>
                         </div>
                     </>
+                ):(
+                    <div className="error-message">
+                        <p>Transaction not found or expired.</p>
+                    </div>
                 )}
             </div>
         </div>

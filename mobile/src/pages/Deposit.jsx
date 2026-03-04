@@ -73,7 +73,7 @@ export function Deposit() {
     return (
         <div className="deposit-page-wrapper">
             <h2>Deposit by QRCode</h2>
-        
+            
         {depositConfirmed ? (
             renderConfirmationScreen()
         ) : !transactionId ? (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api'; 
 import { useNavigate } from 'react-router-dom';
+import { ErrorMessage } from './ErrorMessage';
 import './css/Invest.css';
 
 export function Invest() {
@@ -9,6 +10,7 @@ export function Invest() {
     const [selectedAsset, setSelectedAsset] = useState(null); // Ativo clicado
     const [quantity, setQuantity] = useState(1); // Quantidade no modal
     const [showModal, setShowModal] = useState(false); // Controle do modal
+    const [errorMsg, setErrorMsg] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,9 +42,10 @@ export function Invest() {
 
     const confirmInvestment = async () => {
         if (!quantity || quantity <= 0) {
-            alert("Please enter a valid quantity.");
+            setErrorMsg("Please enter a valid quantity.");
             return;
         }
+        setErrorMsg('');
 
         const investmentData = {
             ticker: selectedAsset.ticker,
@@ -54,7 +57,8 @@ export function Invest() {
             const transactionId = response.data;
             navigate(`/confirmTransaction/${transactionId}`);
         } catch (err) {
-            alert("Erro ao processar investimento: " + (err.response?.data?.message || "Erro desconhecido"));
+            const errorMessage = err.response?.data?.message || 'Unknown error processing investment';
+            setErrorMsg("Error processing investment: " + errorMessage);
         }
     };
 
@@ -108,6 +112,7 @@ export function Invest() {
                             <button className="close-x" onClick={handleCloseModal}>&times;</button>
                         </header>
                         
+                        <ErrorMessage message={errorMsg} />
                         <div className="modal-body">
                             <div className="asset-summary">
                                 <strong>{selectedAsset.ticker}</strong>

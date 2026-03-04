@@ -71,7 +71,7 @@ export function Transfer() {
         ) : !transactionId ? (
             <form onSubmit={handleTransfer} className="balance-card">
                 <ErrorMessage message={errorMsg} />
-                <p style={{ textAlign: "center", marginBottom: "15px" }}>Enter the data to transfer:</p>
+                <p style={{ textAlign: "center", color: "var(--primary)" }}>Enter the data to transfer:</p>
                 
                 <input 
                     type="text"

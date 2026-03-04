@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { ErrorMessage } from './ErrorMessage';
 import './css/InvestWallet.css';
 
 export function InvestWallet() {
@@ -9,6 +10,7 @@ export function InvestWallet() {
     const [selectedInvestment, setSelectedInvestment] = useState(null); // investimento clicado
     const [quantity, setQuantity] = useState(1); // quantidade a vender
     const [showModal, setShowModal] = useState(false); // controle do modal de venda
+    const [errorMsg, setErrorMsg] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,13 +43,14 @@ export function InvestWallet() {
 
     const confirmSale = async () => {
         if (!quantity || quantity <= 0) {
-            alert("Please enter a valid quantity.");
+            setErrorMsg("Please enter a valid quantity.");
             return;
         }
         if (quantity > selectedInvestment.quantity) {
-            alert("Quantity to sell cannot exceed what you own.");
+            setErrorMsg("Quantity to sell cannot exceed what you own.");
             return;
         }
+        setErrorMsg('');
 
         const investmentData = {
             ticker: selectedInvestment.ticker,
@@ -71,6 +74,7 @@ export function InvestWallet() {
             );
         } catch (error) {
             console.error("Error selling investment", error);
+            setErrorMsg("Error selling investment. Please try again.");
         } finally {
             handleCloseModal();
         }
@@ -155,6 +159,7 @@ export function InvestWallet() {
                             <button className="close-x" onClick={handleCloseModal}>&times;</button>
                         </header>
 
+                        <ErrorMessage message={errorMsg} />
                         <div className="modal-body">
                             <div className="asset-summary">
                                 <strong>{selectedInvestment.ticker}</strong>

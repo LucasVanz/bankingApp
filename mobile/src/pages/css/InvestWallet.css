@@ -127,7 +127,7 @@
 
 .btn-back:hover {
     background: #3b3b98;
-    color: white;
+    color: rgba(26, 29, 77, 0.6);
 }
 
 /* Modal styles (same as Invest page) */
