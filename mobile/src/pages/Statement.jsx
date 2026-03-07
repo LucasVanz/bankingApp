@@ -9,25 +9,67 @@ export function Statement() {
   const [idUser, setIdUser] = useState("");
   const [typeStatement, setTypeStatement] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [isInitialized, setIsInitialized] = useState(false);
   const navigate = useNavigate();
+
+  // Função para formatar data para YYYY-MM-DD
+  const formatDate = (date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  // Inicializar datas padrão e fazer a requisição inicial
+  useEffect(() => {
+    const today = new Date();
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+    setStartDate(formatDate(thirtyDaysAgo));
+    setEndDate(formatDate(today));
+    setTypeStatement("ALL");
+    setIsInitialized(true);
+  }, []);
+
+  // Fazer requisição apenas na primeira inicialização
+  useEffect(() => {
+    if (isInitialized && startDate && endDate && typeStatement) {
+      handleAllStatement();
+    }
+  }, [isInitialized]);
 
   const handleAllStatement = () => {
     setTypeStatement("ALL");
-    const url = "/users/me/transactions";
+    const url = `/users/me/transactions?type=ALL${startDate ? `&startDate=${startDate}` : ''}${endDate ? `&endDate=${endDate}` : ''}`;
     handleStatement(url);
   };
+
   const handleExpensesStatement = () => {
     setTypeStatement("EXPENSES");
-    const url = "/users/me/transactions/expenses";
+    const url = `/users/me/transactions?type=EXPENSES${startDate ? `&startDate=${startDate}` : ''}${endDate ? `&endDate=${endDate}` : ''}`;
     handleStatement(url);
   };
+
   const handleIncomeStatement = () => {
     setTypeStatement("INCOME");
-    const url = "/users/me/transactions/income";
+    const url = `/users/me/transactions?type=INCOME${startDate ? `&startDate=${startDate}` : ''}${endDate ? `&endDate=${endDate}` : ''}`;
     handleStatement(url);
   };
+
   const handleBackStatement = () => {
     navigate("/dashboard");
+  };
+
+  const handleApplyFilter = () => {
+    // Aplicar filtro com o tipo atual
+    if (typeStatement === "ALL") {
+      handleAllStatement();
+    } else if (typeStatement === "EXPENSES") {
+      handleExpensesStatement();
+    } else if (typeStatement === "INCOME") {
+      handleIncomeStatement();
+    } else {
+      handleAllStatement(); // Default
+    }
   };
 
   const handleStatement = async (url) => {
@@ -44,11 +86,6 @@ export function Statement() {
       setErrorMsg(errorMessage);
     }
   };
-
-  // Chama a requisição para indicar todos os extratos no primeiro acesso aos extratos
-  useEffect(() => {
-    handleAllStatement();
-  }, []);
 
   return (
     <div className="statement-page-wrapper">
@@ -78,6 +115,25 @@ export function Statement() {
           >
             <span>Income</span>
           </button>
+        </div>
+        <div className="date-filters">
+          <label>
+            Start Date:
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </label>
+          <label>
+            End Date:
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </label>
+          <button onClick={handleApplyFilter}>Apply Filter</button>
         </div>
         {transactions.map((transaction) => {
           const corAtual =

@@ -1,5 +1,7 @@
 package com.lucas.banking.banking_backend.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -145,5 +147,9 @@ public class EmailService {
         } catch (Exception e) {
             System.err.println("Erro ao enviar email: " + e.getMessage());
         }
+    }
+
+    public void sendEmailStatement(List<Transaction> statement){
+
     }
 }

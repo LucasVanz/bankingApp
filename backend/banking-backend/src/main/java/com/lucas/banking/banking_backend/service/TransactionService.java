@@ -1,4 +1,5 @@
 package com.lucas.banking.banking_backend.service;
+
 import com.lucas.banking.banking_backend.dto.AnalisysReturnDTO;
 import com.lucas.banking.banking_backend.entity.*;
 import com.lucas.banking.banking_backend.repository.TransactionRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -25,8 +27,9 @@ public class TransactionService {
     UserInvestimentService userInvestimentService;
     @Autowired
     EmailService emailService;
+
     @Transactional
-    public UUID requestDeposit(User user, BigDecimal amount){
+    public UUID requestDeposit(User user, BigDecimal amount) {
         // Busca a carteira pelo usuário
         Wallet wallet = walletService.findByUser(user);
         Transaction transaction = new Transaction();
@@ -38,12 +41,13 @@ public class TransactionService {
         transactionRepository.save(transaction);
         return transaction.getId();
     }
+
     @Transactional
-    public UUID requestWithdraw(User user, BigDecimal amount){
+    public UUID requestWithdraw(User user, BigDecimal amount) {
         // Busca a carteira pelo usuário
         Wallet wallet = walletService.findByUser(user);
         // Verifica se possui saldo na carteira
-        if (!haveBalance(wallet, amount)){
+        if (!haveBalance(wallet, amount)) {
             throw new RuntimeException("Insufficient funds... The current balance is R$" + wallet.getBalance());
         }
         // Efetua a carga dos dados da transação
@@ -56,17 +60,17 @@ public class TransactionService {
         return transaction.getId();
     }
 
-    public UUID requestTransfer(User user, String receiverCpf, BigDecimal amount){
+    public UUID requestTransfer(User user, String receiverCpf, BigDecimal amount) {
         Wallet walletUser = walletService.findByUser(user);
         Wallet walletReceiver = walletService.findByUser(userService.findByCpf(receiverCpf));
         // Verifica se não está fazendo uma transferência para a mesma conta
-        if (user.getCpf().equalsIgnoreCase(receiverCpf)){
+        if (user.getCpf().equalsIgnoreCase(receiverCpf)) {
             throw new RuntimeException("It is not possible to make transfers using the same account");
         }
         // Verifica se possui saldo na carteira
-        if (!haveBalance(walletUser, amount)){
+        if (!haveBalance(walletUser, amount)) {
             throw new RuntimeException("Insufficient funds at the time of transfer request.... " +
-                                       "The current balance is R$" + walletUser.getBalance());
+                    "The current balance is R$" + walletUser.getBalance());
         }
         // Efetua a carga dos dados da transação
         Transaction transaction = new Transaction();
@@ -78,16 +82,17 @@ public class TransactionService {
         transactionRepository.save(transaction);
         return transaction.getId();
     }
+
     @Transactional
-    public boolean confirmTransaction(UUID idTransaction){
+    public boolean confirmTransaction(UUID idTransaction) {
         Transaction transaction = transactionRepository
                 .findById(idTransaction)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
         // Se o status da transação for pendente
-        if (transaction.getStatus() == TransactionStatus.PENDING){
+        if (transaction.getStatus() == TransactionStatus.PENDING) {
             Wallet wallet = transaction.getWallet();
             // Atualiza o valor da carteira
-            switch (transaction.getType()){
+            switch (transaction.getType()) {
                 case DEPOSIT -> wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
                 case WITHDRAW -> {
                     if (!haveBalance(wallet, transaction.getAmount())) {
@@ -110,7 +115,8 @@ public class TransactionService {
                         throw new RuntimeException("Insufficient funds at the time of confirmation");
                     }
                     wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));
-                    userInvestimentService.buyAsset(wallet, transaction.getFinancialAsset(), transaction.getQuantityFinancialAsset());
+                    userInvestimentService.buyAsset(wallet, transaction.getFinancialAsset(),
+                            transaction.getQuantityFinancialAsset());
                 }
                 case INVESTMENT_SELL -> {
                     wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
@@ -129,13 +135,13 @@ public class TransactionService {
     }
 
     @Transactional
-    public UUID investmentTransaction(User user, String ticker, BigDecimal quantity){
+    public UUID investmentTransaction(User user, String ticker, BigDecimal quantity) {
         // Busca a carteira pelo usuário
         Wallet wallet = walletService.findByUser(user);
         FinancialAsset financialAsset = financialAssetService.getAssetByTicker(ticker);
         BigDecimal amount = financialAsset.getCurrentPrice().multiply(quantity);
         // Verifica se possui saldo na carteira
-        if (!haveBalance(wallet, amount)){
+        if (!haveBalance(wallet, amount)) {
             throw new RuntimeException("Insufficient funds... The current balance is R$" + wallet.getBalance());
         }
         Transaction transaction = new Transaction();
@@ -151,15 +157,17 @@ public class TransactionService {
     }
 
     @Transactional
-    public UUID investmentSellTransaction(User user, String ticker, BigDecimal quantity){
+    public UUID investmentSellTransaction(User user, String ticker, BigDecimal quantity) {
         // Busca a carteira pelo usuário
         Wallet wallet = walletService.findByUser(user);
         FinancialAsset financialAsset = financialAssetService.getAssetByTicker(ticker);
         BigDecimal amount = financialAsset.getCurrentPrice().multiply(quantity);
-        UserInvestment userInvestment = userInvestimentService.getUserInvestmentByFinancialAssetAndWallet(financialAsset, wallet);
+        UserInvestment userInvestment = userInvestimentService
+                .getUserInvestmentByFinancialAssetAndWallet(financialAsset, wallet);
         // Verifica se possui o ativo e a quantidade necessária para venda
-        if (userInvestment.getQuantity().compareTo(quantity) < 0){
-            throw new RuntimeException("Insufficient asset quantity... You have " + userInvestment.getQuantity() + " " + ticker + " at the moment");
+        if (userInvestment.getQuantity().compareTo(quantity) < 0) {
+            throw new RuntimeException("Insufficient asset quantity... You have " + userInvestment.getQuantity() + " "
+                    + ticker + " at the moment");
         }
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
@@ -173,31 +181,49 @@ public class TransactionService {
         return transaction.getId();
     }
 
-
-    public boolean haveBalance(Wallet wallet, BigDecimal amount){
+    public boolean haveBalance(Wallet wallet, BigDecimal amount) {
         return wallet.getBalance().compareTo(amount) >= 0;
     }
 
-    public Transaction findById(UUID id){
+    public Transaction findById(UUID id) {
         return transactionRepository.getReferenceById(id);
     }
-    
-    public List<Transaction> getTransactions(User user){
+
+    public List<Transaction> getTransactions(User user, StatementType type, LocalDate startDate, LocalDate endDate) {
         Wallet wallet = walletService.findByUser(user);
-        return transactionRepository.findByWalletOrReceiverWalletOrderByCreatedAtDesc(wallet, wallet);
+        if (startDate != null && endDate != null) {
+            switch (type) {
+                case ALL -> {
+                    return transactionRepository.findByWalletOrReceiverWalletAndCreatedAtBetweenOrderByCreatedAtDesc(
+                            wallet, wallet, startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+                }
+                case INCOME -> {
+                    return transactionRepository.findIncomesByWalletAndCreatedAtBetween(wallet,
+                            startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+                }
+                case EXPENSES -> {
+                    return transactionRepository.findExpensesByWalletAndCreatedAtBetween(wallet,
+                            startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+                }
+            }
+            return null;
+        } else {
+            switch (type) {
+                case ALL -> {
+                    return transactionRepository.findByWalletOrReceiverWalletOrderByCreatedAtDesc(wallet, wallet);
+                }
+                case INCOME -> {
+                    return transactionRepository.findIncomesByWallet(wallet);
+                }
+                case EXPENSES -> {
+                    return transactionRepository.findExpensesByWallet(wallet);
+                }
+            }
+            return null;
+        }
     }
 
-    public List<Transaction> getTransactionsExpenses(User user){
-        Wallet wallet = walletService.findByUser(user);
-        return transactionRepository.findExpensesByWallet(wallet);
-    }
-
-    public List<Transaction> getTransactionsIncome(User user){
-        Wallet wallet = walletService.findByUser(user);
-        return transactionRepository.findIncomesByWallet(wallet);
-    }
-
-    public AnalisysReturnDTO getAnalysisByUserId(User user){
+    public AnalisysReturnDTO getAnalysisByUserId(User user) {
         Wallet wallet = walletService.findByUser(user);
         return transactionRepository.getAnalysisByWallet(wallet);
     }

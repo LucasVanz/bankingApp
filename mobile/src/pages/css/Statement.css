@@ -89,3 +89,41 @@
   line-height: 1.4;
   text-align: center;
 }
+
+/* Filtros de Data */
+.date-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.date-filters label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #333;
+}
+
+.date-filters input {
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.date-filters button {
+  padding: 10px;
+  background: linear-gradient(135deg, #3b3b98 0%, #717192 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.date-filters button:hover {
+  background: linear-gradient(135deg, #717192 0%, #3b3b98 100%);
+}
