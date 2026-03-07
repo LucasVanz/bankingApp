@@ -23,6 +23,8 @@ public class TransactionService {
     FinancialAssetService financialAssetService;
     @Autowired
     UserInvestimentService userInvestimentService;
+    @Autowired
+    EmailService emailService;
     @Transactional
     public UUID requestDeposit(User user, BigDecimal amount){
         // Busca a carteira pelo usuário
@@ -119,6 +121,8 @@ public class TransactionService {
             // Indica que a transação foi completa
             transaction.setStatus(TransactionStatus.COMPLETED);
             transactionRepository.save(transaction);
+            // Envia email de confirmação da transação
+            emailService.sendEmailTransaction(transaction);
             return true;
         }
         return false;

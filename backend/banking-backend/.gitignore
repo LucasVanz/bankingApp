@@ -2,3 +2,6 @@
 backend/banking-backend/data/
 *.db
 *.trace.db
+
+# Credentials
+.env
