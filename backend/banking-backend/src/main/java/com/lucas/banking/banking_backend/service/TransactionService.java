@@ -227,4 +227,9 @@ public class TransactionService {
         Wallet wallet = walletService.findByUser(user);
         return transactionRepository.getAnalysisByWallet(wallet);
     }
+
+    public void sendStatementEmail(User user, StatementType type, LocalDate startDate, LocalDate endDate) throws Exception {
+        List<Transaction> transactionsStatement = getTransactions(user, type, startDate, endDate);
+        emailService.sendStatementEmail(transactionsStatement, user, startDate, endDate);
+    }
 }

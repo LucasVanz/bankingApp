@@ -8,12 +8,10 @@ import com.lucas.banking.banking_backend.entity.StatementType;
 import com.lucas.banking.banking_backend.entity.Transaction;
 import com.lucas.banking.banking_backend.entity.User;
 import com.lucas.banking.banking_backend.entity.Wallet;
-import com.lucas.banking.banking_backend.service.TransactionService;
-import com.lucas.banking.banking_backend.service.UserInvestimentService;
-import com.lucas.banking.banking_backend.service.UserService;
-import com.lucas.banking.banking_backend.service.WalletService;
+import com.lucas.banking.banking_backend.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
     @Autowired
     UserService userService;
     @Autowired
@@ -32,6 +31,8 @@ public class UserController {
     TransactionService transactionService;
     @Autowired
     UserInvestimentService userInvestimentService;
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody @Valid UserRequestDTO data) {
@@ -65,6 +66,18 @@ public class UserController {
         return ResponseEntity.ok(transactionService.getTransactions(user, type, startDate, endDate));
     }
 
+    @GetMapping("/me/transactions/email")
+    public ResponseEntity<String> sendStatementEmail(@AuthenticationPrincipal User user,
+            @RequestParam(required = true) StatementType type,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate) {
+        try {
+            transactionService.sendStatementEmail(user, type, startDate, endDate);
+            return ResponseEntity.ok("Email sent successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
     @GetMapping("me/analisys")
     public ResponseEntity<AnalisysReturnDTO> getTransactionsAnalisys(@AuthenticationPrincipal User user) {
