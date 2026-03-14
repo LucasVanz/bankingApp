@@ -16,7 +16,6 @@ import com.lucas.banking.banking_backend.entity.FinancialAsset;
 import com.lucas.banking.banking_backend.entity.Transaction;
 import com.lucas.banking.banking_backend.entity.User;
 
-
 import jakarta.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -173,18 +172,34 @@ public class EmailService {
                 }
         }
 
-        public void sendStatementEmail(List<Transaction> transactionsStatement, User user, LocalDate startDate, LocalDate endDate) throws Exception {
+        public void sendStatementEmail(List<Transaction> transactionsStatement, User user, LocalDate startDate,
+                        LocalDate endDate) throws Exception {
                 try {
                         byte[] pdfBytes = pdfGeneratorService.generateStatementPdf(transactionsStatement);
+
+                        if (pdfBytes == null || pdfBytes.length == 0) {
+                                throw new Exception("Generated PDF is empty.");
+                        }
+
                         MimeMessage message = mailSender.createMimeMessage();
-                        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "UTF-8");
-                        mimeMessageHelper.setFrom(mailFrom);
-                        mimeMessageHelper.setTo(user.getEmail());
-                        mimeMessageHelper.setSubject("Statement from: " + startDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " to: " + endDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                        mimeMessageHelper.addAttachment("statement.pdf", new ByteArrayResource(pdfBytes), "application/pdf");
+                        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+                        helper.setFrom(mailFrom);
+                        helper.setTo(user.getEmail());
+                        helper.setSubject("Statement from: "
+                                        + startDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                                        + " to: "
+                                        + endDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+                        helper.setText("Attached is your account statement in PDF format.");
+                        helper.addAttachment("statement.pdf", new ByteArrayResource(pdfBytes), "application/pdf");
+
                         mailSender.send(message);
+
                 } catch (IOException e) {
-                        throw new Exception("Error generating PDF: " + e.getMessage());
+                        throw new Exception("Error generating PDF: " + e.getMessage(), e);
+                } catch (Exception e) {
+                        throw new Exception("Error sending statement email: " + e.getMessage(), e);
                 }
         }
 }

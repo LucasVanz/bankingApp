@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { ErrorMessage } from "./ErrorMessage";
+import { SuccessMessage } from "./SuccessMessage";
 import "./css/Statement.css";
 
 export function Statement() {
@@ -9,9 +10,11 @@ export function Statement() {
   const [idUser, setIdUser] = useState("");
   const [typeStatement, setTypeStatement] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   // Função para formatar data para YYYY-MM-DD
@@ -72,6 +75,23 @@ export function Statement() {
     }
   };
 
+  const handleSendEmail = async () => {
+    setErrorMsg("");
+    setSuccessMsg("");
+    setIsLoading(true);
+    try {
+      const url = `/users/me/transactions/email?type=${typeStatement}${startDate ? `&startDate=${startDate}` : ''}${endDate ? `&endDate=${endDate}` : ''}`;
+      const response = await api.get(url);
+      setSuccessMsg("Email sent successfully");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data || "Failed to send email";
+      setErrorMsg(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleStatement = async (url) => {
     setErrorMsg("");
     setTransactions([]);
@@ -89,6 +109,12 @@ export function Statement() {
 
   return (
     <div className="statement-page-wrapper">
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">Sending email...</p>
+        </div>
+      )}
       <div className="statement-container">
         <div>
           <button className="back-statement" onClick={handleBackStatement}>
@@ -96,6 +122,7 @@ export function Statement() {
           </button>
         </div>
         <ErrorMessage message={errorMsg} />
+        <SuccessMessage message={successMsg} />
         <div className="statement-filters">
           <button
             className={`all-statement ${typeStatement === "ALL" ? "active" : ""}`}
@@ -134,6 +161,7 @@ export function Statement() {
             />
           </label>
           <button onClick={handleApplyFilter}>Apply Filter</button>
+          <button onClick={handleSendEmail}>Send Statement by Email</button>
         </div>
         {transactions.map((transaction) => {
           const corAtual =
@@ -173,3 +201,4 @@ export function Statement() {
     </div>
   );
 }
+

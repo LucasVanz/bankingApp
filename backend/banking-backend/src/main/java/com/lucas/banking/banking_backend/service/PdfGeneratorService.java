@@ -2,6 +2,8 @@ package com.lucas.banking.banking_backend.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -24,7 +26,7 @@ public class PdfGeneratorService {
             contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 12);
 
             float y = 750;
-
+            float leading = 16;
             contentStream.beginText();
             contentStream.newLineAtOffset(50, y);
             contentStream.showText("List of transactions");
@@ -41,31 +43,42 @@ public class PdfGeneratorService {
                     contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 12);
                     y = 750;
                 }
-                contentStream.beginText();
-                contentStream.newLineAtOffset(50, y);
-                String complementMessageTransaction = "";
+
+                List<String> lines = new ArrayList<>();
+                lines.add("Date: " + transaction.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                lines.add("Amount: " + transaction.getAmount());
+                lines.add("Type: " + transaction.getType());
                 switch (transaction.getType()) {
                     case TRANSFER:
-                        complementMessageTransaction = "From: " + transaction.getWallet().getUser().getName() + "\nTo: "
-                                + transaction.getReceiverWallet().getUser().getName();
+                        lines.add("From: " + transaction.getWallet().getUser().getName());
+                        lines.add("To: " + transaction.getReceiverWallet().getUser().getName());
+                        break;
                     case INVESTMENT:
-                        complementMessageTransaction = "Financial Asset: " + transaction.getFinancialAsset().getName()
-                                + "\nQuantity: "
-                                + transaction.getQuantityFinancialAsset();
+                        lines.add("Financial Asset: " + transaction.getFinancialAsset().getName());
+                        lines.add("Quantity: " + transaction.getQuantityFinancialAsset());
+                        break;
                     case INVESTMENT_SELL:
-                        complementMessageTransaction = "Financial Asset: " + transaction.getFinancialAsset().getName()
-                                + "\nQuantity: "
-                                + transaction.getQuantityFinancialAsset();
+                        lines.add("Financial Asset: " + transaction.getFinancialAsset().getName());
+                        lines.add("Quantity: " + transaction.getQuantityFinancialAsset());
+                        break;
                     case DEPOSIT:
                         break;
                     case WITHDRAW:
                         break;
                 }
-                contentStream.showText(
-                        "Date: " + transaction.getCreatedAt() + "\nAmount: " + transaction.getAmount() + "\nType: "
-                                + transaction.getType() + "\n" + complementMessageTransaction + "\n\n");
+                lines.add("");
+                float requiredHeight = lines.size() * leading;
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, y);
+                for (int i = 0; i < lines.size(); i++) {
+                    contentStream.showText(lines.get(i));
+                    if (i < lines.size() - 1) {
+                        contentStream.newLineAtOffset(0, -leading);
+                    }
+                }
+
                 contentStream.endText();
-                y -= 20;
+                y -= requiredHeight;
             }
             contentStream.close();
 
