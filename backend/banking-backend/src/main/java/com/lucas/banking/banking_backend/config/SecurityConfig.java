@@ -21,30 +21,30 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
     @Autowired
     SecurityFilter securityFilter;
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // Ajuste aqui para usar a sua configuração
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
-            .csrf(csrf -> csrf.disable()) 
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers("/health").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
-                    .requestMatchers(HttpMethod.PUT, "/users/me/update").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .requestMatchers("/transaction/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/transaction/details/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/transaction/status/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/transaction/investment").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/transaction/investmentSell").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/transaction/confirm/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/financialAssets/**").permitAll()
-                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                    .anyRequest().authenticated()
-            )
-            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+                // Ajuste aqui para usar a sua configuração
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/health").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/users/me/update").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers("/transaction/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/transaction/details/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/transaction/status/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/transaction/investment").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/transaction/investmentSell").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/transaction/confirm/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/financialAssets/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .anyRequest().authenticated())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -55,12 +55,18 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Porta do seu Vite
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-}
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5173",
+                "https://banking-backend-uz0z.onrender.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 }
