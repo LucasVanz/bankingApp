@@ -2,3 +2,5 @@
 data/bankingdb.mv.db
 data/bankingdb.trace.db
 mobile/.env
+mobile/.env.development
+mobile/.env.production
