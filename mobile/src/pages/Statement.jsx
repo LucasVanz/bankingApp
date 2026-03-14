@@ -17,6 +17,17 @@ export function Statement() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Limpando mensagem de sucesso após exibição
+  useEffect(() => {
+    if (!successMsg) return;
+
+    const timeout = setTimeout(() => {
+      setSuccessMsg("");
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [successMsg]);
+
   // Função para formatar data para YYYY-MM-DD
   const formatDate = (date) => {
     return date.toISOString().split('T')[0];

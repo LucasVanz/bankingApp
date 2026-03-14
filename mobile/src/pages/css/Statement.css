@@ -143,6 +143,53 @@
   font-size: 16px;
 }
 
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.success-box {
+  background: #e8f5e8;
+  border: 1px solid #81c784;
+  border-radius: 14px;
+  padding: 18px 24px;
+  color: #2e7d32;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  min-width: 260px;
+  text-align: center;
+  animation: popIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
