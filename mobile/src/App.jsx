@@ -10,7 +10,7 @@ import { Analisys } from './pages/Analisys';
 import { Invest } from './pages/Invest';
 import { InvestWallet } from './pages/InvestWallet';
 import { UserDetails } from './pages/UserDetails';
-import { ConfirmTransaction } from './pages/confirmTransaction';
+import { ConfirmTransaction } from './pages/ConfirmTransaction';
 
 function App() {
   return (
