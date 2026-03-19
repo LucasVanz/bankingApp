@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://bankingapp-bs0b.onrender.com") // Porta padrão do Vite
+                .allowedOrigins("https://bankingapp-bs0b.onrender.com", "http://localhost:5173") // Porta padrão do Vite
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
     }
