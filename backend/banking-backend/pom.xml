@@ -90,7 +90,7 @@
     		<artifactId>pdfbox</artifactId>
     		<version>3.0.2</version>
 		</dependency>
-		<!--<dependency>
+		<dependency>
     		<groupId>org.flywaydb</groupId>
     		<artifactId>flyway-core</artifactId>
 		</dependency>
@@ -98,7 +98,7 @@
     		<groupId>org.postgresql</groupId>
     		<artifactId>postgresql</artifactId>
     		<scope>runtime</scope>
-		</dependency> !-->
+		</dependency>
 	</dependencies>
 
 	<build>
