@@ -1,9 +1,9 @@
 package com.lucas.banking.banking_backend.controller;
 
+import com.lucas.banking.banking_backend.dto.ConfirmWithPasswordDTO;
 import com.lucas.banking.banking_backend.dto.DepositRequestDTO;
 import com.lucas.banking.banking_backend.dto.InvestmentRequestDTO;
 import com.lucas.banking.banking_backend.dto.TransactionDetailsDTO;
-import com.lucas.banking.banking_backend.dto.TransferConfirmDTO;
 import com.lucas.banking.banking_backend.dto.TransferRequestDTO;
 import com.lucas.banking.banking_backend.dto.WithdrawRequestDTO;
 import com.lucas.banking.banking_backend.service.AuthService;
@@ -56,7 +56,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer/confirm/{id}")
-    public ResponseEntity<String> transferConfirm(@AuthenticationPrincipal User user, @PathVariable UUID id, @RequestBody TransferConfirmDTO data) {
+    public ResponseEntity<String> transferConfirm(@AuthenticationPrincipal User user, @PathVariable UUID id, @RequestBody ConfirmWithPasswordDTO data) {
         String token = authService.authenticate(user.getCpf(), data.password());
         if (!token.isEmpty()){
             return confirmTransaction(user, id);
@@ -68,6 +68,15 @@ public class TransactionController {
     public ResponseEntity<String> confirmTransaction(@AuthenticationPrincipal User user, @PathVariable UUID id){
         if(transactionService.confirmTransaction(id)){
             return ResponseEntity.ok("Transaction completed successfully!");
+        }
+        return ResponseEntity.badRequest().body("Invalid transaction or transaction already processed");
+    }
+    
+    @PostMapping("/confirmWithPassword/{id}")
+    public ResponseEntity<String> confirmWithPasswordTransaction(@AuthenticationPrincipal User user, @PathVariable UUID id, @RequestBody ConfirmWithPasswordDTO data){
+        String token = authService.authenticate(user.getCpf(), data.password());
+        if (!token.isEmpty()){
+            return confirmTransaction(user, id);
         }
         return ResponseEntity.badRequest().body("Invalid transaction or transaction already processed");
     }

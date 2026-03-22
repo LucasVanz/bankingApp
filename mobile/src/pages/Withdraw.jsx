@@ -11,6 +11,9 @@ export function Withdraw() {
   const [transactionId, setTransactionId] = useState(null);
   const [withdrawConfirmed, setWithdrawConfirmed] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmingWithPassword, setConfirmingWithPassword] = useState(false);
   const navigate = useNavigate();
 
   // Carrega o valor da transação
@@ -28,10 +31,33 @@ export function Withdraw() {
       });
       setTransactionId(response.data);
       setWithdrawConfirmed(false);
+      setShowPasswordField(false);
+      setPassword("");
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "An unexpected error occurred";
       setErrorMsg(errorMessage);
+    }
+  };
+
+  const handleConfirmWithPassword = async () => {
+    if (!password) {
+      setErrorMsg("Please enter your password.");
+      return;
+    }
+    setConfirmingWithPassword(true);
+    setErrorMsg("");
+    try {
+      await api.post(`/transaction/confirmWithPassword/${transactionId}`, {
+        password,
+      });
+      setWithdrawConfirmed(true);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Password incorrect or transaction failed.";
+      setErrorMsg(errorMessage);
+    } finally {
+      setConfirmingWithPassword(false);
     }
   };
 
@@ -135,7 +161,39 @@ export function Withdraw() {
               marginSize={true}
             />
           </div>
-          <button onClick={() => setTransactionId(null)} className="action-btn">
+          {!showPasswordField ? (
+            <button
+              onClick={() => setShowPasswordField(true)}
+              className="action-btn btn-secondary"
+            >
+              Confirm with Password
+            </button>
+          ) : (
+            <div className="password-confirmation">
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="password-input"
+              />
+              <button
+                onClick={handleConfirmWithPassword}
+                disabled={confirmingWithPassword}
+                className="action-btn"
+              >
+                {confirmingWithPassword ? "Confirming..." : "Confirm"}
+              </button>
+            </div>
+          )}
+          <button
+            onClick={() => {
+              setTransactionId(null);
+              setShowPasswordField(false);
+              setPassword("");
+            }}
+            className="action-btn"
+          >
             New Withdraw
           </button>
         </div>

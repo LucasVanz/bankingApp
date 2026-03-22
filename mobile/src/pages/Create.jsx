@@ -13,6 +13,7 @@ export function Create() {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   // Formata o CPF
@@ -30,6 +31,7 @@ export function Create() {
     e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
+    setIsLoading(true);
     try {
       const response = await api.post("/users/create", {
         cpf: cpf.replace(/\D/g, ""),
@@ -47,69 +49,80 @@ export function Create() {
         error.response?.data?.message ||
         "Verify if CPF or Email already exists!";
       setErrorMsg(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="create-auth-container">
       <h2>Create your account</h2>
-      <ErrorMessage message={errorMsg} />
-      {successMsg && (
-        <div
-          style={{
-            backgroundColor: "#e8f5e9",
-            color: "#2e7d32",
-            padding: "10px",
-            borderRadius: "8px",
-            marginBottom: "15px",
-            textAlign: "center",
-            fontSize: "14px",
-            fontWeight: "500",
-            border: "1px solid #81c784",
-          }}
-        >
-          {successMsg}
+      {isLoading ? (
+        <div className="loading-screen">
+          <div className="spinner"></div>
+          <p>Creating your account...</p>
         </div>
+      ) : (
+        <>
+          <ErrorMessage message={errorMsg} />
+          {successMsg && (
+            <div
+              style={{
+                backgroundColor: "#e8f5e9",
+                color: "#2e7d32",
+                padding: "10px",
+                borderRadius: "8px",
+                marginBottom: "15px",
+                textAlign: "center",
+                fontSize: "14px",
+                fontWeight: "500",
+                border: "1px solid #81c784",
+              }}
+            >
+              {successMsg}
+            </div>
+          )}
+          <form className="create-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="CPF"
+              value={cpf}
+              onChange={handleCpfChange}
+            />
+            <input
+              type="text"
+              placeholder="Full Name"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="E-mail"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="tel"
+              placeholder="(99) 99999-9999"
+              value={phone}
+              onChange={handlePhoneChange}
+            />
+            <input
+              type="password"
+              placeholder="Create Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              Finish
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => navigate("/")}
+            >
+              Back to login
+            </button>
+          </form>
+        </>
       )}
-      <form className="create-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="CPF"
-          value={cpf}
-          onChange={handleCpfChange}
-        />
-        <input
-          type="text"
-          placeholder="Full Name"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="E-mail"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="tel"
-          placeholder="(99) 99999-9999"
-          value={phone}
-          onChange={handlePhoneChange}
-        />
-        <input
-          type="password"
-          placeholder="Create Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit" className="btn-primary">
-          Finish
-        </button>
-        <button
-          type="button"
-          className="btn-secondary"
-          onClick={() => navigate("/")}
-        >
-          Back to login
-        </button>
-      </form>
     </div>
   );
 }

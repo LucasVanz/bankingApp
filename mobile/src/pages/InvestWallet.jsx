@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import { ErrorMessage } from "./ErrorMessage";
 import "./css/InvestWallet.css";
 
@@ -11,6 +12,11 @@ export function InvestWallet() {
   const [quantity, setQuantity] = useState(1); // quantidade a vender
   const [showModal, setShowModal] = useState(false); // controle do modal de venda
   const [errorMsg, setErrorMsg] = useState("");
+  const [transactionId, setTransactionId] = useState(null);
+  const [saleConfirmed, setSaleConfirmed] = useState(false);
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmingWithPassword, setConfirmingWithPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,6 +33,74 @@ export function InvestWallet() {
     };
     fetchWallet();
   }, []);
+
+  // Polling: Verifica o status da transação a cada 2 segundos
+  useEffect(() => {
+    let interval;
+    if (transactionId && !saleConfirmed) {
+      interval = setInterval(async () => {
+        try {
+          const response = await api.get(
+            `/transaction/status/${transactionId}`,
+          );
+          if (response.data === "COMPLETED") {
+            setSaleConfirmed(true);
+            // Update investments
+            setInvestments((prev) =>
+              prev
+                .map((inv) => {
+                  if (inv.id === selectedInvestment.id) {
+                    const remaining = inv.quantity - quantity;
+                    return { ...inv, quantity: remaining };
+                  }
+                  return inv;
+                })
+                .filter((inv) => inv.quantity > 0),
+            );
+            clearInterval(interval);
+          }
+        } catch (error) {
+          console.error("Erro ao verificar status: " + error);
+        }
+      }, 2000);
+    }
+    return () => clearInterval(interval);
+  }, [transactionId, saleConfirmed, selectedInvestment, quantity]);
+
+  const renderConfirmationScreen = () => (
+    <div className="balance-card success-card">
+      <div className="checkmark-wrapper">
+        <svg
+          className="checkmark"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 52 52"
+        >
+          <circle
+            className="checkmark__circle"
+            cx="26"
+            cy="26"
+            r="25"
+            fill="none"
+          />
+          <path
+            className="checkmark__check"
+            fill="none"
+            d="M14.1 27.2l7.1 7.2 16.7-16.8"
+          />
+        </svg>
+      </div>
+      <h2>Sale confirmed!</h2>
+      <p>
+        You sold <strong>{selectedInvestment?.ticker}</strong> successfully!
+      </p>
+      <button
+        onClick={() => navigate("/dashboard")}
+        className="action-btn btn-success-return"
+      >
+        Back to dashboard
+      </button>
+    </div>
+  );
 
   // abrir modal de venda
   const handleOpenSellModal = (investment) => {
@@ -61,9 +135,30 @@ export function InvestWallet() {
         "/transaction/investmentSell",
         investmentData,
       );
-      const transactionId = response.data;
-      navigate(`/confirmTransaction/${transactionId}`);
+      setTransactionId(response.data);
+      setSaleConfirmed(false);
+      setShowPasswordField(false);
+      setPassword("");
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error selling investment", error);
+      setErrorMsg("Error selling investment. Please try again.");
+    }
+  };
 
+  const handleConfirmWithPassword = async () => {
+    if (!password) {
+      setErrorMsg("Please enter your password.");
+      return;
+    }
+    setConfirmingWithPassword(true);
+    setErrorMsg("");
+    try {
+      await api.post(`/transaction/confirmWithPassword/${transactionId}`, {
+        password,
+      });
+      setSaleConfirmed(true);
+      // Update investments
       setInvestments((prev) =>
         prev
           .map((inv) => {
@@ -76,10 +171,11 @@ export function InvestWallet() {
           .filter((inv) => inv.quantity > 0),
       );
     } catch (error) {
-      console.error("Error selling investment", error);
-      setErrorMsg("Error selling investment. Please try again.");
+      const errorMessage =
+        error.response?.data?.message || "Password incorrect or transaction failed.";
+      setErrorMsg(errorMessage);
     } finally {
-      handleCloseModal();
+      setConfirmingWithPassword(false);
     }
   };
 
@@ -90,8 +186,63 @@ export function InvestWallet() {
   );
 
   return (
-    <div className="wallet-screen">
-      <div className="wallet-container">
+    <>
+      <div className="wallet-screen">
+        {saleConfirmed ? (
+          renderConfirmationScreen()
+        ) : transactionId ? (
+          <div className="balance-card qr-container">
+            <p>
+              Scan to confirm sale of <strong>{selectedInvestment?.ticker}</strong>
+            </p>
+            <div className="qr-wrapper">
+              <QRCodeSVG
+                value={`${window.location.origin}/confirmTransaction/${transactionId}`}
+                size={200}
+                marginSize={true}
+              />
+            </div>
+            <p className="qr-hint">
+              After scanning, confirm the sale on your phone.
+            </p>
+            {!showPasswordField ? (
+              <button
+                onClick={() => setShowPasswordField(true)}
+                className="action-btn btn-secondary"
+              >
+                Confirm with Password
+              </button>
+            ) : (
+              <div className="password-confirmation">
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="password-input"
+                />
+                <button
+                  onClick={handleConfirmWithPassword}
+                  disabled={confirmingWithPassword}
+                  className="action-btn"
+                >
+                  {confirmingWithPassword ? "Confirming..." : "Confirm"}
+                </button>
+              </div>
+            )}
+            <button
+              onClick={() => {
+                setTransactionId(null);
+                setShowPasswordField(false);
+                setPassword("");
+              }}
+              className="action-btn btn-secondary"
+            >
+              Cancel / New Sale
+            </button>
+          </div>
+        ) : (
+          <div className="wallet-container">
         <header className="wallet-header">
           <h2>My Investment Wallet</h2>
           <div className="total-invested-card">
@@ -185,9 +336,11 @@ export function InvestWallet() {
           </div>
         )}
 
-        <button className="btn-back" onClick={() => navigate("/dashboard")}>
-          Back to Dashboard
-        </button>
+            <button className="btn-back" onClick={() => navigate("/dashboard")}>
+              Back to Dashboard
+            </button>
+          </div>
+        )}
       </div>
 
       {/* --- MODAL DE VENDA --- */}
@@ -253,6 +406,6 @@ export function InvestWallet() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

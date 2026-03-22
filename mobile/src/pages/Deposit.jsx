@@ -11,6 +11,9 @@ export function Deposit() {
   const [transactionId, setTransactionId] = useState(null);
   const [depositConfirmed, setDepositConfirmed] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmingWithPassword, setConfirmingWithPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleAmountChange = (e) => {
@@ -27,10 +30,33 @@ export function Deposit() {
       });
       setTransactionId(response.data);
       setDepositConfirmed(false);
+      setShowPasswordField(false);
+      setPassword("");
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "An unexpected error occurred";
       setErrorMsg(errorMessage);
+    }
+  };
+
+  const handleConfirmWithPassword = async () => {
+    if (!password) {
+      setErrorMsg("Please enter your password.");
+      return;
+    }
+    setConfirmingWithPassword(true);
+    setErrorMsg("");
+    try {
+      await api.post(`/transaction/confirmWithPassword/${transactionId}`, {
+        password,
+      });
+      setDepositConfirmed(true);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Password incorrect or transaction failed.";
+      setErrorMsg(errorMessage);
+    } finally {
+      setConfirmingWithPassword(false);
     }
   };
 
@@ -134,8 +160,37 @@ export function Deposit() {
           <p className="qr-hint">
             After scanning, confirm the payment on your phone.
           </p>
+          {!showPasswordField ? (
+            <button
+              onClick={() => setShowPasswordField(true)}
+              className="action-btn btn-secondary"
+            >
+              Confirm with Password
+            </button>
+          ) : (
+            <div className="password-confirmation">
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="password-input"
+              />
+              <button
+                onClick={handleConfirmWithPassword}
+                disabled={confirmingWithPassword}
+                className="action-btn"
+              >
+                {confirmingWithPassword ? "Confirming..." : "Confirm"}
+              </button>
+            </div>
+          )}
           <button
-            onClick={() => setTransactionId(null)}
+            onClick={() => {
+              setTransactionId(null);
+              setShowPasswordField(false);
+              setPassword("");
+            }}
             className="action-btn btn-secondary"
           >
             Cancel / New Deposit
