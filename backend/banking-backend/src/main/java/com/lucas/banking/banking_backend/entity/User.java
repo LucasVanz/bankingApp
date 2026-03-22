@@ -43,7 +43,6 @@ public class User implements UserDetails {
     @NotEmpty
     @PhoneNumber
     private String phone;
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String photoBase64;
     @NotEmpty
