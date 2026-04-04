@@ -53,11 +53,14 @@ This structure ensures maintainability, scalability and separation of concerns.
 - Profile update (name, email, phone, photo)  
 
 ### 💰 Transactions
-- Deposit (QR Code confirmation)  
-- Withdraw (QR Code confirmation)  
-- Transfer between accounts  
+- Deposit requests with QR Code confirmation  
+- Withdraw requests with QR Code confirmation  
+- Transfer between accounts with confirmation flow  
+- Transaction confirmation by ID (`/transaction/confirm/{id}` and `/transaction/confirmWithPassword/{id}`)  
+- Transaction detail lookup by ID  
 - Transaction status tracking  
-- Detailed statement (all / income / expenses)  
+- Detailed statement filtering with type and date range  
+- Send statement by email  
 
 ### 📊 Financial Analytics
 - Transaction volume charts  
@@ -67,9 +70,10 @@ This structure ensures maintainability, scalability and separation of concerns.
 
 ### 📈 Investments Module
 - View financial assets (FIXED / VARIABLE)  
-- Buy assets  
-- Track investment wallet  
-- Profitability calculation  
+- Buy assets with QR Code confirmation  
+- Sell investments using `investmentSell`  
+- Track investment wallet holdings  
+- Profitability and position summaries  
 
 ---
 
@@ -103,10 +107,14 @@ POST /transaction/deposit
 POST /transaction/withdraw
 POST /transaction/transfer
 POST /transaction/investment
+POST /transaction/investmentSell
+POST /transaction/confirm/{id}
+POST /transaction/confirmWithPassword/{id}
+POST /transaction/transfer/confirm/{id}
+GET /transaction/details/{id}
 GET /transaction/status/{id}
-GET /users/me/transactions
-GET /users/me/transactions/expenses
-GET /users/me/transactions/income
+GET /users/me/transactions?type={type}&startDate={date}&endDate={date}
+GET /users/me/transactions/email?type={type}&startDate={date}&endDate={date}
 ```
 ### Investments & Analytics
 ```bash
