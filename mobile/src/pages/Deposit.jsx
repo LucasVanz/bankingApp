@@ -120,7 +120,7 @@ export function Deposit() {
 
   return (
     <div className="deposit-page-wrapper">
-      <h2>Deposit by QRCode</h2>
+      <h2>Deposit</h2>
 
       {depositConfirmed ? (
         renderConfirmationScreen()
@@ -129,7 +129,7 @@ export function Deposit() {
           <ErrorMessage message={errorMsg} />
           <p style={{ textAlign: "center" }}>Enter the amount to deposit:</p>
           <input
-            type="text"
+            type="transaction-amount"
             className="money-input"
             value={`R$ ${formatMoneyDisplay(amount)}`}
             onChange={handleAmountChange}

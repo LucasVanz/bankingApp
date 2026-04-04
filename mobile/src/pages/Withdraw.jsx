@@ -106,7 +106,7 @@ export function Withdraw() {
           />
         </svg>
       </div>
-      <h2>Withdraw realized!</h2>
+      <h2>Withdrawal realized!</h2>
       <p>
         You withdrew <strong>R$ {formatMoneyDisplay(amount)}</strong>{" "}
         successfully!
@@ -125,7 +125,7 @@ export function Withdraw() {
     <div className="withdraw-page-wrapper">
       {" "}
       {/* Wrapper de escopo */}
-      <h2>Withdraw by QRCode</h2>
+      <h2>Withdraw</h2>
       {withdrawConfirmed ? (
         renderConfirmationScreen()
       ) : !transactionId ? (
@@ -133,7 +133,7 @@ export function Withdraw() {
           <ErrorMessage message={errorMsg} />
           <p style={{ textAlign: "center" }}>Enter the amount to withdraw:</p>
           <input
-            type="text"
+            type="transaction-amount"
             className="money-input"
             value={`R$ ${formatMoneyDisplay(amount)}`}
             onChange={handleAmountChange}

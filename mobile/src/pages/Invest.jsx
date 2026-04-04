@@ -81,6 +81,7 @@ export function Invest() {
         You invested in <strong>{selectedAsset?.ticker}</strong> successfully!
       </p>
       <button
+        type="button"
         onClick={() => navigate("/dashboard")}
         className="action-btn btn-success-return"
       >
@@ -174,6 +175,7 @@ export function Invest() {
             </p>
             {!showPasswordField ? (
               <button
+                type="button"
                 onClick={() => setShowPasswordField(true)}
                 className="action-btn btn-secondary"
               >
@@ -189,6 +191,7 @@ export function Invest() {
                   className="password-input"
                 />
                 <button
+                  type="button"
                   onClick={handleConfirmWithPassword}
                   disabled={confirmingWithPassword}
                   className="action-btn"
@@ -198,6 +201,7 @@ export function Invest() {
               </div>
             )}
             <button
+              type="button"
               onClick={() => {
                 setTransactionId(null);
                 setShowPasswordField(false);
@@ -213,6 +217,7 @@ export function Invest() {
             <header className="broker-header">
               <h2>Home Broker</h2>
               <button
+                type="button"
                 className="btn-portfolio"
                 onClick={() => navigate("/investWallet")}
               >
@@ -244,6 +249,7 @@ export function Invest() {
                       <span className="yield">{asset.yieldPercentage}% yield</span>
                     </div>
                     <button
+                      type="button"
                       className="btn-invest"
                       onClick={() => handleOpenModal(asset)}
                     >
@@ -254,7 +260,7 @@ export function Invest() {
               </div>
             )}
 
-            <button className="btn-back" onClick={() => navigate("/dashboard")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/dashboard")}>
               Back to Dashboard
             </button>
           </div>
@@ -267,7 +273,7 @@ export function Invest() {
           <div className="modal-content">
             <header className="modal-header">
               <h3>Confirm Investment</h3>
-              <button className="close-x" onClick={handleCloseModal}>
+              <button type="button" className="close-x" onClick={handleCloseModal}>
                 &times;
               </button>
             </header>
@@ -313,10 +319,10 @@ export function Invest() {
             </div>
 
             <footer className="modal-footer">
-              <button className="btn-confirm" onClick={confirmInvestment}>
+              <button type="button" className="btn-confirm" onClick={confirmInvestment}>
                 Confirm Purchase
               </button>
-              <button className="btn-cancel" onClick={handleCloseModal}>
+              <button type="button" className="btn-cancel" onClick={handleCloseModal}>
                 Cancel
               </button>
             </footer>

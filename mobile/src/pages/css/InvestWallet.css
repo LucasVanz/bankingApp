@@ -4,8 +4,17 @@
     display: flex;
     justify-content: center;
     background-color: #f4f7fe;
-    padding: 40px 20px;
+    padding: 20px 16px;
     box-sizing: border-box;
+}
+
+.wallet-screen .balance-card.success-card {
+    width: 100%;
+    max-width: 520px;
+    align-self: center;
+    margin: auto 0;
+    padding: 32px 28px;
+    border-radius: 28px;
 }
 
 .wallet-container {

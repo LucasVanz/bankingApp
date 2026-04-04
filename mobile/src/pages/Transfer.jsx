@@ -105,7 +105,7 @@ export function Transfer() {
           </p>
 
           <input
-            type="text"
+            type="transaction-amount"
             value={`R$ ${formatMoneyDisplay(amount)}`}
             onChange={(e) => setAmount(parseMoneyInput(e.target.value))}
             placeholder="Amount"
