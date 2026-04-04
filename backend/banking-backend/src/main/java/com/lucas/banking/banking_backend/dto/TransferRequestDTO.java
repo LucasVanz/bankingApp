@@ -7,5 +7,5 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 
-public record TransferRequestDTO (@NotNull @DecimalMin(value = "0.01") BigDecimal amount, @NotEmpty @CPF String receiverCpf){
+public record TransferRequestDTO (@NotNull @DecimalMin(value = "0.01", message = "Must be greater than or equal to 0.01") BigDecimal amount, @NotEmpty @CPF String receiverCpf){
 }

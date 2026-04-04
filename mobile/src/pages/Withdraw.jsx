@@ -143,6 +143,7 @@ export function Withdraw() {
             Generate Code
           </button>
           <button
+            type="button"
             className="back-button"
             onClick={() => navigate("/dashboard")}
           >

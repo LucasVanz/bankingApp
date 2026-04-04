@@ -139,6 +139,7 @@ export function Deposit() {
             Generate Code
           </button>
           <button
+            type="button"
             className="deposit-back-button"
             onClick={() => navigate("/dashboard")}
           >

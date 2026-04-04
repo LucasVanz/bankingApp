@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Login } from './pages/Login';
 import { Create } from './pages/Create';
 import { Dashboard } from './pages/Dashboard';
@@ -12,10 +13,31 @@ import { InvestWallet } from './pages/InvestWallet';
 import { UserDetails } from './pages/UserDetails';
 import { ConfirmTransaction } from './pages/ConfirmTransaction';
 
-function App() {
+function AnimatedRoutes() {
+  const location = useLocation();
+  const [displayLocation, setDisplayLocation] = useState(location);
+  const [transitionStage, setTransitionStage] = useState('fadeIn');
+
+  useEffect(() => {
+    if (location.pathname !== displayLocation.pathname) {
+      setTransitionStage('fadeOut');
+    }
+  }, [location, displayLocation]);
+
+  useEffect(() => {
+    if (transitionStage === 'fadeOut') {
+      const timeout = window.setTimeout(() => {
+        setDisplayLocation(location);
+        setTransitionStage('fadeIn');
+      }, 250);
+      return () => window.clearTimeout(timeout);
+    }
+    return undefined;
+  }, [transitionStage, location]);
+
   return (
-    <Router>
-      <Routes>
+    <div className={`page-wrapper ${transitionStage}`}>
+      <Routes location={displayLocation}>
         {/* Define a tela inicial como o Login */}
         <Route path="/" element={<Login />} />
         {/* Rota para a tela de cadastro */}
@@ -43,6 +65,14 @@ function App() {
         {/* Redireciona qualquer rota inexistente para o login */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AnimatedRoutes />
     </Router>
   );
 }

@@ -122,6 +122,7 @@ export function Transfer() {
             Confirm transfer
           </button>
           <button
+            type="button"
             className="transfer-back-button"
             onClick={() => navigate("/dashboard")}
           >

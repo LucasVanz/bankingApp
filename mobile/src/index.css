@@ -5,6 +5,10 @@
   --text-color: #1e293b;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -45,4 +49,22 @@ button {
 
 .btn-secondary { background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); }
 .btn-secondary:hover { background: #f5f3ff; }
+
+.page-wrapper {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: 0 16px;
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.page-wrapper.fadeIn {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-wrapper.fadeOut {
+  opacity: 0;
+  transform: translateX(-24px);
+}
 

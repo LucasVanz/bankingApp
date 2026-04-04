@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record WithdrawRequestDTO(@NotNull @DecimalMin(value = "0.01") BigDecimal amount) {
+public record WithdrawRequestDTO(@NotNull @DecimalMin(value = "0.01", message = "Must be greater than or equal to 0.01") BigDecimal amount) {
 }

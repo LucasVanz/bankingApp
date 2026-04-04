@@ -1,17 +1,15 @@
 .statement-page-wrapper{
   min-height: 100vh;
   width: 100%;
-  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 24px;
+  padding: 24px 0px 0;
 }
 
 .statement-container{
   width: 100%;
-  max-width: 450px;     
-  padding: 0 16px;
+  max-width: 400px;  
 }
 
 .back-statement {
@@ -30,7 +28,6 @@
 .statement-filters {
   position: sticky;
   top: 0;
-  background: #ffffff;
   padding: 16px 0;
   display: flex;
   flex-direction: row; /* Alinhados horizontalmente */
@@ -46,7 +43,7 @@
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
-  background: #f8f9fa;
+  background: #ffffff;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
