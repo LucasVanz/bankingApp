@@ -17,12 +17,28 @@ export function Invest() {
   const [showPasswordField, setShowPasswordField] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmingWithPassword, setConfirmingWithPassword] = useState(false);
+  const [filterType, setFilterType] = useState("VARIABLE"); // VARIABLE ou FIXED
   const navigate = useNavigate();
+
+  // Limpar erro após 5 segundos
+  useEffect(() => {
+    if (errorMsg) {
+      const timer = setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
 
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const response = await api.get("/financialAssets/homebroker");
+        setLoading(true);
+        const endpoint =
+          filterType === "FIXED"
+            ? "/financialAssets/fixedAssets"
+            : "/financialAssets/variableAssets";
+        const response = await api.get(endpoint);
         setAssets(response.data);
       } catch (error) {
         console.error("Erro ao carregar ativos", error);
@@ -31,7 +47,7 @@ export function Invest() {
       }
     };
     fetchAssets();
-  }, []);
+  }, [filterType]);
 
   // Polling: Verifica o status da transação a cada 2 segundos
   useEffect(() => {
@@ -223,6 +239,25 @@ export function Invest() {
               >
                 My wallet
               </button>
+
+              {/* Botões de Filtro */}
+              <div className="filter-buttons">
+                <button
+                  type="button"
+                  className={`filter-btn ${filterType === "VARIABLE" ? "active" : ""}`}
+                  onClick={() => setFilterType("VARIABLE")}
+                >
+                  Variable
+                </button>
+                <button
+                  type="button"
+                  className={`filter-btn ${filterType === "FIXED" ? "active" : ""}`}
+                  onClick={() => setFilterType("FIXED")}
+                >
+                  Fixed
+                </button>
+              </div>
+
               <p>Select asset to invest</p>
             </header>
 

@@ -5,3 +5,6 @@ backend/banking-backend/data/
 
 # Credentials
 .env
+
+target/
+*.class

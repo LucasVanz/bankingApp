@@ -12,6 +12,16 @@ export function ConfirmTransaction() {
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState("");
 
+  // Limpar erro após 5 segundos
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   useEffect(() => {
     const fetchDetails = async () => {
       try {

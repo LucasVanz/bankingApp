@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ErrorMessage } from "./ErrorMessage";
 import { formatPhoneNumber } from "../utils/formatters";
 import "./css/UserDetails.css";
+import userImage from "./images/User.png";
 
 export function UserDetails() {
   // Para uso genérico
@@ -26,6 +27,28 @@ export function UserDetails() {
     photoBase64: initialData.photo || null,
   });
 
+  // Busca os dados da API se não receberem do Dashboard
+  useEffect(() => {
+    const fetchUserData = async () => {
+      // Se não houver dados do dashboard, busca da API
+      if (!initialData.name) {
+        try {
+          const response = await api.get("/users/me");
+          setUserData({
+            name: response.data.name || "",
+            email: response.data.email || "",
+            phone: response.data.phone || "",
+            photoBase64: response.data.photoBase64 || null,
+          });
+        } catch (error) {
+          console.error("Erro ao buscar dados do usuário:", error);
+          setErrorMsg("Erro ao carregar dados do usuário");
+        }
+      }
+    };
+    fetchUserData();
+  }, [initialData.name]);
+
   const handleBackStatement = async () => {
     navigate("/dashboard");
   };
@@ -42,7 +65,7 @@ export function UserDetails() {
       setIsEditing(false);
       // Ativa a animação de sucesso
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      setTimeout(() => setSaveSuccess(false), 5000);
     } catch (error) {
       const errorMessage =
         error.response?.data?.errors?.[0]?.defaultMessage ||
@@ -90,7 +113,7 @@ export function UserDetails() {
           <div className="user-details-photo-wrapper">
             <img
               className="user-details-avatar"
-              src={userData.photoBase64 || "https://via.placeholder.com/150"}
+              src={userData.photoBase64 || userImage}
               alt="Profile"
             />
             {isEditing && (

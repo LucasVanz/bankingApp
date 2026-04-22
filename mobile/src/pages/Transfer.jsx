@@ -19,6 +19,16 @@ export function Transfer() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
+  // Limpar erro após 5 segundos
+  useEffect(() => {
+    if (errorMsg) {
+      const timer = setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
+
   // Cria a transação de saque
   const handleTransfer = async (e) => {
     e.preventDefault();

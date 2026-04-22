@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+
 @RestController
 @RequestMapping("/financialAssets")
 public class FinancialAssetController {
@@ -26,4 +27,16 @@ public class FinancialAssetController {
     public ResponseEntity<List<FinancialAssetDTO>> getFinancialAssets(@AuthenticationPrincipal User user){
         return ResponseEntity.ok(financialAssetService.getAllAssets());
     }
+    
+    @GetMapping("/fixedAssets")
+    public ResponseEntity<List<FinancialAssetDTO>> getFixedAssets(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(financialAssetService.getFixedAssets());
+    }
+
+    @GetMapping("/variableAssets")
+    public ResponseEntity<List<FinancialAssetDTO>> getVariableAssets(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(financialAssetService.getVariableAssets());
+    }
+    
+
 }

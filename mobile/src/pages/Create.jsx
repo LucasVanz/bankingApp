@@ -16,6 +16,26 @@ export function Create() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Limpar erro após 5 segundos
+  useEffect(() => {
+    if (errorMsg) {
+      const timer = setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
+
+  // Limpar sucesso após 5 segundos (já tem redirecionamento em 2 segundos, mas como backup)
+  useEffect(() => {
+    if (successMsg) {
+      const timer = setTimeout(() => {
+        setSuccessMsg("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMsg]);
+
   // Formata o CPF
   const handleCpfChange = (e) => {
     const maskedCpf = formatCPF(e.target.value);

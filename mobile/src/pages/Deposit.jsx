@@ -16,6 +16,16 @@ export function Deposit() {
   const [confirmingWithPassword, setConfirmingWithPassword] = useState(false);
   const navigate = useNavigate();
 
+  // Limpar erro após 5 segundos
+  useEffect(() => {
+    if (errorMsg) {
+      const timer = setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
+
   const handleAmountChange = (e) => {
     setAmount(parseMoneyInput(e.target.value));
   };
@@ -170,6 +180,7 @@ export function Deposit() {
             </button>
           ) : (
             <div className="password-confirmation">
+              <ErrorMessage message={errorMsg} />
               <input
                 type="password"
                 placeholder="Enter your password"
