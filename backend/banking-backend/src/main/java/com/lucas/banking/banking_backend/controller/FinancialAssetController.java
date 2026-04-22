@@ -22,11 +22,6 @@ public class FinancialAssetController {
     @Autowired
     FinancialAssetService financialAssetService;
 
-
-    @GetMapping("/homebroker")
-    public ResponseEntity<List<FinancialAssetDTO>> getFinancialAssets(@AuthenticationPrincipal User user){
-        return ResponseEntity.ok(financialAssetService.getAllAssets());
-    }
     
     @GetMapping("/fixedAssets")
     public ResponseEntity<List<FinancialAssetDTO>> getFixedAssets(@AuthenticationPrincipal User user){
