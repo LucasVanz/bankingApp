@@ -5,5 +5,6 @@ public enum TransactionType {
     TRANSFER,
     WITHDRAW,
     INVESTMENT,
-    INVESTMENT_SELL
+    INVESTMENT_SELL,
+    DIVIDEND
 }

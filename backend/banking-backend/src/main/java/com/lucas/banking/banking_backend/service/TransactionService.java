@@ -93,7 +93,9 @@ public class TransactionService {
             Wallet wallet = transaction.getWallet();
             // Atualiza o valor da carteira
             switch (transaction.getType()) {
-                case DEPOSIT -> wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
+                case DEPOSIT -> {
+                    wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
+                }
                 case WITHDRAW -> {
                     if (!haveBalance(wallet, transaction.getAmount())) {
                         throw new RuntimeException("Insufficient funds at the time of confirmation");
@@ -119,6 +121,9 @@ public class TransactionService {
                             transaction.getQuantityFinancialAsset());
                 }
                 case INVESTMENT_SELL -> {
+                    wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
+                }
+                case DIVIDEND -> {
                     wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
                 }
             }
@@ -228,7 +233,8 @@ public class TransactionService {
         return transactionRepository.getAnalysisByWallet(wallet);
     }
 
-    public void sendStatementEmail(User user, StatementType type, LocalDate startDate, LocalDate endDate) throws Exception {
+    public void sendStatementEmail(User user, StatementType type, LocalDate startDate, LocalDate endDate)
+            throws Exception {
         List<Transaction> transactionsStatement = getTransactions(user, type, startDate, endDate);
         emailService.sendStatementEmail(transactionsStatement, user, startDate, endDate);
     }
