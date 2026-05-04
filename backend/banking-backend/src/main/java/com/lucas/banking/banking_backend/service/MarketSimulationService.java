@@ -52,27 +52,19 @@ public class MarketSimulationService {
         financialAssetRepository.saveAll(assets);
     }
 
-    // TODO: REVISAR O MÉTODO
-    @Scheduled(fixedRate = 60000) // Roda a cada 60 segundos (60000 milissegundos)
+    @Scheduled(fixedRate = 180000) // Roda a cada 60 segundos (60000 milissegundos)
     public void throwDividends() {
         List<UserInvestment> userInvestments = userInvestmentRepository.findByFinancialAssetType(FinancialAssetType.FIXED);
 
         for (UserInvestment userInvestment : userInvestments) {
             FinancialAsset financialAsset = userInvestment.getFinancialAsset();
             BigDecimal yieldPercentage = financialAsset.getYieldPercentage();
-            if (yieldPercentage == null || yieldPercentage.compareTo(BigDecimal.ZERO) <= 0) {
-                continue;
-            }
-
+            // Calcula o valor do dividendo com base no preço atual, quantidade e percentual de rendimento
             BigDecimal dividendAmount = financialAsset.getCurrentPrice()
                     .multiply(userInvestment.getQuantity())
                     .multiply(yieldPercentage)
                     .divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
-
-            if (dividendAmount.compareTo(BigDecimal.ZERO) <= 0) {
-                continue;
-            }
-
+            // Cria e confirma a transação de dividendos
             Transaction transaction = new Transaction();
             transaction.setAmount(dividendAmount);
             transaction.setType(TransactionType.DIVIDEND);

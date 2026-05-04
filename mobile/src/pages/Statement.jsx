@@ -178,6 +178,7 @@ export function Statement() {
           const corAtual =
             transaction.type === "DEPOSIT" ||
             transaction.type == "INVESTMENT_SELL" ||
+            transaction.type === "DIVIDEND" ||
             transaction.receiverWallet?.user?.id === idUser
               ? "#11bd36"
               : "#c01010ff";

@@ -18,6 +18,7 @@ const COLORS_MAP = {
   sent: "#FF4444", // Vermelho
   investment: "#3b3b98", // Roxo (Identidade visual do app)
   investmentSell: "#8b008b", // Roxo escuro (para vendas de investimentos)
+  dividend: "#00A8FF", // Azul claro para dividendos
 };
 
 export function Analisys() {
@@ -70,6 +71,11 @@ export function Analisys() {
           value: analisysData.totalAmountInvestmentSell || 0,
           color: COLORS_MAP.investmentSell,
         },
+        {
+          name: "Dividends",
+          value: analisysData.totalAmountDividend || 0,
+          color: COLORS_MAP.dividend,
+        },
       ]
     : [];
 
@@ -105,6 +111,11 @@ export function Analisys() {
           name: "Investments Sales",
           value: analisysData.countInvestmentSell || 0,
           color: COLORS_MAP.investmentSell,
+        },
+        {
+          name: "Dividends",
+          value: analisysData.countDividend || 0,
+          color: COLORS_MAP.dividend,
         },
       ]
     : [];

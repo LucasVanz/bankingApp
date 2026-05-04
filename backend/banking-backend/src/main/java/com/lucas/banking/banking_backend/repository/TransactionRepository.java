@@ -28,7 +28,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
    @Query("SELECT t FROM Transaction t WHERE " +
          "(t.receiverWallet = :wallet AND t.type = 'TRANSFER' AND t.status = 'COMPLETED') OR " +
          "(t.wallet = :wallet AND t.type = 'DEPOSIT' AND t.status = 'COMPLETED') OR " +
-         "(t.wallet = :wallet AND t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED') " +
+         "(t.wallet = :wallet AND t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED') OR " +
+         "(t.wallet = :wallet AND t.type = 'DIVIDEND' AND t.status = 'COMPLETED') " +
          "ORDER BY t.createdAt DESC")
    List<Transaction> findIncomesByWallet(@Param("wallet") Wallet wallet);
 
@@ -42,7 +43,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
    @Query("SELECT t FROM Transaction t WHERE (" +
          "(t.receiverWallet = :wallet AND t.type = 'TRANSFER' AND t.status = 'COMPLETED') OR " +
          "(t.wallet = :wallet AND t.type = 'DEPOSIT' AND t.status = 'COMPLETED') OR " +
-         "(t.wallet = :wallet AND t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED')" +
+         "(t.wallet = :wallet AND t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED') OR" +
+         "(t.wallet = :wallet AND t.type = 'DIVIDEND' AND t.status = 'COMPLETED')" +
          ") AND t.createdAt BETWEEN :startDate AND :endDate " +
          "ORDER BY t.createdAt DESC")
    List<Transaction> findIncomesByWalletAndCreatedAtBetween(Wallet wallet, LocalDateTime startDate,
@@ -57,21 +59,20 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
          LocalDateTime endDate);
 
    @Query("SELECT new com.lucas.banking.banking_backend.dto.AnalisysReturnDTO(" +
-         "COALESCE(SUM(CASE WHEN t.type = 'TRANSFER' AND t.status = 'COMPLETED' AND t.wallet = :wallet THEN t.amount ELSE 0 END), 0), "
-         +
-         "COALESCE(SUM(CASE WHEN t.type = 'TRANSFER' AND t.status = 'COMPLETED' AND t.receiverWallet = :wallet THEN t.amount ELSE 0 END), 0), "
-         +
+         "COALESCE(SUM(CASE WHEN t.type = 'TRANSFER' AND t.status = 'COMPLETED' AND t.wallet = :wallet THEN t.amount ELSE 0 END), 0), " +
+         "COALESCE(SUM(CASE WHEN t.type = 'TRANSFER' AND t.status = 'COMPLETED' AND t.receiverWallet = :wallet THEN t.amount ELSE 0 END), 0), " +
          "COALESCE(SUM(CASE WHEN t.type = 'WITHDRAW' AND t.status = 'COMPLETED' THEN t.amount ELSE 0 END), 0), " +
          "COALESCE(SUM(CASE WHEN t.type = 'DEPOSIT' AND t.status = 'COMPLETED' THEN t.amount ELSE 0 END), 0), " +
          "COALESCE(SUM(CASE WHEN t.type = 'INVESTMENT' AND t.status = 'COMPLETED' THEN t.amount ELSE 0 END), 0), " +
-         "COALESCE(SUM(CASE WHEN t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED' THEN t.amount ELSE 0 END), 0), "
-         +
+         "COALESCE(SUM(CASE WHEN t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED' THEN t.amount ELSE 0 END), 0), " +
+         "COALESCE(SUM(CASE WHEN t.type = 'DIVIDEND' AND t.status = 'COMPLETED' THEN t.amount ELSE 0 END), 0), " +
          "COUNT(CASE WHEN t.type = 'TRANSFER' AND t.status = 'COMPLETED' AND t.wallet = :wallet THEN 1 END), " +
          "COUNT(CASE WHEN t.type = 'TRANSFER' AND t.status = 'COMPLETED' AND t.receiverWallet = :wallet THEN 1 END), " +
          "COUNT(CASE WHEN t.type = 'WITHDRAW' AND t.status = 'COMPLETED' THEN 1 END), " +
          "COUNT(CASE WHEN t.type = 'DEPOSIT' AND t.status = 'COMPLETED' THEN 1 END), " +
          "COUNT(CASE WHEN t.type = 'INVESTMENT' AND t.status = 'COMPLETED' THEN 1 END), " +
-         "COUNT(CASE WHEN t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED' THEN 1 END)) " +
+         "COUNT(CASE WHEN t.type = 'INVESTMENT_SELL' AND t.status = 'COMPLETED' THEN 1 END), " +
+         "COUNT(CASE WHEN t.type = 'DIVIDEND' AND t.status = 'COMPLETED' THEN 1 END)) " +
          "FROM Transaction t WHERE t.wallet = :wallet OR t.receiverWallet = :wallet")
    AnalisysReturnDTO getAnalysisByWallet(@Param("wallet") Wallet wallet);
 }
